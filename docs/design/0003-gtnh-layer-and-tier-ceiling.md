@@ -15,11 +15,11 @@ Storage is an early-game need: players want a storage network soon after their f
 
 1. **No own materials.** Every part is made from GT materials and parts through ore-dict unification. The only mod-specific items are this mod's own blocks and items; nothing is registered that GT already provides.
 2. **Recipes in the GT recipe maps.** Machine processing goes through GT's recipe maps with the builder, at the EU/t of the item's tier. Crafting-table recipes follow pack conventions: GT tools in the grid, GT parts as ingredients. No recipe may let an item be obtained before its tier.
-3. **Tier band: the early game up to EU (HV).**
+3. **Tier band: the early game up to HV.**
    - Early-game items (the basic storage block and item, the basic terminal, the filters, the configurator) are reachable at LV or below, right after first ingots;
    - The network parts (cables, connectors, interface) and the main terminal sit at MV to HV;
    - The advanced items (the crafting terminal, the advanced wireless terminal, the level emitter) sit at HV;
-   - Nothing the mod outputs is above **EU (HV)**. The cap is named here so M05's dev self-check can enforce it.
+   - Nothing the mod outputs is above **HV** (128V; GT tier order: ULV < LV < MV < HV < EV < IV and above). The cap is named here so M05's dev self-check can enforce it.
 4. **The per-item tier map is M05's.** This record fixes the band and the rule; the per-item map is written when S2 refines it and M05 lands the recipes. Every item gets exactly one tier, gated by both the minimum machine voltage of its final recipe and at least one input material unobtainable before that tier.
 
 ## Consequences
@@ -31,7 +31,7 @@ Storage is an early-game need: players want a storage network soon after their f
 ## Alternatives considered
 
 - **Faithful vanilla recipes.** Rejected: a parallel progression beside GT's is exactly what GT-first exists to avoid.
-- **A lower ceiling (EV).** Rejected at this stage: the advanced items would stop being useful in the late game, right where a storage network is most needed. Revisit in beta if the content feels cheap.
+- **A higher ceiling (EV).** Rejected at this stage: the advanced items would stop being useful in the late game, right where a storage network is most needed. Revisit in beta if the content feels cheap.
 - **No ceiling.** Rejected: the advanced items would reach ZPM and IV and compete with the pack's full storage solution for the same job.
 
 ## Still open
