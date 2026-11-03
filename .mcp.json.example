@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "semantic-search": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["-I", "tools/semantic-search/server.py"],
+      "env": {"SEMSEARCH_UPSTREAM_REF": "upstream-src"}
+    }
+  }
+}
