@@ -5,7 +5,7 @@ A storage network for **GT New Horizons** (Minecraft 1.7.10): terminals, item/ta
 Store items in blocks, reach them from a terminal across the whole network — by exact item, by tag, or by a poly filter — and let the terminal sort the result. Cable the storage together, watch levels with an emitter, and reach a network from anywhere with a wireless terminal.
 
 > [!NOTE]
-> **In development — planning and spec phase done, no playable build yet.** Spike S1 (behavior spec) and S3 (pack research) have landed; S2 (GT integration) is in flight. What builds next, and each gate, is in [docs/ROADMAP.md](docs/ROADMAP.md).
+> **In development — planning and spec phase done, no playable build yet.** Spikes S1 (behavior spec), S2 (GT integration) and S3 (pack research) have all landed (2026-11-03); the build starts at M01. What builds next, and each gate, is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## What it does
 
@@ -15,7 +15,7 @@ Store items in blocks, reach them from a terminal across the whole network — b
 - **Wireless access.** Wireless terminals (basic and advanced) with configurable range.
 - **Inventory configurator.** Edit a storage block's contents and filters from the outside.
 - **Paint kit.** Re-skin storage blocks.
-- **Recipe viewer and info integrations.** NEI/REI/EMI recipe-viewer plugins and Waila/Jade/TOP overlays.
+- **Recipe viewer and info integrations.** A NEI recipe-viewer plugin and Waila block-info overlays — the 1.7.10 stand-ins for upstream's JEI/REI/EMI and Jade/TOP (the mapping is in the API map).
 
 ## Requirements
 

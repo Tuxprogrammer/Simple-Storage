@@ -2,9 +2,9 @@
 
 How this mod differs from Tom's Simple Storage 2.11.3 and how it fits into GT New Horizons. Upstream's behavior is in [docs/original-spec/](../original-spec/README.md). Builders read both: the original-spec sheet for what a system does, and the matching new-spec area for what changes and how it connects to the pack.
 
-Target pack: **GTNH 2.9.0** ([0002](../design/0002-target-pack.md)), pending S3 verification.
+Target pack: **GTNH 2.9.0** ([0002](../design/0002-target-pack.md), S3-verified).
 
-Status: **not yet written** — spikes S1 to S3 produce it ([ROADMAP](../ROADMAP.md)).
+Status: `00-pack-integration` is written (spikes S2 and S3, 2026-11-03); the area specs `01` to `06` are written as their milestones build (M02 to M06, [ROADMAP](../ROADMAP.md)).
 
 ## What this mod is for
 
@@ -25,7 +25,7 @@ Every change here serves that, and every system uses what the pack already has b
 
 | Area | What changes |
 |---|---|
-| `00-pack-integration` | The target pack and its versions, GT recipe maps and materials, the recipe viewer, every pack mod this mod touches — being written by the pack-research lane this round (S3) |
+| `00-pack-integration` | The target pack and its versions, GT recipe maps and materials, the recipe viewer, every pack mod this mod touches (S3 + S2, done 2026-11-03) |
 | `01-core` | 1.7.10 lifecycle and registration, Forge config with module flags, network, the platform layer collapsed into one |
 | `02-storage` | The storage item and block on GT parts, NBT formats, the item components |
 | `03-terminal` | The terminal, its screens, menus and slots, filters and sorting, the inventory stack logic |

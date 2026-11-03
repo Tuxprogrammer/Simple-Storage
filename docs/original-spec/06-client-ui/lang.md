@@ -10,7 +10,7 @@
 | 6 | **Data formats** | Standard MC lang JSON (flat key → string). The `toms_storage.configuration.importantInfo.tooltip` and the `config.toms_storage.*`/`text.autoconfig.*...@Tooltip` values are the only multi-line strings |
 | 7 | **Output** | Block/item/menu names, item tooltips (including the dynamic beacon-level lines), the terminal HUD lines (`terminal_stat.*`), chat messages, config-screen text, narrator labels, the keybind name |
 | 8 | **Relationships** | Every area references its own keys here: block/item names (area `02`/`03`/`04`), terminal UI (area `03`), viewer names (area `05`), config options (area `01`); the search-mode and priority/side/ctrlMode keys are constructed by the widget kit (see [widgets.md](widgets.md)) |
-| 9 | **NeoForge dependencies** | None beyond the lang-file convention; AutoConfig `@Tooltip` keys (`text.autoconfig.toms_storage.option.*.@Tooltip`) are the AutoConfig tooltip mechanism (NF Cloth / FB AutoConfig — 1.7.10: config GUI text, pending S2) |
+| 9 | **NeoForge dependencies** | None beyond the lang-file convention; AutoConfig `@Tooltip` keys (`text.autoconfig.toms_storage.option.*.@Tooltip`) are the AutoConfig tooltip mechanism (NF Cloth / FB AutoConfig — 1.7.10: config GUI text, S2: API-MAP) |
 | 10 | **Bugs** | `UI-01` (11 missing narrator keys), `UI-02` (missing `narrator.toms_storage.button_state.*`), `UI-03` (missing `tooltip.toms_trading_network.textfield`, wrong namespace) |
 
 ## Behavior detail

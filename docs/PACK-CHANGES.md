@@ -36,7 +36,7 @@ One config file, `config/simplestoragenh.cfg` (GTNHLib `@Config` annotation, `mo
 |---|---|---|
 | `modules.storage` | `true` | storage blocks (cabinet, crate, trims) — module flag, gates behavior not registration |
 | `modules.terminal` | `true` | storage + crafting terminals |
-| `modules.network` | `true` | cables, connectors, connector, proxy, interface, hopper |
+| `modules.network` | `true` | cables, cable connectors, inventory connectors, proxy, interface, hopper |
 | `modules.wireless` | `true` | wireless + advanced wireless terminals |
 | `modules.integration.nei` | `true` | NEI plugin (only meaningful with NEI loaded) |
 | `modules.integration.waila` | `true` | Waila providers (only with Waila loaded) |

@@ -32,7 +32,7 @@ Third-party integrations of Tom's Simple Storage Mod `2.11.3` (upstream branch `
 
 - Source files read: 21 of 21 in-scope Java files (the files listed in [COVERAGE.md](../COVERAGE.md) row `05-integration`: the three viewer packages `jei`/`rei`/`emi` + `NF/rei/REIPluginLoader`, the `jade` package (8), `SophisticatedDoubleBlocks`, `NF/top/TheOneProbeHandler`, `FB/ModMenu`), plus the `01-core` files `NF/StorageMod.java` and `FB/StorageMod.java` (for the registration call sites), and the build/metadata files: `NeoForge/build.gradle`, `Fabric/build.gradle`, `NeoForge/gradle.properties`, `Fabric/gradle.properties`, `META-INF/neoforge.mods.toml`, `Fabric/.../fabric.mod.json`, `version-check-nf.json`, `version-check.json`. Classes that are *used* here but owned by other areas: `EventHandler`/`MultiblockInventoryAPI`/`PolymorphHelper`/`PolymorphTerminalWidget` (→ `01-core/util-api.md`), `VanillaMultiblockInventories`/`IAutoFillTerminal` (→ `03-terminal/inventory-access.md`, `03-terminal/terminal-utils.md`), `ServerEvents` (→ `01-core/mod-lifecycle.md`) — all were read and are covered from the integration side in [other-compat.md](other-compat.md).
 - Textures / sounds / lang keys covered: 0 textures, 0 sounds (none used directly by these classes except shared GUI icons documented in `06-client-ui`); lang keys are listed in [06-client-ui/lang.md](../06-client-ui/lang.md)
-- Corrections made to earlier statements: none
+- Corrections made to earlier statements: none (first writing); the field-9 "pending S2" notes were resolved by S2 (2026-11-03, see [API-MAP](../API-MAP.md))
 
 ## Known limits
 

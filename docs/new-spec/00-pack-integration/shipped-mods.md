@@ -241,7 +241,7 @@ Every mod in the GTNH 2.9.0 pack, with the version the pack ships and why it mat
 | VendingMachine | 0.4.103 | - |
 | VillageNames | 4.5.21-GTNH | - |
 | VisualProspecting | 1.5.42 | - |
-| waila | 1.19.34 | Jade's predecessor: the Waila API (`IWailaPlugin`) is where our Jade integrations land |
+| waila | 1.19.34 | Jade's predecessor: the Waila API (`IWailaRegistrar`/`IWailaBlock`) is where our Jade integrations land |
 | WailaHarvestability | 1.3.6-GTNH | Waila harvest-tool info |
 | WAILAPlugins | 0.7.2 | Extra Waila plugins |
 | WanionLib | 1.10.1 | - |

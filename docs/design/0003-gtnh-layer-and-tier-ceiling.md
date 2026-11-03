@@ -31,7 +31,7 @@ Storage is an early-game need: players want a storage network soon after their f
 ## Alternatives considered
 
 - **Faithful vanilla recipes.** Rejected: a parallel progression beside GT's is exactly what GT-first exists to avoid.
-- **A higher ceiling (EV).** Rejected at this stage: the advanced items would stop being useful in the late game, right where a storage network is most needed. Revisit in beta if the content feels cheap.
+- **A higher ceiling (EV).** Rejected at this stage: the content would stretch to the late game, exactly where the pack's AE2 already takes over storage (D14), and the advanced items would arrive after the early/mid game when a simple network is most needed. Revisit in beta if the content feels cheap.
 - **No ceiling.** Rejected: the advanced items would reach ZPM and IV and compete with the pack's full storage solution for the same job.
 
 ## Still open

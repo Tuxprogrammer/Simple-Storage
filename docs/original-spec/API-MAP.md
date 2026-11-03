@@ -1,6 +1,6 @@
 # API map
 
-Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none". Filled in as S1 wrote each area; the 1.7.10 answer is designed in the new spec, not here. Harvested from the `NeoForge dependencies` fields of the committed sheets (areas `05-integration` and `06-client-ui` at write time; `01`–`04` in S1 parts 1–2) plus the cross-loader mechanisms named in this spec. All "pending S2" rows resolved by spike S2 (2026-11-03, verified against source at the pack's tags).
+Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none". Filled in as S1 wrote each area, every row then resolved by S2 (2026-11-03, verified against source at the pack's tags) — the design records for the 1.7.10 answers stay in the new spec. Harvested from the `NeoForge dependencies` fields of the committed sheets (areas `05-integration` and `06-client-ui` at write time; `01`–`04` in S1 parts 1–2) plus the cross-loader mechanisms named in this spec.
 
 ## Recipe viewers and info mods (area `05-integration`)
 
@@ -23,7 +23,7 @@ Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none
 
 | API | Used for | 1.7.10 counterpart |
 |---|---|---|
-| `WidgetSprites` + `blitSprite(RenderPipelines.GUI_TEXTURED, …)` + nine-slice mcmeta (`gui.scaling`) | icon buttons, list rows, scroll thumb | **no direct counterpart** — 1.7.10: `Gui.drawModalRectWithCustomSize` (nine-slice via nine blits) + `TextureManager` binding; no `SpriteCollection` (1.9+) (inferred from 1.7.10 API, S2) |
+| `WidgetSprites` + `blitSprite(RenderPipelines.GUI_TEXTURED, …)` + nine-slice mcmeta (`gui.scaling`) | icon buttons, list rows, scroll thumb | **no direct counterpart** — 1.7.10: `Gui.drawModalRectWithCustomSize` (nine-slice via nine blits) + `TextureManager` binding; no `SpriteCollection` (1.10+) (inferred from 1.7.10 API, S2) |
 | `RecipeBookComponent`/`GhostSlots`/`PlaceRecipeHelper` | crafting terminal recipe book | **no counterpart** — vanilla 1.7.10 has no recipe book (added 1.14); the terminal's book is a mod feature (S2) |
 | `RenderPipeline` + `RegisterRenderPipelinesEvent` + named pipeline location `toms_storage:pipeline/lines` | no-depth line pipeline | **no direct 1.7.10 counterpart** for named pipeline locations — 1.7.10: `RenderType.create` (Forge) |
 | `IrisPipelines.assignPipeline(…, ShaderKey.LINES)` | Iris shader override of the line pipeline | the pack's 1.7.10 shader mod is **Angelica 2.2.43 (Embeddium)**, not Iris (S3 MOD-INDEX); pipeline-assignment API unverified — treat as optional (inferred, S2) |
@@ -51,7 +51,7 @@ Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none
 | `Component.translatable`/`I18n` | lang lookup | `I18n.translate` (same lineage) |
 | `RenderPipelines.GUI_TEXTURED` + `GuiGraphicsExtractor` | GUI drawing | 1.7.10: `Gui`/`GuiDrawHelper` (naming only) |
 
-## Pending from areas `01`–`04` (sheets not committed at write time)
+## Platform and registration (areas `01`–`04`)
 
 | API family | Used for | 1.7.10 counterpart |
 |---|---|---|

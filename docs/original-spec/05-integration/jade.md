@@ -10,7 +10,7 @@
 | 6 | **Data formats** | NBT payload per component (written by the data provider, read by the component provider):<br>`inventory_connector`: `free` (int, free slots), `all` (int, total slots), `blocks` (int, number of inventories in the network).<br>`inventory_config`: `bf` (bool, set only when a `BlockFilter` exists), `skip` (bool), `pr` (byte = `Priority` ordinal: 0=`lowest`, 1=`low`, 2=`normal`, 3=`high`, 4=`highest`), `filter` (ItemStack via `ItemStack.CODEC`, only when the filter slot is non-empty).<br>`inventory_hopper`: `filter` (ItemStack via `ItemStack.CODEC`, only when non-empty), `enabled` (bool).<br>Client read-back uses `TagValueInput` with `ProblemReporter.DISCARDING` (malformed NBT is ignored) and `Minecraft.getInstance().level.registryAccess()` as the registry source |
 | 7 | **Output** | (client) Jade tooltips: inventory connector → free/total slot count + fill progress bar + inventory count; any block with a block filter → "Inventory Configuration" line + skip/priority line + (when a filter item is set) the filter item (detail mode: icon + full item tooltip in a bordered box; otherwise a single "Filter: <item name>" line); inventory hopper → filter info + "disabled by redstone" when redstone-disabled |
 | 8 | **Relationships** | `InventoryConnectorBlockEntity.getUsage()` → `UsageInfo` (`free/all/blocks`) (area `02-storage`), `BlockFilter.getFilterAt(level, pos)` (area `03-terminal`/`02-storage`), `BasicInventoryHopperBlockEntity.getFilter()/isEnabled()` (area `02-storage`), `Priority` enum (`SH/util/Priority.java`, area `02-storage`), the block/item classes for registration (areas `02`/`03`), the `config.jade.plugin_toms_storage.*` lang keys (area `06-client-ui`) |
-| 9 | **NeoForge dependencies** | Jade API (`snownee.jade.api.*`, `IWailaPlugin` discovery) — the 1.7.10 counterpart is WAILA (or the GTNH-pack info mod; pending S2). `ItemStack.CODEC` + `TagValueInput` for the `filter` field (data components → NBT in 1.7.10). `ProgressView`/`JadeUI` (no 1.7.10 counterpart, pending S2). Uses the mod's own block-entity getters |
+| 9 | **NeoForge dependencies** | Jade API (`snownee.jade.api.*`, `IWailaPlugin` discovery) — the 1.7.10 counterpart is WAILA (S2: Waila 1.19.34, see API-MAP). `ItemStack.CODEC` + `TagValueInput` for the `filter` field (data components → NBT in 1.7.10). `ProgressView`/`JadeUI` (no 1.7.10 counterpart, S2: none — see API-MAP). Uses the mod's own block-entity getters |
 | 10 | **Bugs** | `INT-06` (config providers registered for every block/entity) |
 
 ## Behavior detail
@@ -48,4 +48,4 @@
 
 ## Deviations in the new mod
 
-None (original spec only; the 1.7.10 info-mod counterpart is a pending S2 decision).
+None (original spec only; the 1.7.10 info-mod counterpart is settled by S2 (Waila — see API-MAP)).
