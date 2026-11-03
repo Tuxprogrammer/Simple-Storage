@@ -33,5 +33,7 @@ Spike S3 verified the current stable from three sources on 2026-11-02: the GTNH 
 
 ## Still open
 
-- Whether a jar-shipped BetterQuesting quest line is adopted (S2 decision; the importer API exists, [integration-opportunities.md](../new-spec/00-pack-integration/integration-opportunities.md) § Questbook).
-- Whether ghost-drag in NEI is in scope (NEI has no built-in ghost-ingredient concept; [integration-opportunities.md](../new-spec/00-pack-integration/integration-opportunities.md) § mapping table).
+None — both former open items are settled:
+
+- Jar-shipped BetterQuesting quest line: **yes**, the mod ships its own quest line in the jar (decision log D12).
+- Ghost-drag in NEI: **beta candidate**, not alpha scope (decision log D11).
