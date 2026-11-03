@@ -2,7 +2,7 @@
 
 A description of **Tom's Simple Storage Mod 2.11.3 for Minecraft 26.2** (upstream branch `26.2`, commit `95bb61d`, NeoForge 26.2.0.90, [tom5454/Toms-Storage](https://github.com/tom5454/Toms-Storage)): how it behaves, every number and tunable, its data formats, and its suspected bugs. Upstream is MIT, so code may be ported ([0001](../design/0001-port-policy-and-licensing.md)). This spec is not a clean-room substitute for the code. It is the **behavior contract** that unit tests and the ported-code gate check against, and the register of upstream bugs that must not come back. How this mod differs from upstream, and how it fits GTNH, is in [docs/new-spec/](../new-spec/README.md).
 
-Status: **not yet written** — producing it is spike S1 ([ROADMAP](../ROADMAP.md)).
+Status: **written** — S1 landed 2026-11-03: 6 areas, 51 system sheets, COVERAGE.md 217/217 upstream Java files, 54 suspected-bug rows reported (51 unique after cross-area dedup; register in [BUGS.md](BUGS.md)).
 
 | Area | Covers | Bug prefix |
 |---|---|---|
