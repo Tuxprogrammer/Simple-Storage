@@ -14,8 +14,8 @@ The GT-first alternative would make every one of them an EU-consuming GT machine
 ## Decision
 
 1. **Faithful upstream: power-free.** The terminal, the storage blocks, the cable and connector blocks and the wireless items consume no energy at alpha. No EU buffer, no per-operation cost.
-2. **Not GT machines.** The blocks are ordinary 1.7.10 blocks with their own simple GUIs, not GT MetaTileEntities and not GT's GUI framework. They claim no MetaTileEntity IDs.
-3. **An optional EU sink in M05.** M05 may add an **optional** EU sink behind a config flag, off by default (for example, the level emitter as an EU consumer, or a small per-transfer cost on the terminal), so a server that wants an energy cost gets one without changing the default experience. S2 refines the mechanism. The flag changes behavior only, never registration (`config-safe-registration`).
+2. **Not GT machines.** The blocks are ordinary 1.7.10 blocks with their own simple GUIs, not GT MetaTileEntities and not GT's GUI framework. They claim no MetaTileEntity IDs. *Refined by S2 (decision D9): verified against the pack — `IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler` (GT5-Unofficial 5.09.54.265, IMetaTileEntity.java#L50) is the GT-machine shape; the pack's storage neighbors (ironchest 6.1.13, StorageDrawers 2.2.31-GTNH, EnderStorage 1.8.9 — S3 MOD-INDEX) are all ordinary tile entities without EU, so "power-free utility block with its own GUI" is the established pack shape for non-processing storage. Details in [new-spec/00-pack-integration/machine-model.md](../new-spec/00-pack-integration/machine-model.md).*
+3. **An optional EU sink in M05.** M05 may add an **optional** EU sink behind a config flag, off by default, so a server that wants an energy cost gets one without changing the default experience. *Refined by S2 (decision D7): the sink is the **level emitter as a fixed consumer at the ULV rate — 8 EU/t while active** (`GTValues.V[0]`, verified in [new-spec/00-pack-integration/gtnh-tiers-and-energy.md](../new-spec/00-pack-integration/gtnh-tiers-and-energy.md)). The emitter is a redstone utility, not a machine, so it drains at the ULV rate rather than its HV item tier (512 EU/t would make the sink a machine, which §2 avoids). Config keys: `euSink.enabled` (default `false`), `euSink.euPerTick` (default `8`). The flag changes behavior only, never registration (`config-safe-registration`).*
 4. **No multiblock at alpha.** Upstream has no multiblock; a storage network scales by adding blocks. If the beta review wants a multiblock, it gets its own record.
 
 ## Consequences
@@ -31,4 +31,4 @@ The GT-first alternative would make every one of them an EU-consuming GT machine
 
 ## Still open
 
-- Q2: does the optional EU sink ship, and as what — settled by S2 and built in M05.
+- (S2, 2026-11-03: Q2 settled — the optional EU sink ships as what, at what rate: **level emitter, 8 EU/t ULV rate while active, behind `euSink.enabled` (off by default)** — decision D7. M05 builds it; if the beta review finds 8 EU/t too cheap or too expensive, the `euSink.euPerTick` knob is the escape hatch rather than a new record.)
