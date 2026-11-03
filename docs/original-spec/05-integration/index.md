@@ -30,7 +30,7 @@ Third-party integrations of Tom's Simple Storage Mod `2.11.3` (upstream branch `
 
 ## Coverage
 
-- Source files read: 28 of 28 in-scope Java files (the 23 integration classes listed in [COVERAGE.md](../COVERAGE.md) row `05-integration`, plus `SH/util/IAutoFillTerminal.java`, `NF/StorageMod.java`, `FB/StorageMod.java` for the registration calls), plus the build/metadata files: `NeoForge/build.gradle`, `Fabric/build.gradle`, `NeoForge/gradle.properties`, `Fabric/gradle.properties`, `META-INF/neoforge.mods.toml`, `Fabric/.../fabric.mod.json`, `version-check-nf.json`, `version-check.json`
+- Source files read: 28 of 28 in-scope Java files (the files listed in [COVERAGE.md](../COVERAGE.md) row `05-integration`: the three viewer packages `jei`/`rei`/`emi` + `NF/rei/REIPluginLoader`, the `jade` package (8), `polymorph` (2), `api` (2), `SophisticatedDoubleBlocks`, `VanillaMultiblockInventories`, `NF/top/TheOneProbeHandler`, `FB/ModMenu`, `SH/util/IAutoFillTerminal`, `NF/ServerEvents`), plus the `01-core` files `NF/StorageMod.java` and `FB/StorageMod.java` (for the registration call sites), and the build/metadata files: `NeoForge/build.gradle`, `Fabric/build.gradle`, `NeoForge/gradle.properties`, `Fabric/gradle.properties`, `META-INF/neoforge.mods.toml`, `Fabric/.../fabric.mod.json`, `version-check-nf.json`, `version-check.json`
 - Textures / sounds / lang keys covered: 0 textures, 0 sounds (none used directly by these classes except shared GUI icons documented in `06-client-ui`); lang keys are listed in [06-client-ui/lang.md](../06-client-ui/lang.md)
 - Corrections made to earlier statements: none
 

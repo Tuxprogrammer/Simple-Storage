@@ -77,6 +77,13 @@ All steps are **(client)**.
 
 1. A 20×18 vanilla `ImageButton` using `RecipeBookComponent.RECIPE_BUTTON_SPRITES`; placed by `CraftingTerminalScreen` (area `03-terminal`); its press handler toggles the recipe book open/closed via the screen. (Documented here as a widget; the screen-side wiring is `03-terminal`.)
 
+### Screen base classes (GUI kit infrastructure)
+
+1. `IScreen` (`SH/screen/IScreen.java`): interface with `getExclusionAreas(Consumer<Box>)` and the nested `Box(x, y, width, height)` record — the contract the recipe viewers use to keep recipe GUIs off button columns (area `05-integration`).
+2. `PlatformContainerScreen` (`NF/screen/PlatformContainerScreen.java`, `FB/screen/PlatformContainerScreen.java` — identical on both loaders): `AbstractContainerScreen` + `IScreen`; the root of every TSS screen. Concrete subclasses (areas `02`/`03`) provide the exclusion areas and layouts.
+3. `TSContainerScreen` (`SH/screen/TSContainerScreen.java`): adds child-widget wheel routing — `mouseScrolled` falls through to the child widget under the cursor (copied from vanilla's `ContainerEventHandler`).
+4. `AbstractFilteredScreen` (`SH/screen/AbstractFilteredScreen.java`): thin subclass for `AbstractFilteredMenu` screens (the item/tag filter GUIs, area `03-terminal`); the ghost-drag target surface for the viewers.
+
 ## Deviations in the new mod
 
 None (original spec only).
