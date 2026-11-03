@@ -1,122 +1,50 @@
-# Example Forge Mod for Minecraft 1.7.10
+# Simple Storage
 
-[![](https://jitpack.io/v/GTNewHorizons/ExampleMod1.7.10.svg)](https://jitpack.io/#GTNewHorizons/ExampleMod1.7.10)
-[![](https://github.com/GTNewHorizons/ExampleMod1.7.10/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/GTNewHorizons/ExampleMod1.7.10/actions/workflows/build-and-test.yml)
+A storage network for **GT New Horizons** (Minecraft 1.7.10): terminals, item/tag/poly filters, stack sorting and a cable network. This is a backport of [Tom's Simple Storage](https://github.com/tom5454/Toms-Storage), built for GTNH 2.9.0.
 
-An example mod for Minecraft 1.7.10 with Forge focussed on a stable, updatable setup.
+Store items in blocks, reach them from a terminal across the whole network — by exact item, by tag, or by a poly filter — and let the terminal sort the result. Cable the storage together, watch levels with an emitter, and reach a network from anywhere with a wireless terminal.
 
-<!-- omit in toc -->
-### Table of Contents
+> [!NOTE]
+> **In development — planning and spec phase done, no playable build yet.** Spike S1 (behavior spec) and S3 (pack research) have landed; S2 (GT integration) is in flight. What builds next, and each gate, is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
-* [Example Forge Mod for Minecraft 1.7.10](#example-forge-mod-for-minecraft-1710)
-    * [Motivation](#motivation)
-    * [Help! I'm stuck!](#help-im-stuck)
-    * [Getting started](#getting-started)
-    * [Features](#features)
-    * [Files](#files)
-    * [Forge's Access Transformers](#forges-access-transformers)
-    * [Mixins](#mixins)
-    * [Advanced](#advanced)
-    * [Claude Code skills](#claude-code-skills)
-    * [Feedback wanted](#feedback-wanted)
+## What it does
 
+- **Storage blocks.** The filing cabinet and the open crate, each with its own documented internal inventory.
+- **Terminals with filters and sorting.** A storage terminal and a crafting terminal, each with item, tag and poly filters and stack sorting.
+- **The cable network.** Cables, connectors, interfaces and level emitters that tie storage together into a network.
+- **Wireless access.** Wireless terminals (basic and advanced) with configurable range.
+- **Inventory configurator.** Edit a storage block's contents and filters from the outside.
+- **Paint kit.** Re-skin storage blocks.
+- **Recipe viewer and info integrations.** NEI/REI/EMI recipe-viewer plugins and Waila/Jade/TOP overlays.
 
-### Motivation
+## Requirements
 
-We had our fair share in struggles with build scripts for Minecraft Forge. There are quite a few pitfalls from non-obvious error messages. This Example Project provides you a build system you can adapt to over 90% of Minecraft Forge mods and can easily be updated if need be.
+- **GT New Horizons 2.9.0**, server and client. The pack provides GTNHLib, the one hard dependency.
 
-### Help! I'm stuck!
+## Installing
 
-We all have been there! Check out our [FAQ](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/docs/FAQ.md). If that doesn't help, please open an issue.
+The same jar goes on the server and on every client: a server running the mod turns away clients without it.
 
-### Getting started
+### Dedicated server
 
-> [!WARNING]
-> Do not clone or fork this repository when creating a new mod. It contains files that are specific to this example project and are not part of the mod template. Use the [project starter](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/master-packages/starter.zip) instead.
+1. Stop the server and put `simplestoragenh-<version>.jar` in `mods/`.
+2. Start the server with a **new world** (delete or rename the old `world/` folder, or set `level-name` to a new name).
 
-Creating mod from scratch:
-1. Unzip [project starter](https://github.com/GTNewHorizons/ExampleMod1.7.10/releases/download/master-packages/starter.zip) into project directory.
-2. Replace placeholders in LICENSE-template and rename it to LICENSE, or remove LICENSE-template and put any other license you like on your code. This is an permissive OSS project and we encourage you participate in OSS movement by having permissive license like one in template. You can find out pros and cons of OSS software in [this article](https://www.freecodecamp.org/news/what-is-great-about-developing-open-source-and-what-is-not/)
-3. Ensure your project is under VCS. For example initialise git repository by running `git init; git commit --message "initialized repository"`.
-4. Replace placeholders (edit values in gradle.properties, change example package and class names, etc.)
-5. Run `./gradlew setupDecompWorkspace`
-6. Run `./gradlew build`
-6. Make sure to check out the rest sections of this file.
-7. You are good to go!
+### Client
 
-We also have described guidelines for existing mod [migration](docs/migration.md) and [porting](docs/porting.md)
+Put the same `simplestoragenh-<version>.jar` in the instance's `mods/` folder. For single player, create a new world.
 
-### Features
+## Building from source
 
- - Updatable: Replace [`build.gradle`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle) with a newer version
- - Optional API artifact (.jar)
- - Optional version replacement in Java files
- - Optional shadowing of dependencies
- - Simplified setup of Mixin and example
- - Scala support (add sources under `src/main/scala/` instead of `src/main/java/`)
- - Optional named developer account for consistent player progression during testing
- - Boilerplate forge mod as starting point
- - Improved warnings for pitfalls
- - Git Tags integration for versioning
- - [Jitpack](https://jitpack.io) CI
- - GitHub CI:
-   - Releasing your artifacts on new tags pushed. Push git tag named after version (e.g. 1.0.0) which will trigger a release of artifacts with according names.
-   - Running smoke test for server startup. On any server crash occurring workflow will fail and print the crash log.
+```sh
+./gradlew build        # the jar is in build/libs/
+./gradlew runClient    # development client
+```
 
-### Files
- - [`build.gradle`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle): This is the core script of the build process. You should not need to tamper with it, unless you are trying to accomplish something out of the ordinary. __Do not touch this file! You will make a future update near impossible if you do so!__
- - [`gradle.properties`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/gradle.properties): The core configuration file. It includes
- - [`dependencies.gradle[.kts]`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/dependencies.gradle): Add your mod's dependencies in this file. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
- - [`repositories.gradle[.kts]`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/repositories.gradle): Add your dependencies' repositories. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available.
- - `addon.gradle[.kts]`: Any additional build logic. This is separate from the main build script, so you may replace the [`build.gradle`](https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle) if an update is available. See [Advanced](#advanced) for more details.
- - [`jitpack.yml`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/jitpack.yml): Ensures that your mod is available as import over [Jitpack](https://jitpack.io).
- - [`.github/workflows/gradle.yml`](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/.github/workflows/gradle.yml): A simple CI script that will build your mod any time it is pushed to `master` or `main` and publish the result as release in your repository. This feature is free with GitHub if your repository is public.
+Contributors start with [CONTRIBUTING.md](CONTRIBUTING.md). The roadmap is in [docs/ROADMAP.md](docs/ROADMAP.md), the design records in [docs/design/](docs/design/README.md), the behavior spec in [docs/original-spec/](docs/original-spec/README.md) and the pack-facing changes in [docs/new-spec/](docs/new-spec/README.md).
 
-### Forge's Access Transformers
+Builds and Minecraft runs belong on the build host, not a development laptop: drive it with [tools/remote/remote.sh](tools/remote/README.md); host and paths come from the git-ignored `.env`.
 
-You may activate Forge's Access Transformers by defining a configuration file in `gradle.properties`.
+## License
 
-Check out the [`example-access-transformers`](https://github.com/GTNewHorizons/ExampleMod1.7.10/tree/example-access-transformers) branch for a working example!
-
-> [!WARNING]
-> Access Transformers are bugged and will deny you any sources for the decompiled Minecraft! Your development environment will still work, but you might face some inconveniences. For example, IntelliJ will not permit searches in dependencies without attached sources.
-
-### Mixins
-
-[Mixins](https://github.com/SpongePowered/Mixin) are used to modify vanilla or mod/library code during runtime without having to edit, recompile, and redistribute the original code. For example, mixins can change a hardcoded value, redirect a method call, inject additional code, access private fields/methods, make a class implement your interface, and more. Mixins are an advanced feature which most normal mods will not require.
-
-Documentation about Mixin features can be found here: [Mixin Wiki](https://github.com/SpongePowered/Mixin/wiki) and [MixinExtras Wiki](https://github.com/LlamaLad7/MixinExtras/wiki)
-
-There are many examples of mixins in these mods: [Hodgepodge](https://github.com/GTNewHorizons/Hodgepodge) and [Angelica](https://github.com/GTNewHorizons/Angelica)
-
-To enable Mixins in your project, follow one of the example commits:
-- use [normal mixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/beba55615fa8337b7639f0d5b18db6cc8d4826be) for basic and quick registration
-- use [GTNH IMixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/055cd4f18765a421a86c706f53b62116988297e3) (recommended) for the same thing as below, but in a less verbose and more unified manner using the IMixins api
-- use [GTNH Early/Late mixins](https://github.com/GTNewHorizons/ExampleMod1.7.10/commit/c4df59d92164775b69451f3e690239e93d1fc979) to have full control over the registration logic and check for presence of other mods during runtime to load your mixins
-
-The extra required dependencies are handled automatically after mixins are enabled.
-
-### Advanced
-
-If your project requires custom gradle commands you may add a `addon.gradle[.kts]` to your project. It will be added automatically to the build script. Although we recommend against it, it is sometimes required. When in doubt, feel free to ask us about it. You may break future updates of this build system!
-If you need access to properties modified later in the buildscript, you can also use a `addon.late.gradle[.kts]`.
-For local tweaks that you don't want to commit to Git, like adding extra JVM arguments for testing, use `addon[.late].local.gradle[.kts]`.
-
-### Claude Code agent kit
-
-This fork adds a [Claude Code](https://claude.com/claude-code) setup for rewriting a mod, porting one, or integrating mods into the GT New Horizons pack. Copy what you need into your own project:
-
-- [`CLAUDE.md`](CLAUDE.md): a short map of non-negotiables, budget rules, skills and where to look. [`CONTRIBUTING.template.md`](CONTRIBUTING.template.md) holds the binding rules to adapt.
-- [`.claude/skills/`](.claude/skills/): twenty focused skills that Claude Code loads when a task matches: porting and design (clean-room reimplementation, behavior spec, GT-first design, integration research, config-safe registration, testing, rendering, side safety, pack content delivery, releases, pack contribution policy, port workflow) and token economy (budgets and tiers, orchestrating agents, context handoffs, the single integrator, remote build hosts, waiting on jobs, quiet tool output, cheap screenshot review).
-- [`.claude/agents/`](.claude/agents/), [`.claude/hooks/`](.claude/hooks/) and [`.claude/settings.example.json`](.claude/settings.example.json): subagent definitions, two optional guard hooks and suggested settings. Nothing is active until you copy it; see [`.claude/README.md`](.claude/README.md).
-- [`docs/templates/`](docs/templates/) and [`docs/agent-setup/`](docs/agent-setup/): document skeletons and agent brief templates.
-- [`tools/`](tools/): quiet-run and wait helpers, a build-host runner, semantic search, bug-coverage and pack-reference tools. Host settings come from a git-ignored `.env` ([`.env.example`](.env.example)).
-
-The skills were written with Claude (an AI model), distilled from lessons learned on large GTNH ports. Read them critically and adapt them to your project; check each rule against the current pack and buildscript before relying on it.
-
-### Feedback wanted
-
-If you tried out this build script we would love to head your opinion! Is there any feature missing for you? Did something not work? Please open an issue and we will try to resolve it asap!
-
-Happy modding,\
-[SinTh0r4s](https://github.com/SinTh0r4s), [TheElan](https://github.com/TheElan) and [basdxz](https://github.com/basdxz)
+MIT; see [LICENSE](LICENSE). Tom's Simple Storage is © 2020 tom5454, under the MIT License; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
