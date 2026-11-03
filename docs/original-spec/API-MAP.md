@@ -1,6 +1,6 @@
 # API map
 
-Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none". Filled in as S1 writes each area; the 1.7.10 answer is designed in the new spec, not here. Harvested from the `NeoForge dependencies` fields of the committed sheets (areas `05-integration` and `06-client-ui` at write time; `01`–`04` pending S1 parts 1–2) plus the cross-loader mechanisms named in this spec.
+Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none". Filled in as S1 wrote each area; the 1.7.10 answer is designed in the new spec, not here. Harvested from the `NeoForge dependencies` fields of the committed sheets (areas `05-integration` and `06-client-ui` at write time; `01`–`04` in S1 parts 1–2) plus the cross-loader mechanisms named in this spec. All "pending S2" rows resolved by spike S2 (2026-11-03, verified against source at the pack's tags).
 
 ## Recipe viewers and info mods (area `05-integration`)
 
