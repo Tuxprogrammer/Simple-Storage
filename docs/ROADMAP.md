@@ -16,7 +16,7 @@ Two gates matter most:
 - **Lanes** are the agent teams. A lane owns its feature area's code, tests and docs, so lanes don't collide. Milestones in different lanes run **in parallel** once their entry gates hold.
 - Each milestone's content ships behind a module toggle that changes behavior only, never registration (`config-safe-registration`).
 - Every change meets the definition of done in `CONTRIBUTING.md`: spec sheet cited, deviations recorded, regression tests for upstream bugs it could reproduce (`doesNotReproduce<ID>_…`, IDs from [BUGS.md](original-spec/BUGS.md)), ported code through the gate, headless boot clean.
-- The planning phase (S1 to S3 and M01) is interactive: open questions go to the owner with a recommendation. Milestone scopes below are refined from the specs when S1 to S3 land, and their exit gates are written in full then.
+- The planning phase (S1 to S3 and M01) is interactive: open questions go to the owner with a recommendation. S1 to S3 landed 2026-11-03, so the milestone scopes below are refined from the specs and their exit gates are written in full.
 
 ```
  S1 Behavior spec ─────────┐
@@ -49,7 +49,7 @@ Two gates matter most:
 
 ## Spikes
 
-Status: **S3 is done this round** by the parallel pack-research lane (the new-spec `00-pack-integration` area and record 0002). **S1 and S2 are not started.**
+Status: **S1 to S3 are done** (2026-11-03). S1 delivered the six original-spec areas, 51 system sheets, [BUGS.md](original-spec/BUGS.md) (51 unique suspected bugs), `COVERAGE.md` (217/217 upstream Java files) and `API-MAP.md` (every row resolved). S2 delivered the verified GT5-Unofficial tier table (shifted one tier up vs classic GT5, D15), the recipe maps and material conventions, the machine model, the NEI/Waila recipe-viewer mapping, the 22-row per-item tier map, and settled Q1 to Q4 (decisions D7 to D16). S3 delivered the verified GTNH 2.9.0 target (released 2026-10-31), the 243-row MOD-INDEX, and the integration surfaces (AE2 rv3-beta-1095-GTNH present, NEI 2.8.171-GTNH, BetterQuesting 3.8.92-GTNH, Waila 1.19.34). Open questions: all settled — [OPEN-QUESTIONS.md](new-spec/OPEN-QUESTIONS.md) has no open rows. The milestone scopes below are now refined from the specs, and their exit gates are written in full.
 
 | Spike | Delivers | Before | Lane |
 |---|---|---|---|
@@ -61,18 +61,18 @@ Status: **S3 is done this round** by the parallel pack-research lane (the new-sp
 
 **Lane:** Core. **Parallel with:** S1, S2, S3.
 
-**Entry gate:** this roadmap, `CONTRIBUTING.md` and design records 0001 to 0004 are committed.
+**Entry gate:** this roadmap, [CONTRIBUTING.md](../CONTRIBUTING.md) and design records [0001](design/0001-port-policy-and-licensing.md) to [0004](design/0004-energy-and-machine-model.md) are committed (met: all on `master`).
 
 **Budget:** 1 agent, 60 calls in total; model plan: top model for the static checks and the packet base classes (hard code), mid-tier for the wiring and docs. Stop and re-plan at 1.5x (`mod-port-budget`).
 
 **Scope:**
-- dependencies pinned to the pack per [0002](design/0002-target-pack.md);
+- dependencies pinned to the pack per [0002](design/0002-target-pack.md) and the [Recommended dependencies](new-spec/00-pack-integration/integration-opportunities.md#recommended-dependencies-q4) table: GT5-Unofficial 5.09.54.265, GTNHLib 0.11.54 (`api`), NEI 2.8.171-GTNH, and the optional compat set (AE2 rv3-beta-1095-GTNH, waila 1.19.34, InGame-Info-XML 2.9.8, BetterQuesting 3.8.92-GTNH, EnhancedLootBags 1.3.5, Chisel 2.17.34-GTNH) as `compileOnly`, guarded by `Loader.isModLoaded` in the `compat` package;
 - the package skeleton (`CONTRIBUTING.md` § Architecture);
 - JUnit wired into the build;
 - the static checks (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`);
 - the network channel with validated packet base classes;
-- config with module flags per `config-safe-registration`;
-- the dev self-check;
+- config with module flags per `config-safe-registration` and D16 (one `config/simplestoragenh.cfg`, GTNHLib `@Config`; the key catalog is the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table — `modules.*`, `euSink.*`, `network.*`, `wireless.*`, `behavior.*`);
+- the dev self-check (its tier-cap checks land in M05 per [0003](design/0003-gtnh-layer-and-tier-ceiling.md) § Consequences);
 - `THIRD-PARTY-NOTICES.md` and the changelog;
 - CI green.
 
@@ -80,69 +80,103 @@ Status: **S3 is done this round** by the parallel pack-research lane (the new-sp
 - [ ] `./gradlew spotlessApply build` passes, with at least one real unit test and every static check running (each proven by a fixture that makes it fail).
 - [ ] `./gradlew runServer` boots with the pack's core dependencies and no errors from this mod.
 - [ ] `./gradlew runClient` reaches the main menu.
+- [ ] `dependencies.gradle` carries every coordinate of the Recommended dependencies table at the pack's pinned version and the build resolves them (GT5-Unofficial 5.09.54.265, GTNHLib 0.11.54, NEI 2.8.171-GTNH, AE2 rv3-beta-1095-GTNH, waila 1.19.34, InGame-Info-XML 2.9.8, BetterQuesting 3.8.92-GTNH, EnhancedLootBags 1.3.5, Chisel 2.17.34-GTNH).
 - [ ] The dev self-check passes on a fresh world.
-- [ ] Module flags load, save and are documented.
-- [ ] Packet base classes reject out-of-range, wrong-position and unauthorized requests, with tests.
+- [ ] Module flags load, save and are documented: every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table is registered with its default, and flags gate behavior only, never registration.
+- [ ] Packet base classes reject out-of-range, wrong-position and unauthorized requests, with tests (CORE-02: the client→server `DataPacket` is bounded and field-whitelisted).
 
 ## M02 · Storage
 
 **Lane:** Storage. **Parallel with:** M03, M04.
 
-**Entry gate:** M01 done; S1's `02-storage` area written.
+**Entry gate:** M01 done; S1's `02-storage` area written (met: [02-storage](original-spec/02-storage/index.md), 14 sheets).
 
 **Budget:** 1 agent, 50 calls in total; model plan: top model for the block entity and its NBT (hard code), mid-tier for spec transcription and the ported code. Stop and re-plan at 1.5x (`mod-port-budget`).
 
-**Scope:** the storage item with its internal inventory; the storage block and its block entity; the item components that carry per-item state; NBT formats as specified; every `STOR` bug of the ported logic fixed, with its regression test; the module toggle.
+**Scope:** per the [02-storage](original-spec/02-storage/index.md) sheets: the storage blocks — the filing cabinet (512 slots, one item type per cabinet) and the open crate (the virtual inventory of item entities in front of it); the inventory trim and painted trim, and the paint kit (the `IPaintable` component, the painted block state); the cable network — the inventory cable (plain and framed), the cable connector (plain and framed), the inventory connector (20-tick staggered scan, `invConnectorScanRange`), the proxy, the interface, the level emitter (the 0004 EU-sink target) and the basic inventory hopper (`basicHopperCooldown`); the cable-graph walk and its per-level cache; the item components (paint state, `bound_pos`); the NBT formats as the sheets specify, server-authoritative, readers tolerant of missing keys; every `STOR` bug of the ported logic (and the filing-cabinet container's CORE-05/CORE-06) fixed with its regression test; module flags `modules.storage` and `modules.network`.
 
-**Exit gate:** written in full when S1 to S3 land.
+**Exit gate:**
+- [ ] All 13 storage/network blocks (including `painted_trim`) and the paint kit are registered; every block entity round-trips its NBT per the 02-storage sheets (round-trip test per block entity, missing keys tolerated, writers forward-compatible).
+- [ ] The cable network walks and caches the graph per level per `cable-network.md`; a network built from cables, connectors, proxies and interfaces answers the same contents from every attached face, and `hasConnectedInventories` reflects actual connections (STOR-03).
+- [ ] The staggered-tick gates hold for every position hash, including `Integer.MIN_VALUE` (STOR-01, STOR-05 and STOR-06 with `doesNotReproduce` tests).
+- [ ] Every `STOR` bug of the ported logic (STOR-01 to STOR-10) and CORE-05/CORE-06 have their `doesNotReproduce<ID>_…` test, and the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md) (provenance header, Javadoc, `Avoids:` lines).
+- [ ] The static checks pass on the new code (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world.
+- [ ] `modules.storage` and `modules.network` gate behavior only, never registration: with each flag off the blocks still register and the behavior is inert, tested.
+- [ ] `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 
 ## M03 · Terminal
 
 **Lane:** Storage. **Parallel with:** M02, M04.
 
-**Entry gate:** M01 done; S1's `03-terminal` area written.
+**Entry gate:** M01 done; S1's `03-terminal` area written (met: [03-terminal](original-spec/03-terminal/index.md), 14 sheets).
 
 **Budget:** 1 agent, 70 calls in total; model plan: top model for the inventory stack logic and the sorting (hard code), mid-tier for the screens and lang. Stop and re-plan at 1.5x (`mod-port-budget`).
 
-**Scope:** the terminal block and entity; its screen, menu and slots; the filter system (item and tag filters) and the sorting system; the inventory stack logic that ties the network's inventories together, unit-tested with fake inventories so the lane does not wait on M02's blocks; every `TERM` bug fixed, with its regression test; the module toggle.
+**Scope:** per the [03-terminal](original-spec/03-terminal/index.md) sheets: the storage terminal and crafting terminal blocks, the item/tag/polymorphic item filter items and the inventory configurator item, registered per the 01-core `mod-lifecycle.md` registry table; the terminal block entities (the item list lives in the block entity, lazily rebuilt on change); the screens, menus and `SlotStorage` display slots with the re-implemented vanilla slot mechanics (shift-click, drag); the `modes`/`sorting` bit layouts; the filter system (item, tag and polymorphic filters) and the sorting system; the inventory stack logic (`MultiInventoryAccess`, the change tracker) unit-tested with fake inventories so the lane does not wait on M02's blocks; the crafting terminal's grid, auto-fill and recipe book behind the `IAutoFillTerminal` contract; the inventory configurator bind tool and the inventory-link (beacon) screen; the level emitter GUI; the [06-client-ui](original-spec/06-client-ui/index.md) widget kit as the screens need it (icon buttons, lists, popups and their narrator keys); every `TERM` bug of the ported logic (and CORE-03/CORE-04, CORE-07, CORE-08, CORE-10) fixed with its regression test; the `modules.terminal` flag.
 
-**Exit gate:** written in full when S1 to S3 land.
+**Exit gate:**
+- [ ] The terminal screens, menus and slots behave per the sheets for every control mode and sort type in the 03-terminal key facts (AE/RS/DEF, tall mode, ghost off), with the `modes`/`sorting` bit layouts exact and the `SlotStorage` display slots re-implementing shift-click and drag per `terminal-stacks.md`.
+- [ ] The inventory stack logic is unit-tested with fake inventories: pull/push iterates lowest priority first, filtered insert/extract honor keepLast (CORE-04), multi-inventory offsets stay correct through compaction (CORE-03), and the change tracker survives same-tick network growth (TERM-12), against the spec's numbers.
+- [ ] Every `TERM` bug of the ported logic (TERM-01 to TERM-12) and CORE-07/CORE-10 have their `doesNotReproduce<ID>_…` test; CORE-08 (the polymorphic widget) is recorded as "not registered — polymorph is not in the pack"; the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md).
+- [ ] The widget kit ships with every narrator key defined (`LangKeysTest`): the UI-01 to UI-07 bugs are fixed where the widget lands here, with tests where one can be written (the EnumCycleButton NPE, the scrollbar grab rect, the popup click rects, the missing and dynamically built keys).
+- [ ] The crafting terminal's auto-fill reserves item accounting per cell (TERM-05), and the `IAutoFillTerminal` contract answers `updateSearch`, `sendMessage`, `getStoredItems` and `isSmartSearch` per the 05-integration shared viewer contract.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world; `modules.terminal` gates behavior only, never registration.
+- [ ] `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 
 ## M04 · Wireless
 
 **Lane:** Storage. **Parallel with:** M02, M03.
 
-**Entry gate:** M01 done; S1's `04-wireless` area written.
+**Entry gate:** M01 done; S1's `04-wireless` area written (met: [04-wireless](original-spec/04-wireless/index.md), 2 sheets).
 
 **Budget:** 1 agent, 40 calls in total; model plan: top model for the range and synchronization mechanics, mid-tier for the rest. Stop and re-plan at 1.5x (`mod-port-budget`).
 
-**Scope:** the wireless terminal and its screen; range and synchronization; the advanced wireless variant; every `WIRE` bug fixed, with its regression test; the module toggle.
+**Scope:** per the [04-wireless](original-spec/04-wireless/index.md) sheets: the basic wireless item (extends the terminal's interaction reach, `wireless.reach` 4–64, default 16) and the advanced wireless item (binds to one terminal, `wireless.advRange` 16–512, default 64, opens it from anywhere including another dimension via the `B` keybind); the reach check running on the terminal's block entity per the 03-terminal sheets; the beacon levels (8-block radius, 40-tick refresh with a per-position phase) granting same-dimension access at `wireless.beaconLvl` and cross-dimension at `wireless.beaconLvlDim` (−1 disables each rule); the `bound_pos` data component with a stable NBT key; every `WIRE` bug of the ported logic fixed with its regression test; the `modules.wireless` flag.
 
-**Exit gate:** written in full when S1 to S3 land.
+**Exit gate:**
+- [ ] The basic wireless item extends reach to exactly `wireless.reach` (clamped 4–64): carrying the item in any slot, a player opens terminals in range and fails just out of range, with the check running on the terminal's block entity (unit tests at the range boundary).
+- [ ] The advanced item binds to exactly one terminal (sneak + right-click) and opens that exact terminal from anywhere, including another dimension, via the `B` keybind; when the bound terminal is invalid or its chunk is unloaded, the use is consumed consistently on both sides (WIRE-03).
+- [ ] Beacon levels compute per `BeaconLevelCalc` (8-block radius, 40-tick refresh) with a per-position phase that holds for every hash including `Integer.MIN_VALUE` (WIRE-04/TERM-04), granting same-dimension access at `wireless.beaconLvl` and cross-dimension at `wireless.beaconLvlDim`, with −1 disabling each rule.
+- [ ] Every `WIRE` bug of the ported logic (WIRE-01 to WIRE-05) has its `doesNotReproduce<ID>_…` test, and the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md); `bound_pos` keeps a stable NBT key (WIRE-05) so old saves load.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); no client-only state on the server; the dev self-check passes on a fresh world.
+- [ ] `modules.wireless` gates behavior only, never registration; `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 
 ## M05 · GTNH layer
 
 **Lane:** Integration. **Parallel with:** none (integration).
 
-**Entry gate:** M02, M03 and M04 done; S2 done (records [0003](design/0003-gtnh-layer-and-tier-ceiling.md) and [0004](design/0004-energy-and-machine-model.md) refined, the new-spec gtnh area written).
+**Entry gate:** M02, M03 and M04 done; S2 done (met: [0003](design/0003-gtnh-layer-and-tier-ceiling.md) and [0004](design/0004-energy-and-machine-model.md) refined with verified numbers, the [00-pack-integration](new-spec/00-pack-integration/index.md) sheets committed, decisions D7 to D16 recorded).
 
 **Budget:** 1 agent, 50 calls in total; model plan: mid-tier for research transcription and the audits, top model for the recipe design. Stop and re-plan at 1.5x (`mod-port-budget`).
 
-**Scope:** every recipe in the GT recipe maps per [0003](design/0003-gtnh-layer-and-tier-ceiling.md), tier-gated to the named cap, with the per-item tier map; GT materials and parts through ore-dict, no own materials; the optional EU sink per [0004](design/0004-energy-and-machine-model.md) if S2 keeps it; the recipe-viewer handlers for the pack's viewer; the dev self-check walks every recipe against the tier map and the cap.
+**Scope:** per [0003](design/0003-gtnh-layer-and-tier-ceiling.md) and the [00-pack-integration](new-spec/00-pack-integration/index.md) sheets: every recipe in the GT recipe maps per [recipes-and-materials.md](new-spec/00-pack-integration/recipes-and-materials.md) — all machine recipes in `gt.recipe.assembler` at the item's tier (D8) and the ULV rows as crafting-table recipes per the pack's crafting convention; the 22-row [tier map](new-spec/00-pack-integration/tier-map.md) landed row by row (LV/MV/HV), with GT materials and parts through ore-dict and no own materials; the optional EU sink per [0004](design/0004-energy-and-machine-model.md) §3 (the level emitter as a fixed consumer at 8 EU/t while active, `euSink.enabled` off by default, D7); the config finalized per D16 (one `config/simplestoragenh.cfg`, every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table); the dev self-check walks every recipe against the tier map and the cap (cap HV = 512V, no item before its tier, the input-gate rule); the optional AE2 storage access behind `modules.integration.appeng` (off at alpha, D14).
 
-**Exit gate:** written in full when S1 to S3 land.
+**Exit gate:**
+- [ ] Every tier-map row is a recipe: the 18 machine recipes in `gt.recipe.assembler` at the row's tier (LV/MV/HV, D8) and the 3 crafting-table recipes per the crafting convention (21 of the 22 rows — `painted_trim` is painted in-game); the 15 blocks and 7 items each carry exactly one tier, nothing above HV = 512V.
+- [ ] The dev self-check walks every recipe against the tier map and the 0003 cap: no output above HV, no item obtainable before its tier (the circuit input-gate rule holds for every LV/MV/HV row), no own material anywhere; the check fails on a deliberately bad fixture recipe.
+- [ ] The S2 risks hold against the pinned build: the GT5-Unofficial pin in `dependencies.gradle` matches the pack's manifest (risk R1: if the pack bumps GT, re-run the re-pin procedure of the gtnh-integration-research skill before the recipes land), the gating circuit's own recipe tier matches each row's tier (risk R2), and no machine tier below LV exists (risk R5).
+- [ ] The EU sink is live per [0004](design/0004-energy-and-machine-model.md) §3 (D7): the level emitter consumes 8 EU/t while active, `euSink.enabled` off by default, `euSink.euPerTick` the knob; tests with the sink on and off.
+- [ ] The config is final per D16: one `config/simplestoragenh.cfg`, every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table registered with its default, entries labeled (CORE-01) and no zero defaults before per-world sync (CORE-09); module flags gate behavior only, never registration, with `modules.integration.appeng` off at alpha (D14).
+- [ ] Every tier-gated recipe is visible in NEI at its tier in the real pack (GT's own recipe handlers render the assembler recipes); the AE2 compat surface, if built, sits behind `Loader.isModLoaded("appeng")` in the `compat` package and off by default.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); `./gradlew spotlessApply build` and the dev self-check are clean on a fresh world.
 
 ## M06 · Pack content and compatibility
 
 **Lane:** Integration. **Parallel with:** none (integration).
 
-**Entry gate:** M05 done; S3 done (new-spec `00-pack-integration` and record 0002 accepted).
+**Entry gate:** M05 done; S3 done (met: [00-pack-integration](new-spec/00-pack-integration/index.md) and [0002](design/0002-target-pack.md) accepted).
 
 **Budget:** 1 agent, 45 calls in total; model plan: mid-tier for research, catalogs and audits. Stop and re-plan at 1.5x (`mod-port-budget`).
 
-**Scope:** the recipe-viewer plugin for the pack's viewer (Q4); the info-mod integration if S3 finds one; the remaining compat (the belt placement, multiblock inventories, the probe); pack content per [PACK-CHANGES.md](PACK-CHANGES.md) (questbook entries, loot, configs); a module flag per compat.
+**Scope:** per [PACK-CHANGES.md](PACK-CHANGES.md) and [recipe-viewer.md](new-spec/00-pack-integration/recipe-viewer.md): the NEI plugin `NEISimpleStorageConfig implements IConfigureNEI` per its § "What M06 builds" (D11) — the assembler `ICraftingHandler`, the network-inventory `IUsageHandler` (the terminal shows what it holds, the AE2 usage-handler precedent), `registerGuiOverlay` on the terminal/cabinet/filter GUIs, and the `INEIGuiHandler` fast transfer, with ghost-drag deferred to beta; the Waila `IWailaBlock` providers (cabinet contents, terminal stats, emitter, cable/connector network size, hopper filter, configurator bound state) registered by IMC when Waila loads; upstream's JEI/REI/EMI/Jade/TOP/Polymorph/Sophisticated-Storage integrations mapped to NEI/Waila/none per [API-MAP.md](original-spec/API-MAP.md); the pack content per PACK-CHANGES.md: the three jar-shipped BetterQuesting quest lines per tier band (D12), the EnhancedLootBags placement rows and the config table; a module flag per compat (`modules.integration.nei`, `modules.integration.waila`, `modules.integration.appeng`) per `config-safe-registration`.
 
-**Exit gate:** written in full when S1 to S3 land.
+**Exit gate:**
+- [ ] The NEI plugin is discovered by class scan and registers per D11: in the real pack the assembler recipes and the terminal's stored items show in NEI (usage handler), the GUI overlays mount on the terminal/cabinet/filter screens and fast transfer works; ghost-drag is recorded as a beta candidate.
+- [ ] Every INT row of [BUGS.md](original-spec/BUGS.md) (INT-01 to INT-10) is resolved: mapped to the NEI/Waila surface, fixed with a `doesNotReproduce<ID>_…` test where the code lands (INT-05's highlight mapping, INT-10's clickable area), or recorded "none" with its API-MAP evidence (TOP and Sophisticated Storage are not in the pack); no upstream integration dies silently.
+- [ ] The Waila providers render the 05-integration sheet's info (cabinet, terminal stats, emitter, network size, hopper, configurator) when Waila loads and nothing when it does not; their registration is the IMC `Waila`/`register` message, guarded by `Loader.isModLoaded("Waila")`.
+- [ ] The jar-shipped quest line loads via the BQ importer in the real pack: the three tier-band lines of PACK-CHANGES.md exist with namespaced IDs `simplestoragenh.*` (risk R3: the pack may instead override from its quest repo per D12 — either way the line content matches PACK-CHANGES.md).
+- [ ] The EnhancedLootBags placement rows (ULV to HV) and the TooMuchLoot note from PACK-CHANGES.md are delivered or recorded with a decision; the config table is complete, and every compat has its module flag, gating behavior only, never registration.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world; `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 
 ## Alpha gate
 
@@ -161,6 +195,6 @@ Status: **S3 is done this round** by the parallel pack-research lane (the new-sp
 - [ ] Every original-spec sheet is implemented or has a recorded deviation; every new-spec sheet is live.
 - [ ] Every reproducible bug in [BUGS.md](original-spec/BUGS.md) has its regression test.
 - [ ] The full scenario suite passes on a fresh world; the real-pack server and client run is clean on the target pack.
-- [ ] The owner's interactive review: play sessions with back-and-forth on the GTNH integrations and the advanced features. It ends with the owner's sign-off and a list of balance items for the polish pass.
+- [ ] The owner's interactive review: play sessions with back-and-forth on the GTNH integrations and the advanced features. It ends with the owner's sign-off and a list of balance items for the polish pass. The 0003 "basic terminal" reading (D13, S2 risk R4) is flagged in the review and its outcome recorded in the [decision log](design/decision-log.md).
 
 **Open before the gate:** the owner's playtest of the beta jar ([README](../README.md)).
