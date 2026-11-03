@@ -1,4 +1,4 @@
-package com.myname.mymodid;
+package com.tuxprogrammer.simplestorage;
 
 public class ClientProxy extends CommonProxy {
 

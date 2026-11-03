@@ -1,4 +1,4 @@
-package com.myname.mymodid;
+package com.tuxprogrammer.simplestorage;
 
 import java.io.File;
 
