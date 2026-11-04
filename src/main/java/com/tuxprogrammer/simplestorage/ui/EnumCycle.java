@@ -17,13 +17,8 @@ package com.tuxprogrammer.simplestorage.ui;
  * index 0, so cycling never throws.
  *
  * <p>
- * </parameter>
- * </function>
- * </tool_call>
- * <tool_call>
- * <function=Read>
- * <parameter=file_path>
- * {@link ScrollbarModel}
+ * See {@link ScrollbarModel}.
+ * <p>
  * Side: client logic, plain Java.
  */
 public final class EnumCycle {
