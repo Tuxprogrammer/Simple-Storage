@@ -65,7 +65,7 @@ Skills live in [.claude/skills/](.claude/skills/); agent definitions in [.claude
 | Build settings, mod ID, package | [gradle.properties](gradle.properties) |
 | Dependencies and repositories | [dependencies.gradle](dependencies.gradle), [repositories.gradle](repositories.gradle) |
 | Buildscript FAQ, migrating or porting a build | The GTNH buildscript's own docs: [FAQ](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/master/docs/FAQ.md), [migration](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/master/docs/migration.md), [porting](https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/master/docs/porting.md) |
-| Tools | [tools/agent/](tools/agent/README.md), [tools/remote/](tools/remote/README.md), [tools/semantic-search/](tools/semantic-search/README.md), [tools/bugs-coverage/](tools/bugs-coverage/README.md), [tools/gtnh-reference/](tools/gtnh-reference/README.md) |
+| Tools | [tools/agent/](tools/agent/README.md), [tools/remote/](tools/remote/README.md), [tools/qwen/](tools/qwen/README.md) (check gate for qwen work), [tools/semantic-search/](tools/semantic-search/README.md), [tools/bugs-coverage/](tools/bugs-coverage/README.md), [tools/gtnh-reference/](tools/gtnh-reference/README.md) |
 
 ## Commands
 

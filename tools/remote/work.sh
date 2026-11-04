@@ -114,11 +114,12 @@ code="$("${SSH[@]}" "mkdir -p '$ROOT/logs' && cd '$WORK' && . '$ROOT/env.sh' && 
 
 # Print only the useful lines of the log (fetched through ssh cat).
 "${SSH[@]}" "cat '$LOG$cmd.log' 2>/dev/null" | awk '
-    /error:/ { if (n < 30) print }
+    /error:/ { if (n < 30) d = 5 }
     /FAILED/ && /Test|> Task/ { if (m < 30) print }
     /^BUILD (SUCCESSFUL|FAILED)/ { print }
     /What went wrong/ { print; c = 3; next }
     c > 0 { print; c-- }
+    d > 0 { print; d-- }
     { n += ($0 ~ /error:/); m += ($0 ~ /FAILED/ && $0 ~ /Test|> Task/) }
 '
 
