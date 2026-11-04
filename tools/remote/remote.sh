@@ -167,7 +167,7 @@ case "$cmd" in
         # replaces those files: JDKs, the pack, worktrees and logs stay as they are.
         # Tracked files only, so caches and stray local files never reach the server.
         git -C "$HERE/tools/remote/server" ls-files -z \
-            | rsync -rlt --executability --checksum --itemize-changes --from0 --files-from=- \
+            | rsync -rltp --checksum --itemize-changes --from0 --files-from=- \
                 "$HERE/tools/remote/server/" "$HOST:$ROOT/"
         ;;
     fetch)
