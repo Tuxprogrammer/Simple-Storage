@@ -2,10 +2,10 @@
 
 | # | Field | Contents |
 |---|---|---|
-| 1 | **Identity** | `Config` (NF: `NeoForge/src/main/java/com/tom/storagemod/Config.java`, ModConfigSpec-based; Fabric: `Fabric/src/main/java/com/tom/storagemod/Config.java`, autoconfig-based). Singleton `Config.get()`. Two spec files: `toms_storage-common.toml` (COMMON) and `toms_storage-server.toml` (SERVER, per-world). |
+| 1 | **Identity** | `Config` (NF: `NeoForge/src/main/java/com/tom/storagemod/Config.java`, ModConfigSpec-based; Fabric: `Fabric/src/main/java/com/tom/storagemod/Config.java`, autoconfig-based). Singleton `Config.get()`. (Config.java:25, 39-41 NF; Fabric Config.java:33-35) Two spec files: (NF Config.java:147-161) `toms_storage-common.toml` (COMMON) and `toms_storage-server.toml` (SERVER, per-world). |
 | 2 | **Inputs** | ModConfigEvent.Loading / ModConfigEvent.Reloading (NF, mod event bus); the toml files themselves. |
 | 3 | **Numbers** | Every key with default and allowed range, in [Behavior detail](#behavior-detail) table. |
-| 4 | **Behavior** | (both) On Loading and Reloading of either spec, `load(config)` copies the spec values into plain fields: SERVER type fills `onlyTrims`, `invConnectorScanRange`, `invConnectorCableRange`, `wirelessRange`, `advWirelessRange`, `wirelessTermBeaconLvl`, `wirelessTermBeaconLvlCrossDim`, `invLinkBeaconLvl`, `invLinkBeaconRange`, `invLinkBeaconLvlSameDim`, `invLinkBeaconLvlCrossDim`, `runMultithreaded`, `basicHopperCooldown`; COMMON type fills `blockedMods` (as a `Set<String>`) and `blockedBlocks` (parsed via `Identifier.tryParse` → block registry lookup, entries that fail to parse or are air are dropped, kept as `Set<Block>`). Logs the config file name on load and a "changed on the file system!" message on reload. |
+| 4 | **Behavior** | (both) On Loading and Reloading of either spec, `load(config)` copies the spec values into plain fields: (NF Config.java:163-186) SERVER type fills `onlyTrims`, (NF Config.java:164-178) `invConnectorScanRange`, `invConnectorCableRange`, `wirelessRange`, `advWirelessRange`, `wirelessTermBeaconLvl`, `wirelessTermBeaconLvlCrossDim`, `invLinkBeaconLvl`, `invLinkBeaconRange`, `invLinkBeaconLvlSameDim`, `invLinkBeaconLvlCrossDim`, `runMultithreaded`, `basicHopperCooldown`; COMMON type fills `blockedMods` (as a `Set<String>`) (NF Config.java:179-181) and `blockedBlocks` (parsed via `Identifier.tryParse` → block registry lookup, entries that fail to parse or are air are dropped, kept as `Set<Block>`). (NF Config.java:182-184) Logs the config file name on load (NF Config.java:188-192) and a "changed on the file system!" message on reload. (NF Config.java:194-198) |
 | 5 | **Determinism** | None. |
 | 6 | **Data formats** | Config keys (toml), in [Behavior detail](#behavior-detail). No NBT. |
 | 7 | **Output** | Plain fields read throughout the mod: `onlyTrims`, `invConnectorScanRange`, `invConnectorCableRange`, `wirelessRange`, `advWirelessRange`, `wirelessTermBeaconLvl`, `wirelessTermBeaconLvlCrossDim`, `invLinkBeaconLvl`, `invLinkBeaconRange`, `invLinkBeaconLvlSameDim`, `invLinkBeaconLvlCrossDim`, `runMultithreaded`, `basicHopperCooldown`, `getBlockedBlocks()`, `getBlockedMods()`. |
@@ -19,21 +19,21 @@
 
 | Key | Type | Default | Range | Translation key | Meaning |
 |---|---|---|---|---|---|
-| `inventoryConnectorRange` | int | 16 | 4–256 | `config.toms_storage.inventory_connector_range` | Inventory Connector scan range (blocks) |
-| `onlyTrimsConnect` | bool | false | — | `config.toms_storage.only_trims_connect` | Only Allow Trims to Connect Inventories |
-| `invCableConnectorMaxScanSize` | int | 2048 | 16–Integer.MAX_VALUE | `config.toms_storage.inv_cable_connector_max_scan` | Inventory Cable Connector maximum number of cables scanned |
-| `wirelessReach` | int | 16 | 4–64 | `config.toms_storage.wireless_reach` | Wireless terminal reach (blocks) |
-| `advWirelessRange` | int | 64 | 16–512 | `config.toms_storage.adv_wireless_range` | Advanced wireless terminal range (blocks) |
-| `wirelessTermBeaconLvl` | int | 1 | -1–4 | `config.toms_storage.adv_wireless_beacon_lvl` | Adv wireless terminal required beacon level for infinite range; 0 = a single beacon block nearby suffices; -1 disables |
-| `wirelessTermBeaconLvlDim` | int | 4 | -1–4 | `config.toms_storage.adv_wireless_beacon_lvl_dim` | Adv wireless terminal required beacon level for cross-dimension access; 0 = one beacon nearby; -1 disables |
-| `invLinkBeaconLvl` | int | 0 | -1–4 | `config.toms_storage.inv_link_beacon_lvl` | Inventory Cable Connector required beacon level for inventory linking; 0 = one beacon block; -1 disables |
-| `invLinkBeaconRange` | int | 4096 | 0–Integer.MAX_VALUE | `config.toms_storage.inv_link_beacon_range` | Inventory linking range (blocks) with beacons; 0 disables |
-| `invLinkBeaconLvlSameDim` | int | 1 | -1–4 | `config.toms_storage.inv_link_beacon_lvl_same_dim` | Cable connector beacon level for unlimited-range same-dimension linking; 0 = one beacon; -1 disables |
-| `invLinkBeaconLvlCrossDim` | int | 2 | -1–4 | `config.toms_storage.inv_link_beacon_lvl_dim` | Cable connector beacon level for cross-dimension linking; 0 = one beacon; -1 disables |
-| `runMultithreaded` | bool | true | — | `config.toms_storage.run_multithreaded` | Use multithreading to improve performance |
-| `basicHopperCooldown` | int | 10 | 1–200 | `config.toms_storage.basic_hopper_cooldown` | Base tick cooldown (ticks) for Basic Inventory Hopper transfer |
+| `inventoryConnectorRange` | int | 16 | 4–256 | `config.toms_storage.inventory_connector_range` | Inventory Connector scan range (blocks) (NF Config.java:55-57) |
+| `onlyTrimsConnect` | bool | false | — | `config.toms_storage.only_trims_connect` | Only Allow Trims to Connect Inventories (NF Config.java:59-61) |
+| `invCableConnectorMaxScanSize` | int | 2048 | 16–Integer.MAX_VALUE | `config.toms_storage.inv_cable_connector_max_scan` | Inventory Cable Connector maximum number of cables scanned (NF Config.java:63-65) |
+| `wirelessReach` | int | 16 | 4–64 | `config.toms_storage.wireless_reach` | Wireless terminal reach (blocks) (NF Config.java:67-69) |
+| `advWirelessRange` | int | 64 | 16–512 | `config.toms_storage.adv_wireless_range` | Advanced wireless terminal range (blocks) (NF Config.java:71-73) |
+| `wirelessTermBeaconLvl` | int | 1 | -1–4 | `config.toms_storage.adv_wireless_beacon_lvl` | Adv wireless terminal required beacon level for infinite range; 0 = a single beacon block nearby suffices; -1 disables (NF Config.java:75-79) |
+| `wirelessTermBeaconLvlDim` | int | 4 | -1–4 | `config.toms_storage.adv_wireless_beacon_lvl_dim` | Adv wireless terminal required beacon level for cross-dimension access; 0 = one beacon nearby; -1 disables (NF Config.java:81-85) |
+| `invLinkBeaconLvl` | int | 0 | -1–4 | `config.toms_storage.inv_link_beacon_lvl` | Inventory Cable Connector required beacon level for inventory linking; 0 = one beacon block; -1 disables (NF Config.java:87-91) |
+| `invLinkBeaconRange` | int | 4096 | 0–Integer.MAX_VALUE | `config.toms_storage.inv_link_beacon_range` | Inventory linking range (blocks) with beacons; 0 disables (NF Config.java:93-96) |
+| `invLinkBeaconLvlSameDim` | int | 1 | -1–4 | `config.toms_storage.inv_link_beacon_lvl_same_dim` | Cable connector beacon level for unlimited-range same-dimension linking; 0 = one beacon; -1 disables (NF Config.java:98-102) |
+| `invLinkBeaconLvlCrossDim` | int | 2 | -1–4 | `config.toms_storage.inv_link_beacon_lvl_dim` | Cable connector beacon level for cross-dimension linking; 0 = one beacon; -1 disables (NF Config.java:104-108) |
+| `runMultithreaded` | bool | true | — | `config.toms_storage.run_multithreaded` | Use multithreading to improve performance (NF Config.java:110-112) |
+| `basicHopperCooldown` | int | 10 | 1–200 | `config.toms_storage.basic_hopper_cooldown` | Base tick cooldown (ticks) for Basic Inventory Hopper transfer (NF Config.java:114-116) |
 
-Commented-out (config-only, not active): `inventoryConnectorMaxSlots` (int, default Integer.MAX_VALUE, range 1–MAX, key `config.toms_storage.inv_connector_max_slots`).
+Commented-out (config-only, not active): `inventoryConnectorMaxSlots` (int, default Integer.MAX_VALUE, range 1–MAX, key `config.toms_storage.inv_connector_max_slots`). (NF Config.java:118-120; field commented out at :35, :52, :178)
 
 All SERVER keys are loaded into `Config` fields of the same names (camelCased). Beacon-level keys use the sentinel -1 = "feature disabled", 0 = "a single beacon block in range suffices" (no pyramid required), 1–4 = required full pyramid level.
 
@@ -41,15 +41,15 @@ All SERVER keys are loaded into `Config` fields of the same names (camelCased). 
 
 | Key | Type | Default | Translation key | Meaning |
 |---|---|---|---|---|
-| `importantInfo` | bool | true | none (see `CORE-01`) | Cosmetic notice entry; the 6-line "IMPORTANT NOTICE" comment above it explains that most settings live in the per-world server config. The notice text is provided as the entry tooltip via lang key `toms_storage.configuration.importantInfo.tooltip` (exact text in the 06-client-ui lang listing) |
-| `blockedMods` | list of strings | `[]` | `config.toms_storage.inv_blocked_mods` | List of mod ids whose blocks are ignored by the inventory connector |
-| `blockedBlocks` | list of strings | `[]` (NF) / `["create:belt"]` (Fabric) | `config.toms_storage.inv_blocked_blocks` | List of block ids ignored by the inventory connector |
+| `importantInfo` | bool | true | none (see `CORE-01`) | Cosmetic notice entry; (NF Config.java:129-135) the 6-line "IMPORTANT NOTICE" comment above it explains that most settings live in the per-world server config. The notice text is provided as the entry tooltip via lang key `toms_storage.configuration.importantInfo.tooltip` (exact text in the 06-client-ui lang listing) |
+| `blockedMods` | list of strings | `[]` | `config.toms_storage.inv_blocked_mods` | List of mod ids whose blocks are ignored by the inventory connector (NF Config.java:137-139) |
+| `blockedBlocks` | list of strings | `[]` (NF) / `["create:belt"]` (Fabric) | `config.toms_storage.inv_blocked_blocks` | List of block ids ignored by the inventory connector (NF Config.java:141-143) |
 
-`blockedBlocks` entries are parsed as identifiers and resolved against the block registry at load time; unparseable entries and `minecraft:air` are silently dropped. `blockedMods` entries are kept verbatim (no validation) and compared against the block's registry namespace.
+`blockedBlocks` entries are parsed as identifiers and resolved against the block registry at load time; unparseable entries and `minecraft:air` are silently dropped. (NF Config.java:182-184) `blockedMods` entries are kept verbatim (no validation) and compared against the block's registry namespace. (InventoryConnectorConfigUtil.java:15-16, in util/)
 
 ### Loader differences (Fabric)
 
-Fabric's `Config` is an autoconfig `ConfigData` class in `config/toms_storage.json` with the same fields and defaults as the NF SERVER keys: `onlyTrims=false`, `runMultithreaded=true`, `invConnectorScanRange=16`, `wirelessRange=16`, `invConnectorMaxCables=2048` (named `invConnectorMaxCables` on Fabric vs `invCableConnectorMaxScanSize` on NF), `advWirelessRange=64`, `basicHopperCooldown=10`, `wirelessTermBeaconLvl=1`, `wirelessTermBeaconLvlCrossDim=4`, `invLinkBeaconLvl=0`, `invLinkBeaconRange=4096`, `invLinkBeaconLvlSameDim=1`, `invLinkBeaconLvlCrossDim=2`. Differences: no ranges enforced (plain fields); `blockedBlocks` defaults to `["create:belt"]` (NF: empty); the resolved-block set is cached in `StorageMod.blockedBlocks` (lazy) instead of being rebuilt on reload; no `importantInfo` entry; the `text.autoconfig.toms_storage.option.*` lang keys (present in en_us.json) are the autoconfig GUI labels.
+Fabric's `Config` is an autoconfig `ConfigData` class in `config/toms_storage.json` with the same fields and defaults as the NF SERVER keys: (Fabric Config.java:19-28) `onlyTrims=false`, `runMultithreaded=true`, `invConnectorScanRange=16`, `wirelessRange=16`, `invConnectorMaxCables=2048` (Fabric Config.java:22) (named `invConnectorMaxCables` on Fabric vs `invCableConnectorMaxScanSize` on NF), `advWirelessRange=64`, `basicHopperCooldown=10`, `wirelessTermBeaconLvl=1`, `wirelessTermBeaconLvlCrossDim=4`, `invLinkBeaconLvl=0`, `invLinkBeaconRange=4096`, `invLinkBeaconLvlSameDim=1`, `invLinkBeaconLvlCrossDim=2`. Differences: no ranges enforced (plain fields); `blockedBlocks` defaults to `["create:belt"]` (Fabric Config.java:30) (NF: empty); the resolved-block set is cached in `StorageMod.blockedBlocks` (lazy) (Fabric Config.java:37-43; Fabric StorageMod.java:74) instead of being rebuilt on reload; no `importantInfo` entry; the `text.autoconfig.toms_storage.option.*` lang keys (present in en_us.json) are the autoconfig GUI labels.
 
 ## Deviations in the new mod
 

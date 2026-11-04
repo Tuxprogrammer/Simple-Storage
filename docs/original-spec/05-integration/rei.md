@@ -2,12 +2,12 @@
 
 | # | Field | Value |
 |---|---|---|
-| 1 | **Identity** | `com.tom.storagemod.rei.REIPlugin` (`SH/rei/REIPlugin.java`) — `REIClientPlugin` (architectury-based REI API); loader shims: `com.tom.storagemod.rei.REIPluginLoader` (`NF/rei/REIPluginLoader.java`, `@REIPluginLoaderClient`, NeoForge only) and the Fabric entrypoint `rei_client` → `REIPlugin` in `Fabric/.../fabric.mod.json`; `com.tom.storagemod.rei.ReiGhostIngredientHandler` (`SH/rei/ReiGhostIngredientHandler.java`) — `DraggableStackVisitor<AbstractFilteredScreen>`; `com.tom.storagemod.rei.ReiTransferHandler` (`SH/rei/ReiTransferHandler.java`) — `TransferHandler` |
+| 1 | **Identity** | `com.tom.storagemod.rei.REIPlugin` (`SH/rei/REIPlugin.java`) — `REIClientPlugin` (architectury-based REI API); loader shims: `com.tom.storagemod.rei.REIPluginLoader` (`NF/rei/REIPluginLoader.java`, `@REIPluginLoaderClient`, NeoForge only) and the Fabric entrypoint `rei_client` → `REIPlugin` in `Fabric/.../fabric.mod.json`; `com.tom.storagemod.rei.ReiGhostIngredientHandler` (`SH/rei/ReiGhostIngredientHandler.java`) — `DraggableStackVisitor<AbstractFilteredScreen>`; `com.tom.storagemod.rei.ReiTransferHandler` (`SH/rei/ReiTransferHandler.java`) — `TransferHandler`. Sources (upstream `26.2`, `SH` = `NeoForge/src/platform-shared/java/com/tom/storagemod/`): `SH/rei/REIPlugin.java:24`, `SH/rei/ReiGhostIngredientHandler.java:27`, `SH/rei/ReiTransferHandler.java:24`, `NeoForge/src/main/java/com/tom/storagemod/rei/REIPluginLoader.java:9-10`, `Fabric/src/main/resources/fabric.mod.json:31-33` |
 | 2 | **Inputs** | REI API: `TransferHandlerRegistry`, `CategoryRegistry`, `ScreenRegistry`, `Display`/`SimpleGridMenuDisplay`/`EntryStack` from the recipe GUI, the drag context (screen + dragged `EntryStack` + mouse position), `REIRuntime` (search text field) |
-| 3 | **Numbers** | REI version bound: `26.2.820` on both loaders (NF: `implementation` — **bundled in the NeoForge jar**; FB: `compileOnlyApi` + `runtimeOnly`). Ghost target rects: 16×16 px at `guiLeft + slot.x`, `guiTop + slot.y`. Missing-slot highlight fill: `0x40ff0000` (25% alpha red) over the widget's inner bounds. Result color on missing: `0x67aaaa00`. Missing-index remap: `width == 1 ? i * 3 : width == 2 ? (i % 2) + i / 2 * 3 : i` (`width` = display grid width for `SimpleGridMenuDisplay`, else `Integer.MAX_VALUE` → identity) |
+| 3 | **Numbers** | REI version bound: `26.2.820` on both loaders (NF: `implementation` — **bundled in the NeoForge jar**; FB: `compileOnlyApi` + `runtimeOnly`) (NeoForge/build.gradle:190-192; Fabric/gradle.properties:19, Fabric/build.gradle:90-104). Ghost target rects: 16×16 px at `guiLeft + slot.x`, `guiTop + slot.y` (ReiGhostIngredientHandler.java:82). Missing-slot highlight fill: `0x40ff0000` (25% alpha red) over the widget's inner bounds (ReiTransferHandler.java:89-90). Result color on missing: `0x67aaaa00` (ReiTransferHandler.java:83). Missing-index remap: `width == 1 ? i * 3 : width == 2 ? (i % 2) + i / 2 * 3 : i` (`width` = display grid width for `SimpleGridMenuDisplay`, else `Integer.MAX_VALUE` → identity) (ReiTransferHandler.java:42, :67) |
 | 4 | **Behavior** | See Behavior detail |
 | 5 | **Determinism** | All client-side, run by REI when it renders/queries. Focused-stack lookup is a direct `getHoveredSlot()` read (no server round trip). The transfer "missing" computation is a pure function of player inventory + `IAutoFillTerminal.getStoredItems()` + the display's input entries |
-| 6 | **Data formats** | Auto-fill request: `CompoundTag { fill: String }` where the string is the display location (`recipe.getDisplayLocation()` → `ResourceLocation` → `toString()`), sent through `IAutoFillTerminal.sendMessage(tag)` (server-side handling in `CraftingTerminalMenu`, area `03-terminal`). Search sync has no wire format (direct `REIRuntime` text field access) |
+| 6 | **Data formats** | Auto-fill request: `CompoundTag { fill: String }` where the string is the display location (`recipe.getDisplayLocation()` → `ResourceLocation` → `toString()`) (ReiTransferHandler.java:74-77), sent through `IAutoFillTerminal.sendMessage(tag)` (server-side handling in `CraftingTerminalMenu`, area `03-terminal`). Search sync has no wire format (direct `REIRuntime` text field access) |
 | 7 | **Output** | (client) Crafting terminal item shown as a crafting workstation in REI; hovering the terminal screen focuses the hovered slot's item; dragging an item into the filter GUI highlights valid `PhantomSlot`/`FilterSlot` targets and stages a ghost filter; from the REI recipe GUI: "craft" fills the terminal crafting grid (server), a colored result with red-highlighted missing slots when smart item search is on and items are missing |
 | 8 | **Relationships** | `AbstractStorageTerminalScreen.getHoveredSlot()` and `isSmartItemSearchOn()` (area `03-terminal`), `IScreen.getExclusionAreas` (area `06-client-ui`), `PhantomSlot`/`FilterSlot` + `AbstractFilteredMenu.setPhantom(slot, stack)` (area `03-terminal`), `IAutoFillTerminal` + `ISearchHandler` (seam documented in [jei.md](jei.md)), `TerminalItemStack`/`StoredItemStack` (area `03-terminal`), `Content.craftingTerminal` (area `01-core`), REI itself (runtime) |
 | 9 | **NeoForge dependencies** | REI API (modrinth/curse REI for modern MC — no 1.7.10 counterpart; the 1.7.10 port target is likely JEI only (S2: REI dropped — no REI in the pack, see API-MAP)). `REIPluginProvider`/`REIPluginLoaderClient` (NeoForge REI loader) / Fabric `rei_client` entrypoint — plugin discovery with no 1.7.10 counterpart (S2: dropped — see API-MAP). `SimpleGridMenuDisplay`, `CategoryIdentifier.of("minecraft", "plugins/crafting")`, `ProgressView`-free (uses custom renderer lambda). Uses the mod's own screen/menu/slot classes |
@@ -19,33 +19,33 @@ All steps below are **(client)**.
 
 ### Plugin registration (`REIPlugin`, `REIClientPlugin`)
 
-1. `registerTransferHandlers`: registers `ReiTransferHandler` as the transfer handler.
-2. `registerCategories`: `registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(Content.craftingTerminal.get()))` — the crafting terminal item marks crafting recipes as craftable in this mod's terminal.
+1. `registerTransferHandlers`: registers `ReiTransferHandler` as the transfer handler (REIPlugin.java:27-28).
+2. `registerCategories`: `registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(Content.craftingTerminal.get()))` (REIPlugin.java:37) — the crafting terminal item marks crafting recipes as craftable in this mod's terminal.
 3. `registerScreens`:
-   1. **Focused stack**: when the focused screen is an `AbstractStorageTerminalScreen`, return the `EntryStack` of the hovered slot's item (`getHoveredSlot().getItem()`) — REI's "focused item" feature follows the slot the cursor is over on the terminal; otherwise pass.
-   2. **Draggable stack visitor**: `ReiGhostIngredientHandler` (below).
-   3. **Exclusion zones**: for every `IScreen` (all TSS screens), `getExclusionAreas` is collected as REI rectangles — REI does not open recipe GUIs on clicks inside them.
+   1. **Focused stack**: when the focused screen is an `AbstractStorageTerminalScreen`, return the `EntryStack` of the hovered slot's item (`getHoveredSlot().getItem()`) (REIPlugin.java:42-48) — REI's "focused item" feature follows the slot the cursor is over on the terminal; otherwise pass.
+   2. **Draggable stack visitor**: `ReiGhostIngredientHandler` (below) (REIPlugin.java:49).
+   3. **Exclusion zones**: for every `IScreen` (all TSS screens), `getExclusionAreas` is collected as REI rectangles — REI does not open recipe GUIs on clicks inside them (REIPlugin.java:50-54).
 4. Static initializer: registers a `REI` `ISearchHandler` into `IAutoFillTerminal.updateSearch`:
-   - `setSearch(text)`: `REIRuntime.getInstance().getSearchTextField().setText(text)` (no null guard — NPE if REI runtime absent, i.e. REI not loaded; the class is only compiled when REI is on the classpath, but the runtime can still be null pre-init).
+   - `setSearch(text)`: `REIRuntime.getInstance().getSearchTextField().setText(text)` (REIPlugin.java:61-62) (no null guard — NPE if REI runtime absent, i.e. REI not loaded; the class is only compiled when REI is on the classpath, but the runtime can still be null pre-init).
    - `getSearch()`: returns the search field text (no null guard).
-   - Name: `"REI"`.
+   - Name: `"REI"` (REIPlugin.java:72).
 
 ### Ghost drag (`ReiGhostIngredientHandler`)
 
-1. Handles screens that are `AbstractFilteredScreen`.
-2. `getTargets(gui, ingredient)`: for an `ITEM`-typed entry, for each menu slot: `PhantomSlot` → always a target; `FilterSlot` → target iff the dragged item is **not** an `IItemFilter` and the slot does not already hold a filter item; other slots → none. Target rect is the 16×16 slot rect.
-3. `acceptDraggedStack`: if the current mouse position is inside a target rect, `accept` → `AbstractFilteredMenu.setPhantom(slot, stack)`; else pass.
+1. Handles screens that are `AbstractFilteredScreen` (ReiGhostIngredientHandler.java:30-32).
+2. `getTargets(gui, ingredient)`: for an `ITEM`-typed entry, for each menu slot: `PhantomSlot` → always a target; `FilterSlot` → target iff the dragged item is **not** an `IItemFilter` and the slot does not already hold a filter item; other slots → none. Target rect is the 16×16 slot rect (ReiGhostIngredientHandler.java:55-72, :82).
+3. `acceptDraggedStack`: if the current mouse position is inside a target rect, `accept` → `AbstractFilteredMenu.setPhantom(slot, stack)`; else pass (ReiGhostIngredientHandler.java:41-52).
 
 ### Transfer (`ReiTransferHandler`)
 
-1. `context.getMenu()` must implement `IAutoFillTerminal`, else `notApplicable`.
-2. Not applicable unless the display category is `minecraft:plugins/crafting` **and** the currently open screen is *not* the container's own screen (i.e. the player is looking at the recipe GUI, not the terminal).
-3. If the container screen is an `AbstractStorageTerminalScreen` and the display is not "actually crafting" and smart item search is **off** → return a successful no-op that blocks further handlers (nothing to do, and no warning shown).
-4. Build `ItemStack[][]` from the display's input entries (only `ItemStack`-typed values, nulls filtered).
-5. Missing computation (shared shape with EMI, see [emi.md](emi.md)): for each non-empty input alternative list, "found" if any stack is in the player inventory (`findSlotMatchingItem`), else if any stack has a matching `TerminalItemStack` in the terminal's stored items; otherwise add the remapped index `width == 1 ? i * 3 : width == 2 ? (i % 2) + i / 2 * 3 : i`.
-6. If `context.isActuallyCrafting()` (the REI "craft" button): if the display has a location, send `CompoundTag { fill: <location string> }` via `sendMessage` and return a successful blocking result (the terminal grid is filled server-side).
-7. Else if `missing` is non-empty: return a successful result with color `0x67aaaa00`, non-blocking, plus a renderer that walks the recipe widgets in order; for widgets that are `Slot` with notice mark `INPUT` only (the counter increments once per INPUT slot), fill the slot's inner bounds with `0x40ff0000` when the sequential INPUT-slot index is in `missing`.
-8. Otherwise: successful blocking result (nothing missing).
+1. `context.getMenu()` must implement `IAutoFillTerminal`, else `notApplicable` (ReiTransferHandler.java:29, :98).
+2. Not applicable unless the display category is `minecraft:plugins/crafting` **and** the currently open screen is *not* the container's own screen (i.e. the player is looking at the recipe GUI, not the terminal) (ReiTransferHandler.java:30-31).
+3. If the container screen is an `AbstractStorageTerminalScreen` and the display is not "actually crafting" and smart item search is **off** → return a successful no-op that blocks further handlers (nothing to do, and no warning shown) (ReiTransferHandler.java:32-34).
+4. Build `ItemStack[][]` from the display's input entries (only `ItemStack`-typed values, nulls filtered) (ReiTransferHandler.java:36-39).
+5. Missing computation (shared shape with EMI, see [emi.md](emi.md)): for each non-empty input alternative list, "found" if any stack is in the player inventory (`findSlotMatchingItem`), else if any stack has a matching `TerminalItemStack` in the terminal's stored items; otherwise add the remapped index `width == 1 ? i * 3 : width == 2 ? (i % 2) + i / 2 * 3 : i` (ReiTransferHandler.java:46-71).
+6. If `context.isActuallyCrafting()` (the REI "craft" button): if the display has a location, send `CompoundTag { fill: <location string> }` via `sendMessage` and return a successful blocking result (the terminal grid is filled server-side) (ReiTransferHandler.java:73-80).
+7. Else if `missing` is non-empty: return a successful result with color `0x67aaaa00`, non-blocking, plus a renderer that walks the recipe widgets in order; for widgets that are `Slot` with notice mark `INPUT` only (the counter increments once per INPUT slot), fill the slot's inner bounds with `0x40ff0000` when the sequential INPUT-slot index is in `missing` (ReiTransferHandler.java:82-94).
+8. Otherwise: successful blocking result (nothing missing) (ReiTransferHandler.java:96).
 
 ## Deviations in the new mod
 

@@ -3,6 +3,7 @@
 | # | Field | Value |
 |---|---|---|
 | 1 | **Identity** | `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/*.json` — `en_us.json` (217 keys, the reference) + 6 shipped translations: `fr_fr` (189 keys), `ja_jp` (189), `ko_kr` (96), `pt_br` (212), `ru_ru` (212), `zh_cn` (197). No lang files exist elsewhere (no NF/FB-specific lang dirs at `95bb61d`) |
+| 1a | **Sources** | Upstream `26.2`, file `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json` (232 lines, 217 key/value pairs); short citations below are `en_us.json:<line>`. |
 | 2 | **Inputs** | `I18n.get`/`Component.translatable` call sites across the mod (areas `01`–`05`); AutoConfig (Cloth on NF, Fabric AutoConfig on FB) reads the `text.autoconfig.*` and `toms_storage.configuration.*` keys; Jade reads `config.jade.plugin_toms_storage.*` |
 | 3 | **Numbers** | 217 total keys in `en_us`: 128 `tooltip.toms_storage.*`, 22 `text.autoconfig.toms_storage.*`, 15 `block.toms_storage.*`, 15 `config.toms_storage.*`, 7 `chat.toms_storage.*`, 7 `item.toms_storage.*`, 6 `toms_storage.configuration.*`, 6 `menu.toms_storage.*`, 3 `config.jade.plugin_toms_storage.*`, 3 `narrator.toms_storage.*`, 1 each `key.*`, `itemGroup.*`, `label.*`, `overlay.*`, `tag.*`. Translations are all partial (see per-locale gaps below) |
 | 4 | **Behavior** | See Behavior detail |
@@ -64,8 +65,8 @@
 | `item.toms_storage.polymorphic_item_filter` | Polymorphic Item Filter |
 | `item.toms_storage.tag_item_filter` | Tag Item Filter |
 | `item.toms_storage.wireless_terminal` | Wireless Terminal |
-| `itemGroup.toms_storage.tab` | Tom's Simple Storage |
-| `key.toms_storage.open_terminal` | [Tom's Simple Storage] Open Terminal |
+| `itemGroup.toms_storage.tab` | Tom's Simple Storage (en_us.json:26) |
+| `key.toms_storage.open_terminal` | [Tom's Simple Storage] Open Terminal (en_us.json:224) |
 | `label.toms_storage.inventory_connector.beacon_level` | Beacon Level: %d |
 | `menu.toms_storage.crafting_terminal` | C. Terminal |
 | `menu.toms_storage.filing_cabinet` | Filing Cabinet |
@@ -187,10 +188,10 @@
 | `tooltip.toms_storage.matchNBT_on` | Match Components |
 | `tooltip.toms_storage.nbt_overflow` | This item's tag is too big, the item may not show correctly in the terminal |
 | `tooltip.toms_storage.open_crate` | Converts the block in front of it\\into an inventory.\\Beware: Creates Item Entities |
-| `tooltip.toms_storage.opt.search_auto` | Auto Select search: %s |
-| `tooltip.toms_storage.opt.search_keep` | Keep search: %s |
-| `tooltip.toms_storage.opt.search_smart` | Smart features with %s: %s (May lag) |
-| `tooltip.toms_storage.opt.search_sync` | Sync search with %s: %s |
+| `tooltip.toms_storage.opt.search_auto` | Auto Select search: %s (en_us.json:114) |
+| `tooltip.toms_storage.opt.search_keep` | Keep search: %s (en_us.json:115) |
+| `tooltip.toms_storage.opt.search_smart` | Smart features with %s: %s (May lag) (en_us.json:117) |
+| `tooltip.toms_storage.opt.search_sync` | Sync search with %s: %s (en_us.json:116) |
 | `tooltip.toms_storage.paint_kit` | Paint blocks to match\\their surroundings! |
 | `tooltip.toms_storage.paintable` | Can be painted |
 | `tooltip.toms_storage.poly_item_filter` | Only allow inserting items that already exists in this inventory |
@@ -199,11 +200,11 @@
 | `tooltip.toms_storage.priority_low` | Priority: Low |
 | `tooltip.toms_storage.priority_lowest` | Priority: Lowest |
 | `tooltip.toms_storage.priority_normal` | Priority: Normal |
-| `tooltip.toms_storage.recipe_book` | Recipe Book |
+| `tooltip.toms_storage.recipe_book` | Recipe Book (en_us.json:118) |
 | `tooltip.toms_storage.search` | Standard Search |
 | `tooltip.toms_storage.search_auto` | Auto Search |
 | `tooltip.toms_storage.search_auto_keep` | Auto Search Keep |
-| `tooltip.toms_storage.search_auto_keep_sync` | %s Synced Auto Search Keep |
+| `tooltip.toms_storage.search_auto_keep_sync` | %s Synced Auto Search Keep (en_us.json:71) |
 | `tooltip.toms_storage.search_auto_sync` | %s Synced Auto Search |
 | `tooltip.toms_storage.search_keep` | Standard Search Keep |
 | `tooltip.toms_storage.search_keep_sync` | %s Synced Standard Search Keep |
