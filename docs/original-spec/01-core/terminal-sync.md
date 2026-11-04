@@ -42,4 +42,4 @@ Identical SH classes; on Fabric, `update` must run inside a packet context (step
 
 ## Deviations in the new mod
 
-None yet.
+See the [`terminal-sync` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).

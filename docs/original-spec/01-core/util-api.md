@@ -22,4 +22,4 @@
 
 ## Deviations in the new mod
 
-None yet.
+See the [`util-api` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).

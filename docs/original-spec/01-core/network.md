@@ -40,4 +40,4 @@ Fabric `NetworkHandler` exposes the same three helpers (`sendDataToServer`, `sen
 
 ## Deviations in the new mod
 
-None yet.
+See the [`network` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).

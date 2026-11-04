@@ -53,4 +53,4 @@ Fabric's `Config` is an autoconfig `ConfigData` class in `config/toms_storage.js
 
 ## Deviations in the new mod
 
-None yet.
+See the [`config` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).

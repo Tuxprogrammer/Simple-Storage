@@ -71,4 +71,4 @@ Fabric has the same class names in `Fabric/src/main/java/com/tom/storagemod/inve
 
 ## Deviations in the new mod
 
-None yet.
+See the [`inventory-access` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).
