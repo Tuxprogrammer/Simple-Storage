@@ -18,7 +18,7 @@ qwen creates new documents; Sonnet reviews and edits; Claude decides and integra
 
 ## Not done / known gaps vs Lost Cities
 1. Citation density: original sheets average ~1.6 `file:line` cites each (82 total / 51 sheets); LC cites per claim. Upstream is `git show 26.2:<path>`.
-2. Area `index.md` files exceed the 40-line map rule in `mod-port-budget` (03-terminal 171 lines); decide whether to split or relax the rule.
+2. Not a gap: the `mod-port-budget` skill says area indexes should be <=40-line maps, but Lost Cities' own indexes average ~116 lines (ours ~92) and the repo template needs 7 sections. The skill rule and the LC practice disagree; owner may want the skill relaxed or a short map block added at the top of each index.
 3. Not present: `docs/config.md` (player-facing config reference), `docs/api.md`, `docs/reviews/`. Premature before code; revisit at M01/M05.
 4. Decision log is D1-D16; LC is D269 because it records every settled choice. Settle P-rows and Q5-Q9 into D-rows as the owner decides.
 
