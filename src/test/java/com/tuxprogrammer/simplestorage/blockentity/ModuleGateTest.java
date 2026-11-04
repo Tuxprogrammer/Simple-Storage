@@ -60,6 +60,22 @@ public class ModuleGateTest {
         assertTrue(new InventoryHopperTileEntity().isBehaviorActive());
     }
 
+    /** With the terminal flag off, the terminal tile entities are inert; restored, they are active. */
+    @Test
+    public void terminalFlagGatesTheTerminalTileEntities() {
+        ModulesConfig.terminal = false;
+        try {
+            assertFalse(new StorageTerminalTileEntity().isBehaviorActive());
+            assertFalse(new CraftingTerminalTileEntity().isBehaviorActive());
+            assertDoesNotThrow(() -> new StorageTerminalTileEntity().updateEntity());
+            assertDoesNotThrow(() -> new CraftingTerminalTileEntity().updateEntity());
+        } finally {
+            ModulesConfig.terminal = true;
+        }
+        assertTrue(new StorageTerminalTileEntity().isBehaviorActive());
+        assertTrue(new CraftingTerminalTileEntity().isBehaviorActive());
+    }
+
     @Test
     public void inertTileEntityDoesNothingOnUpdate() {
         ModulesConfig.storage = false;

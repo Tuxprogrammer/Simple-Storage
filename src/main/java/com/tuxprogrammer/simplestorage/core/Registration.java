@@ -40,8 +40,9 @@ public final class Registration {
         ModItems.register();
         ModTileEntities.register();
         SimpleStorage.LOG.info(
-            "Registered {} blocks, 1 item, {} tile entities",
+            "Registered {} blocks, {} item, {} tile entities",
             ModBlocks.registeredCount(),
+            ModItems.registeredCount(),
             ModTileEntities.IDS.size());
     }
 }

@@ -15,6 +15,10 @@
     "cannot occur",
     "Polymorph is not in the pack, so by decision the polymorph terminal widget is not registered (ROADMAP M03; also reported as INT-08). Upstream code stays at 26.2"
   ],
+  "CORE-07": [
+    "cannot occur",
+    "The search-mode popup text field that used the missing Tom's Trading Network key is not ported; every key used in code must exist in en_US.lang (LangKeysTest), so a missing key cannot ship"
+  ],
   "UI-01": [
     "cannot occur",
     "Narrator layer is not ported by decision (D21); upstream code stays at 26.2"
@@ -38,5 +42,9 @@
   "CORE-01": [
     "cannot occur",
     "The importantInfo config key is not ported by decision (D22); upstream code stays at 26.2"
+  ],
+  "CORE-02": [
+    "cannot occur",
+    "The generic client-to-server DataPacket that carried arbitrary NBT is not ported: every packet has fixed, bounded fields checked by the Rules pipeline (ServerboundPacketTest, TerminalPacketsTest)"
   ]
 }

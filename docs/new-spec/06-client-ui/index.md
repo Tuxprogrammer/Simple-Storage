@@ -6,3 +6,5 @@ Status: *draft* (new-spec pass, 2026-11-03). Compares each sheet in [original-sp
 |---|---|
 | [deviations.md](deviations.md) | Sheets, how to read the table, the deviation table (6 rows) |
 | [proposals.md](proposals.md) | Contradictions with other docs; accepted proposals (8 rows) |
+
+Implementation: the widget math (scrollbar, popup rects, enum cycle) and the terminal-facing screens shipped in M03 (see [03-terminal/shipped.md](../03-terminal/shipped.md)); textures and models wait for M06 (D36).

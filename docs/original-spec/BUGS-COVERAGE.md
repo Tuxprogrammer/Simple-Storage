@@ -6,23 +6,23 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 
 | Status | IDs |
 |---|---|
-| cannot occur | 10 |
+| cannot occur | 11 |
 | not a bug | 2 |
-| tested | 12 |
-| MISSING | 28 |
+| tested | 29 |
+| MISSING | 10 |
 
 - **tested**: a `doesNotReproduce` test proves the bug does not come back.
 - **MISSING**: neither a test nor a reason; fix this before calling the area done.
 
 | ID | Also | Severity | Status | Test, or why it cannot occur |
 |---|---|---|---|---|
-| TERM-02 | — | crash | MISSING |  |
-| TERM-12 | — | crash | MISSING |  |
+| TERM-02 | — | crash | tested | `SortingTypesTest#doesNotReproduceTERM02_staleOrdinalNeverThrowsAndFallsBackToDefault`<br>`TerminalModesTest#doesNotReproduceTERM02_staleSortOrdinalNeverThrows` |
+| TERM-12 | — | crash | tested | `MultiInventoryTest#doesNotReproduceTERM12_entryCountChangeBetweenCallsIsHandled` |
 | INT-02 | — | crash | cannot occur | Bug is a Fabric `fabric.mod.json` entrypoint; there is no Fabric loader here. The NEI plugin is auto-discovered by class scan (D11, recipe-viewer.md) |
 | INT-07 | — | crash | MISSING |  |
-| UI-04 | — | crash | MISSING |  |
-| CORE-03 | — | gameplay | MISSING |  |
-| CORE-04 | — | gameplay | MISSING |  |
+| UI-04 | — | crash | tested | `EnumCycleTest#doesNotReproduceUI04_cycleNeverThrowsOnNullOrOutOfRange` |
+| CORE-03 | — | gameplay | tested | `MultiInventoryTest#doesNotReproduceCORE03_offsetsStayCorrectThroughCompaction` |
+| CORE-04 | — | gameplay | tested | `MultiInventoryTest#doesNotReproduceCORE04_keepLastNeverPassesANegativeAmount` |
 | CORE-05 | — | gameplay | tested | `CabinetModelTest#doesNotReproduceCORE05_firstItemMustBeUnstackableAndRefusalKeyIsExposed` |
 | CORE-06 | — | gameplay | tested | `CabinetModelTest#doesNotReproduceCORE06_maxStackSizeIsOneAndNothingStackableCanEnter` |
 | CORE-08 | INT-08 | gameplay | cannot occur | Polymorph is not in the pack, so by decision the polymorph terminal widget is not registered (ROADMAP M03; also reported as INT-08). Upstream code stays at 26.2 |
@@ -34,33 +34,33 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | STOR-05 | — | gameplay | tested | `ConnectorScanTest#doesNotReproduceSTOR05_minValueHashStillGetsAPhase`<br>`InventoryConnectorTileEntityTest#doesNotReproduceSTOR05_minValueHashStillGetsARescanPhase`<br>`InventoryInterfaceTileEntityTest#doesNotReproduceSTOR05_minValueHashStillGetsARescanPhase`<br>`StaggerGateTest#doesNotReproduceSTOR05_minValueHashStillFiresEveryTwentyTicks` |
 | STOR-06 | — | gameplay | tested | `LevelEmitterTileEntityTest#doesNotReproduceSTOR06_everyPositionHashIsEvaluatedEveryTenTicks`<br>`StaggerGateTest#doesNotReproduceSTOR06_minValueHashStillFiresEveryTenTicks` |
 | STOR-07 | — | gameplay | tested | `EmitterLogicTest#doesNotReproduceSTOR07_missingTagLoadsTheRuntimeDefault`<br>`LevelEmitterTileEntityTest#doesNotReproduceSTOR07_missingCountTagLoadsTheRuntimeDefault` |
-| TERM-01 | — | gameplay | MISSING |  |
-| TERM-04 | WIRE-04 | gameplay | MISSING |  |
-| TERM-05 | — | gameplay | MISSING |  |
-| TERM-11 | — | gameplay | MISSING |  |
-| TERM-13 | — | gameplay | MISSING |  |
+| TERM-01 | — | gameplay | tested | `ScrollMathTest#doesNotReproduceTERM01_visibleRowsIsAParameter`<br>`TerminalViewTest#doesNotReproduceTERM01_visibleRowsIsAParameter` |
+| TERM-04 | WIRE-04 | gameplay | tested | `StorageTerminalTileEntityTest#doesNotReproduceTERM04_minValueHashStillScansBeaconsEveryFortyTicks` |
+| TERM-05 | — | gameplay | tested | `AutoFillPlannerTest#doesNotReproduceTERM05_twoCellsWantingTheSameItemShareTheCount`<br>`CraftingAutoFillTest#doesNotReproduceTERM05_twoCellsWantingTheSameItemReserveOnePerCell` |
+| TERM-11 | — | gameplay | tested | `FilterSlotLogicTest#doesNotReproduceTERM11_itemAfterTheFirstEmptySlotIsNotDuplicated`<br>`ItemFilterContainerTest#doesNotReproduceTERM11_itemAfterTheFirstEmptySlotIsNotDuplicated`<br>`ItemFiltersTest#doesNotReproduceTERM11_simpleIsCappedAtNineEntries` |
+| TERM-13 | — | gameplay | tested | `FilingCabinetContainerTest#doesNotReproduceTERM13_mayPlaceChecksTheWholeCabinet` |
 | WIRE-01 | — | gameplay | MISSING |  |
 | WIRE-03 | — | gameplay | MISSING |  |
 | INT-01 | — | gameplay | cannot occur | Bug is in upstream's Gradle build comment-out of the EMI plugin; this mod's build is the GTNH buildscript and the EMI plugin is not ported by decision (EMI is not in GTNH 2.9.0; D11, recipe-viewer.md). Upstream code stays at 26.2 for reference |
 | INT-03 | — | gameplay | MISSING |  |
 | INT-09 | — | gameplay | cannot occur | Bug is Sophisticated Storage compat on Fabric; neither is in the target pack, so the compat is not ported by decision (API-MAP.md, 0002) |
 | INT-10 | — | gameplay | MISSING |  |
-| UI-05 | — | gameplay | MISSING |  |
-| CORE-02 | — | performance | MISSING |  |
+| UI-05 | — | gameplay | tested | `ScrollbarModelTest#doesNotReproduceUI05_grabRectMatchesTheDrawnThumb` |
+| CORE-02 | — | performance | cannot occur | The generic client-to-server DataPacket that carried arbitrary NBT is not ported: every packet has fixed, bounded fields checked by the Rules pipeline (ServerboundPacketTest, TerminalPacketsTest) |
 | STOR-09 | — | performance | tested | `HopperLogicTest#doesNotReproduceSTOR09_unfilteredNetworkSourceBacksOffInsteadOfSpinning`<br>`InventoryHopperTileEntityTest#doesNotReproduceSTOR09_unfilteredNetworkSourceDoesNotSpin` |
-| TERM-09 | — | performance | cannot occur | The ComparatorType TYPE sort cache is not ported: the TYPE sort mode is dropped by decision (D27); ordinal 5 stays reserved and inert |
+| TERM-09 | — | performance | tested | `SortingTypesTest#doesNotReproduceTERM09_typeComparatorNotPortedSoNoRace` |
 | INT-06 | — | performance | MISSING |  |
 | INT-05 | — | visual | MISSING |  |
-| UI-06 | — | visual | MISSING |  |
+| UI-06 | — | visual | tested | `PopupRectsTest#doesNotReproduceUI06_popupClicksHitTheRowsThatAreDrawn` |
 | CORE-01 | — | cosmetic | cannot occur | The importantInfo config key is not ported by decision (D22); upstream code stays at 26.2 |
-| CORE-07 | UI-03 | cosmetic | MISSING |  |
-| CORE-10 | — | cosmetic | MISSING |  |
+| CORE-07 | UI-03 | cosmetic | cannot occur | The search-mode popup text field that used the missing Tom's Trading Network key is not ported; every key used in code must exist in en_US.lang (LangKeysTest), so a missing key cannot ship |
+| CORE-10 | — | cosmetic | tested | `KeyModsTest#doesNotReproduceCORE10_rightModifiersCount` |
 | STOR-08 | — | cosmetic | tested | `HopperLogicTest#doesNotReproduceSTOR08_bottomChangePausesExactlyOneCycle`<br>`InventoryHopperTileEntityTest#doesNotReproduceSTOR08_bottomChangePausesExactlyOneCycleInTheTileEntityPath` |
-| STOR-10 | — | cosmetic | tested | `ChannelRegistryTest#doesNotReproduceSTOR10_emptyNameFallsBackToTheSmallestFreeNumber`<br>`ChannelRegistryTest#doesNotReproduceSTOR10_removedNumberIsReused` |
-| TERM-03 | — | cosmetic | MISSING |  |
-| TERM-06 | — | cosmetic | MISSING |  |
+| STOR-10 | — | cosmetic | tested | `ChannelRegistryTest#doesNotReproduceSTOR10_emptyNameFallsBackToTheSmallestFreeNumber`<br>`ChannelRegistryTest#doesNotReproduceSTOR10_removedNumberIsReused`<br>`ChannelRegistryTest#doesNotReproduceSTOR10_userNameCollidingWithFallbackGetsASuffix` |
+| TERM-03 | — | cosmetic | tested | `UsageStatsTest#doesNotReproduceTERM03_zeroSlotsDoesNotDivideByZero` |
+| TERM-06 | — | cosmetic | tested | `ScrollMathTest#doesNotReproduceTERM06_exactlyFortyFiveItemsDoesNotDivideByZero` |
 | TERM-07 | — | cosmetic | cannot occur | Its narrator text is part of the narrator layer, not ported by decision (D21); upstream code stays at 26.2 |
-| TERM-08 | — | cosmetic | MISSING |  |
+| TERM-08 | — | cosmetic | tested | `ChannelRegistryTest#doesNotReproduceTERM08_duplicateNamesGetASuffixSoLookupIsUnambiguous`<br>`SearchQueryTest#doesNotReproduceTERM08_orderIndependentPartLookup` |
 | WIRE-02 | — | cosmetic | MISSING |  |
 | WIRE-05 | — | cosmetic | MISSING |  |
 | UI-01 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |

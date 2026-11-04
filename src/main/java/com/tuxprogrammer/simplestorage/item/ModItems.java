@@ -25,6 +25,12 @@ public final class ModItems {
     /** The paint kit item, assigned by {@link #register()}. */
     public static PaintKitItem paintKit;
 
+    /** The item filter item, assigned by {@link #register()}. */
+    public static ItemFilterItem itemFilter;
+
+    /** The tag filter item, assigned by {@link #register()}. */
+    public static TagFilterItem tagFilter;
+
     private static boolean registered;
 
     private ModItems() {}
@@ -47,5 +53,31 @@ public final class ModItems {
 
         paintKit = new PaintKitItem();
         GameRegistry.registerItem(paintKit, "paint_kit");
+
+        itemFilter = new ItemFilterItem();
+        GameRegistry.registerItem(itemFilter, "item_filter");
+
+        tagFilter = new TagFilterItem();
+        GameRegistry.registerItem(tagFilter, "tag_filter");
+    }
+
+    /**
+     * The number of mod items that have been registered (i.e. are non-null):
+     * {@link #paintKit}, {@link #itemFilter}, and {@link #tagFilter}.
+     *
+     * @return how many of the three items are non-null (0..3)
+     */
+    public static int registeredCount() {
+        int count = 0;
+        if (paintKit != null) {
+            count++;
+        }
+        if (itemFilter != null) {
+            count++;
+        }
+        if (tagFilter != null) {
+            count++;
+        }
+        return count;
     }
 }

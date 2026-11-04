@@ -62,6 +62,69 @@ public class ChannelRegistryTest {
         assertEquals("Workbench", channel.getName());
     }
 
+    /** A user-named channel colliding with a fallback name gets the suffixed variant. */
+    @Test
+    public void doesNotReproduceSTOR10_userNameCollidingWithFallbackGetsASuffix() {
+        ChannelRegistry registry = new ChannelRegistry();
+        UUID owner = UUID.randomUUID();
+        registry.makeChannel("Channel 1", false, owner, "alice");
+        Channel fallback = registry.makeChannel("", true, UUID.randomUUID(), "bob");
+        assertEquals("Channel 2", fallback.getName());
+        Channel renamed = registry.makeChannel("Channel 1", false, owner, "alice");
+        assertEquals("Channel 1 (2)", renamed.getName());
+    }
+
+    /** Creating 'Base' three times yields suffixed names and findByName is unambiguous. */
+    @Test
+    public void doesNotReproduceTERM08_duplicateNamesGetASuffixSoLookupIsUnambiguous() {
+        ChannelRegistry registry = new ChannelRegistry();
+        UUID owner = UUID.randomUUID();
+        Channel first = registry.makeChannel("Base", false, owner, "alice");
+        Channel second = registry.makeChannel("Base", false, owner, "alice");
+        Channel third = registry.makeChannel("Base", false, owner, "alice");
+        assertEquals("Base", first.getName());
+        assertEquals("Base (2)", second.getName());
+        assertEquals("Base (3)", third.getName());
+
+        assertEquals(
+            first.getId(),
+            registry.findByName("base", owner)
+                .getId());
+        assertEquals(
+            second.getId(),
+            registry.findByName("Base (2)", owner)
+                .getId());
+    }
+
+    /** A private channel of another player is invisible to findByName. */
+    @Test
+    public void findByNameRespectsAccess() {
+        ChannelRegistry registry = new ChannelRegistry();
+        UUID owner = UUID.randomUUID();
+        UUID stranger = UUID.randomUUID();
+        Channel publicShared = registry.makeChannel("shared", true, owner, "alice");
+        // Names are unique, so the stranger's private 'shared' is named 'shared (2)'.
+        Channel privateShared = registry.makeChannel("shared", false, stranger, "bob");
+
+        // The public 'shared' channel is visible to everyone.
+        Channel found = registry.findByName("shared", owner);
+        assertNotNull(found);
+        assertEquals(publicShared.getId(), found.getId());
+        assertEquals(owner, found.getOwner());
+        Channel foundByStranger = registry.findByName("shared", stranger);
+        assertNotNull(foundByStranger);
+        assertEquals(publicShared.getId(), foundByStranger.getId());
+        assertEquals(owner, foundByStranger.getOwner());
+
+        // The stranger's private channel is findable by its unique name...
+        Channel strangerFound = registry.findByName("shared (2)", stranger);
+        assertNotNull(strangerFound);
+        assertEquals(privateShared.getId(), strangerFound.getId());
+
+        // ...but invisible to other players (it is not owner's public 'shared').
+        assertNull(registry.findByName("shared (2)", owner));
+    }
+
     /** Only the owner can remove or edit a channel; non-owners' attempts return false. */
     @Test
     public void onlyOwnerCanRemoveOrEdit() {

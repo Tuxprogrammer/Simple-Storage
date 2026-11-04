@@ -350,6 +350,7 @@ public final class InGameRunner {
                     beforeAllFailed = true;
                     counters[1]++;
                     lines.add("FAIL " + simpleName + ".<BeforeAll>: " + detail(t));
+                    logger.error("[scenario] trace of " + simpleName + ".<BeforeAll>", t);
                     break;
                 }
             }
@@ -381,6 +382,7 @@ public final class InGameRunner {
             } catch (Throwable t) {
                 counters[1]++;
                 lines.add("FAIL " + simpleName + "." + m.getName() + ": " + detail(t));
+                logger.error("[scenario] trace of " + simpleName + "." + m.getName(), t);
                 continue;
             }
 
@@ -394,6 +396,7 @@ public final class InGameRunner {
                 failed = true;
                 counters[1]++;
                 lines.add("FAIL " + simpleName + "." + m.getName() + ": " + detail(t));
+                logger.error("[scenario] trace of " + simpleName + "." + m.getName(), t);
             } finally {
                 for (Method each : methodsWith(c, AFTER_EACH_ANNOTATION, false)) {
                     try {
@@ -403,6 +406,7 @@ public final class InGameRunner {
                             failed = true;
                             counters[1]++;
                             lines.add("FAIL " + simpleName + "." + m.getName() + ": " + detail(t));
+                            logger.error("[scenario] trace of " + simpleName + "." + m.getName(), t);
                         }
                     }
                 }
@@ -461,6 +465,9 @@ public final class InGameRunner {
             if (message.length() > MAX_DETAIL_LENGTH) {
                 message = message.substring(0, MAX_DETAIL_LENGTH);
             }
+            message = t.getClass()
+                .getSimpleName() + ": "
+                + message;
         }
         return message + " @ " + frameText(t);
     }

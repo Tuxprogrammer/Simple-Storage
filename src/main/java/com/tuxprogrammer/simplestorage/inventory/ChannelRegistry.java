@@ -1,7 +1,7 @@
 package com.tuxprogrammer.simplestorage.inventory;
 // Ported from Tom's Simple Storage (MIT):
 // https://github.com/tom5454/Toms-Storage/blob/95bb61d/NeoForge/src/platform-shared/java/com/tom/storagemod/inventory/RemoteConnections.java
-// Avoids: STOR-10
+// Avoids: STOR-10, TERM-08
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +19,13 @@ import java.util.function.Supplier;
  * can collide. Here the fallback is {@code "Channel " + n} where n is the smallest
  * integer >= 1 not already used by an existing channel name, so names are
  * deterministic and unique.
+ *
+ * <p>
+ * Upstream bug TERM-08: creating channels never checked name uniqueness, so a
+ * typed name lookup could match several channels. A requested name that is
+ * already used (trimmed, case-insensitive) gets the smallest free suffix,
+ * {@code Name (2)}, {@code Name (3)}, ..., keeping channel names unique so
+ * {@link #findByName(String, UUID)} is never ambiguous.
  *
  * <p>
  * Side: server logic, plain Java.
@@ -106,9 +113,12 @@ public final class ChannelRegistry {
     }
 
     /**
-     * Creates a channel. The name is trimmed; if the result is null, empty, or longer
-     * than {@link #MAX_NAME_LENGTH}, the name becomes {@code "Channel " + n} where n is
-     * the smallest integer >= 1 not already used by an existing channel name.
+     * Creates a channel. The name is trimmed; if the result is null or empty, the name
+     * becomes {@code "Channel " + n} where n is the smallest integer >= 1 not already
+     * used by an existing channel name. A name already used by an existing channel
+     * (trimmed, case-insensitive) gets the smallest free suffix {@code " (n)"} (n >= 2),
+     * and names longer than {@link #MAX_NAME_LENGTH} are shortened (with the suffix, if
+     * any) to fit within it.
      *
      * @param name          desired name (may be null, empty, or too long)
      * @param publicChannel whether the channel is visible to everyone
@@ -120,10 +130,13 @@ public final class ChannelRegistry {
         Objects.requireNonNull(owner, "owner");
         String trimmed = name == null ? null : name.trim();
         String finalName;
+        // The 50-char limit applies BEFORE the uniqueness suffix: a name that
+        // is empty after trimming or longer than MAX_NAME_LENGTH falls back to
+        // the next free "Channel n".
         if (trimmed == null || trimmed.length() == 0 || trimmed.length() > MAX_NAME_LENGTH) {
             finalName = nextFallbackName();
         } else {
-            finalName = trimmed;
+            finalName = uniqueName(trimmed);
         }
         Channel channel = new Channel(idSupplier.get(), owner, ownerName, finalName, publicChannel);
         channels.add(channel);
@@ -181,6 +194,32 @@ public final class ChannelRegistry {
             }
         }
         return false;
+    }
+
+    /**
+     * Finds the channel whose name equals the given name (trimmed, case-insensitive)
+     * among the channels the given player can access.
+     *
+     * <p>
+     * Channel names created via {@link #makeChannel(String, boolean, UUID, String)}
+     * are unique, so the result is never ambiguous; returns null when no accessible
+     * channel has that name.
+     *
+     * @param name   the typed name (may be null)
+     * @param player the player performing the lookup
+     * @return the matching channel, or null
+     */
+    public Channel findByName(String name, UUID player) {
+        String wanted = name == null ? null : name.trim();
+        if (wanted == null) {
+            return null;
+        }
+        for (Channel channel : channels) {
+            if (channel.canAccess(player) && wanted.equalsIgnoreCase(channel.getName())) {
+                return channel;
+            }
+        }
+        return null;
     }
 
     /** Returns the channel with the given id, or null. */
@@ -261,6 +300,48 @@ public final class ChannelRegistry {
     /** Public factory for building a channel (used by restore/persistence). */
     public static Channel channel(UUID id, UUID owner, String ownerName, String name, boolean publicChannel) {
         return new Channel(id, owner, ownerName, name, publicChannel);
+    }
+
+    /**
+     * Makes a channel name unique. If the trimmed name is already used (trimmed,
+     * case-insensitive) by an existing channel, the smallest free suffix
+     * {@code " (n)"} (n >= 2) is appended. The result stays within
+     * {@link #MAX_NAME_LENGTH}; over-long names have their base shortened to make
+     * room (over-long names without a collision are truncated outright).
+     */
+    private String uniqueName(String trimmed) {
+        boolean taken = isNameTaken(trimmed);
+        if (trimmed.length() > MAX_NAME_LENGTH) {
+            if (!taken) {
+                return trimmed.substring(0, MAX_NAME_LENGTH);
+            }
+            for (int n = 2;; n++) {
+                String suffix = " (" + n + ")";
+                String shortened = trimmed.substring(0, MAX_NAME_LENGTH - suffix.length()) + suffix;
+                if (!isNameTaken(shortened)) {
+                    return shortened;
+                }
+            }
+        }
+        if (!taken) {
+            return trimmed;
+        }
+        for (int n = 2;; n++) {
+            String candidate = trimmed + " (" + n + ")";
+            if (!isNameTaken(candidate)) {
+                return candidate;
+            }
+        }
+    }
+
+    /** True if some channel in the registry has a name equal to the given name (exact). */
+    private boolean isNameTaken(String name) {
+        for (Channel channel : channels) {
+            if (name.equals(channel.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Smallest {@code "Channel " + n} (n >= 1) not already used as an exact channel name. */

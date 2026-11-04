@@ -94,7 +94,7 @@ public class ServerboundPacketTest {
         Run run = dispatch(new EditSlotPacket(0, 2, 64, 2, 3), FakeSender.operator());
         assertEquals(PacketOutcome.Kind.ACCEPTED, run.outcome.kind());
         assertTrue(run.handled.get());
-        assertTrue(run.sink.rejected.isEmpty());
+        assertEquals(0, run.sink.rejected.size());
     }
 
     @Test
@@ -177,13 +177,14 @@ public class ServerboundPacketTest {
     }
 
     @Test
-    public void noRealPacketIsRegisteredYet() {
-        // docs/new-spec/01-core/index.md: no packet is defined until a feature needs one.
-        assertTrue(
+    public void registeredPacketsAreTheExpectedOnes() {
+        assertEquals(
+            6,
             SimpleStorageNetwork.serverboundPackets()
-                .isEmpty());
-        assertTrue(
+                .size());
+        assertEquals(
+            2,
             SimpleStorageNetwork.clientboundPackets()
-                .isEmpty());
+                .size());
     }
 }

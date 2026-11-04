@@ -43,7 +43,9 @@ public final class ModBlocks {
             "inventory_connector",
             "inventory_interface",
             "level_emitter",
-            "inventory_hopper"));
+            "inventory_hopper",
+            "storage_terminal",
+            "crafting_terminal"));
 
     public static FilingCabinetBlock filingCabinet;
     public static OpenCrateBlock openCrate;
@@ -58,6 +60,8 @@ public final class ModBlocks {
     public static InventoryInterfaceBlock inventoryInterface;
     public static LevelEmitterBlock levelEmitter;
     public static InventoryHopperBlock inventoryHopper;
+    public static StorageTerminalBlock storageTerminal;
+    public static CraftingTerminalBlock craftingTerminal;
 
     private static boolean registered;
 
@@ -92,6 +96,8 @@ public final class ModBlocks {
         inventoryInterface = new InventoryInterfaceBlock();
         levelEmitter = new LevelEmitterBlock();
         inventoryHopper = new InventoryHopperBlock();
+        storageTerminal = new StorageTerminalBlock();
+        craftingTerminal = new CraftingTerminalBlock();
 
         GameRegistry.registerBlock(filingCabinet, filingCabinet.registryName());
         GameRegistry.registerBlock(openCrate, openCrate.registryName());
@@ -106,6 +112,8 @@ public final class ModBlocks {
         GameRegistry.registerBlock(inventoryInterface, inventoryInterface.registryName());
         GameRegistry.registerBlock(levelEmitter, levelEmitter.registryName());
         GameRegistry.registerBlock(inventoryHopper, inventoryHopper.registryName());
+        GameRegistry.registerBlock(storageTerminal, storageTerminal.registryName());
+        GameRegistry.registerBlock(craftingTerminal, craftingTerminal.registryName());
     }
 
     /**
@@ -126,6 +134,8 @@ public final class ModBlocks {
         if (inventoryInterface != null) count++;
         if (levelEmitter != null) count++;
         if (inventoryHopper != null) count++;
+        if (storageTerminal != null) count++;
+        if (craftingTerminal != null) count++;
         return count;
     }
 }

@@ -56,10 +56,13 @@ public final class DevSelfCheck {
                 failures.add("block without a lang entry: " + name);
             }
         }
-        if (ModItems.paintKit == null) {
-            failures.add("paint kit not registered");
-        } else if (!StatCollector.canTranslate("item.simplestoragenh.paint_kit.name")) {
-            failures.add("config key without a lang entry: item.simplestoragenh.paint_kit.name");
+        if (ModItems.registeredCount() != 3) {
+            failures.add("items registered: " + ModItems.registeredCount() + " of 3");
+        }
+        for (String name : new String[] { "item_filter", "tag_filter" }) {
+            if (!StatCollector.canTranslate("item.simplestoragenh." + name + ".name")) {
+                failures.add("item without a lang entry: " + name);
+            }
         }
         // Tile entity registration: for every id in ModTileEntities.IDS, the tile entity class must be mapped;
         // skipped because GameRegistry does not expose the mapping.

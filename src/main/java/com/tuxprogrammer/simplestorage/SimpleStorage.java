@@ -1,5 +1,8 @@
 package com.tuxprogrammer.simplestorage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +34,21 @@ public class SimpleStorage {
         + "after:NotEnoughItems;after:Waila;after:appliedenergistics2";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
+    /**
+     * The mod's main class instance, injected by FML so other classes can reach mod state.
+     */
+    @Mod.Instance(MODID)
+    public static SimpleStorage instance;
+
+    /**
+     * Opens one of this mod's GUIs; ids are in simplestorage.gui.GuiIds. Server side only.
+     */
+    public static void openGui(EntityPlayer player, int guiId, World world, int x, int y, int z) {
+        player.openGui(instance, guiId, world, x, y, z);
+    }
+
     @SidedProxy(
-        clientSide = "com.tuxprogrammer.simplestorage.ClientProxy",
+        clientSide = "com.tuxprogrammer.simplestorage.client.ClientProxy",
         serverSide = "com.tuxprogrammer.simplestorage.CommonProxy")
     public static CommonProxy proxy;
 

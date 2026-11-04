@@ -1,12 +1,17 @@
 package com.tuxprogrammer.simplestorage.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.tuxprogrammer.simplestorage.SimpleStorage;
 import com.tuxprogrammer.simplestorage.blockentity.LevelEmitterTileEntity;
 import com.tuxprogrammer.simplestorage.blockentity.NetworkQuery;
+import com.tuxprogrammer.simplestorage.core.Module;
+import com.tuxprogrammer.simplestorage.core.ModuleState;
+import com.tuxprogrammer.simplestorage.gui.GuiIds;
 
 /**
  * The block for the level emitter, which emits a weak redstone signal on the
@@ -50,5 +55,16 @@ public class LevelEmitterBlock extends StorageBlockBase {
             NetworkQuery.invalidate(w, x, y, z);
         }
         super.breakBlock(w, x, y, z, block, meta);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hx, float hy,
+        float hz) {
+        // Open the emitter's GUI on the server when the network module is on.
+        if (!world.isRemote && ModuleState.configured()
+            .isActive(Module.NETWORK)) {
+            SimpleStorage.openGui(player, GuiIds.LEVEL_EMITTER, world, x, y, z);
+        }
+        return true;
     }
 }

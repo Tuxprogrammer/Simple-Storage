@@ -27,6 +27,22 @@ Names below are the deobfuscated MCP names of the dev environment; check a class
 | vanilla bootstrap in unit tests | `net.minecraft.init.Bootstrap.func_151354_b()` before touching Items or Blocks |
 | `@SubscribeEvent` | `cpw.mods.fml.common.eventhandler.SubscribeEvent`, class and method must be public |
 | `FMLCommonHandler` side check | `world.isRemote`, `FMLCommonHandler.instance().getSide()` |
+| `mergeItemStack(...)` returns the leftover stack | returns boolean and reduces the stack in place (leftover = stack.stackSize > 0) |
+| `ItemStack.copyItemStack()` / `ItemStack.areItemStackTagsEqual` as instance methods | `stack.copy()` and the STATIC `ItemStack.areItemStackTagsEqual(a, b)` |
+| `net.minecraft.inventory.InventoryPlayer` | `net.minecraft.entity.player.InventoryPlayer` (`getCurrentItem()`, int field `currentItem`, `mainInventory`, `getItemStack()`/`setItemStack`) |
+| `net.minecraft.util.IBlockAccess` | `net.minecraft.world.IBlockAccess` |
+| `Block.onBlockPlacedBy(World,x,y,z,EntityLivingBase)` | `onBlockPlacedBy(World,int,int,int,EntityLivingBase,ItemStack)` (six parameters) |
+| `Slot.slotIndex` | private: use `slot.getSlotIndex()` |
+| `slot.markDirty()` | `slot.onSlotChanged()` |
+| `Slot` constructor after other statements | `super(inventory, index, x, y)` must be the first statement: build the inventory view before constructing the slot |
+| `TileEntity.worldObj` from another class | protected: use `getWorldObj()` |
+| GuiScreen `initGui()`, `drawScreen`, `handleMouseInput`, `updateScreen` declared protected | all four are public |
+| `keyTyped(char,int)`, `mouseClicked(int,int,int)`, `actionPerformed(GuiButton)` are protected |
+| typed container in a GuiContainer subclass | `this.inventorySlots` is the plain Container: keep a typed field |
+| `GuiButton.mousePressed(int,int,int)` | `mousePressed(Minecraft mc, int x, int y)` |
+| `GuiTextField.mouseClicked(...)` returns boolean | returns void in 1.7.10 (use `isFocused()` afterwards) |
+| `PacketBuffer.writeStringToBuffer` / `readStringFromBuffer(int)` | both throw IOException |
+| `Bootstrap` unavailable in plain JUnit | tag the test `@Tag("ingame")` |
 
 ## Habits
 

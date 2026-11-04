@@ -45,7 +45,9 @@ public final class ModTileEntities {
             "inventory_connector",
             "inventory_interface",
             "level_emitter",
-            "inventory_hopper"));
+            "inventory_hopper",
+            "storage_terminal",
+            "crafting_terminal"));
 
     private static boolean registered;
 
@@ -75,5 +77,7 @@ public final class ModTileEntities {
         GameRegistry.registerTileEntity(InventoryInterfaceTileEntity.class, "simplestoragenh:" + "inventory_interface");
         GameRegistry.registerTileEntity(LevelEmitterTileEntity.class, "simplestoragenh:" + "level_emitter");
         GameRegistry.registerTileEntity(InventoryHopperTileEntity.class, "simplestoragenh:" + "inventory_hopper");
+        GameRegistry.registerTileEntity(StorageTerminalTileEntity.class, "simplestoragenh:" + "storage_terminal");
+        GameRegistry.registerTileEntity(CraftingTerminalTileEntity.class, "simplestoragenh:" + "crafting_terminal");
     }
 }

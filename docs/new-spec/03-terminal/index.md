@@ -6,3 +6,6 @@ What this mod (GTNH 2.9.0, Minecraft 1.7.10, Forge 10.13.4.1614) does differentl
 |---|---|
 | [deviations.md](deviations.md) | Sheets, how to read the table, the deviation table (15 rows), re-implemented widget and screen behavior |
 | [proposals.md](proposals.md) | Contradictions with other docs; accepted proposals (8 rows) |
+| [shipped.md](shipped.md) | What milestone M03 built, and what is deferred |
+
+Implementation: shipped in M03 (logic, menus, packets, screens, tests); see [shipped.md](shipped.md) for what exists and what waits for M04 and M06 (D34).

@@ -3,12 +3,17 @@ package com.tuxprogrammer.simplestorage.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import com.tuxprogrammer.simplestorage.SimpleStorage;
 import com.tuxprogrammer.simplestorage.blockentity.FilingCabinetTileEntity;
+import com.tuxprogrammer.simplestorage.core.Module;
+import com.tuxprogrammer.simplestorage.core.ModuleState;
+import com.tuxprogrammer.simplestorage.gui.GuiIds;
 
 /**
  * The block for the filing cabinet, a multi-slot storage container that
@@ -92,9 +97,13 @@ public class FilingCabinetBlock extends StorageBlockBase {
     }
 
     @Override
-    public boolean onBlockActivated(World w, int x, int y, int z, net.minecraft.entity.player.EntityPlayer p, int side,
-        float hx, float hy, float hz) {
-        // Returns false for now: the cabinet GUI belongs to milestone M03.
-        return false;
+    public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer p, int side, float hx, float hy,
+        float hz) {
+        // Open the cabinet's GUI on the server when the storage module is on.
+        if (!w.isRemote && ModuleState.configured()
+            .isActive(Module.STORAGE)) {
+            SimpleStorage.openGui(p, GuiIds.FILING_CABINET, w, x, y, z);
+        }
+        return true;
     }
 }

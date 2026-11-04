@@ -1,5 +1,6 @@
 package com.tuxprogrammer.simplestorage.network;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +16,7 @@ import com.tuxprogrammer.simplestorage.network.validation.RejectionSink;
  * version check applies: the mod is required on both sides.
  *
  * <p>
- * No packet is registered yet: none of upstream's packets survives, and none is added until a feature needs one. To
+ * To
  * add one:
  * <ol>
  * <li>extend {@link ServerboundPacket} or {@link ClientboundPacket}, with a public no-argument constructor;</li>
@@ -101,11 +102,19 @@ public final class SimpleStorageNetwork {
 
     /** Returns one instance of each server-to-client packet, in wire order. Append only. */
     public static List<IPacket> clientboundPackets() {
-        return Collections.emptyList();
+        return Collections
+            .unmodifiableList(Arrays.<IPacket>asList(new TerminalListPacket(), new TerminalStatePacket()));
     }
 
     /** Returns one instance of each client-to-server packet, in wire order. Append only. */
     public static List<IPacket> serverboundPackets() {
-        return Collections.emptyList();
+        return Collections.unmodifiableList(
+            Arrays.<IPacket>asList(
+                new TerminalActionPacket(),
+                new TerminalSettingsPacket(),
+                new FilingCabinetScrollPacket(),
+                new EmitterSettingsPacket(),
+                new FilterFlagsPacket(),
+                new TagFilterPacket()));
     }
 }

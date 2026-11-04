@@ -169,6 +169,9 @@ case "$cmd" in
         git -C "$HERE/tools/remote/server" ls-files -z \
             | rsync -rltp --checksum --itemize-changes --from0 --files-from=- \
                 "$HERE/tools/remote/server/" "$HOST:$ROOT/"
+        # rsync --checksum skips files whose content is unchanged, so the executable bit from git may
+        # never be applied: enforce it explicitly after the copy.
+        remote chmod +x '$ROOT'/bin/*.sh '$ROOT'/realpack/*.sh '$ROOT'/env.sh 2>/dev/null; echo 'install-tools: scripts are executable'
         ;;
     fetch)
         p="${1:?usage: remote.sh fetch <path under REMOTE_ROOT>}"
