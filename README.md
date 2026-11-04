@@ -13,7 +13,7 @@ Store items in blocks, reach them from a terminal across the whole network — b
 - **Terminals with filters and sorting.** A storage terminal and a crafting terminal, each with item, tag and poly filters and stack sorting.
 - **The cable network.** Cables, connectors, interfaces and level emitters that tie storage together into a network.
 - **Wireless access.** Wireless terminals (basic and advanced) with configurable range.
-- **Inventory configurator.** Edit a storage block's contents and filters from the outside.
+- **Inventory configurator.** A hand tool that binds to an inventory connector and edits its priority, side and skip settings.
 - **Paint kit.** Re-skin storage blocks.
 - **Recipe viewer and info integrations.** A NEI recipe-viewer plugin and Waila block-info overlays — the 1.7.10 stand-ins for upstream's JEI/REI/EMI and Jade/TOP (the mapping is in the API map).
 

@@ -22,7 +22,7 @@ The GT-first alternative would make every one of them an EU-consuming GT machine
 
 - The new-spec `02-storage` and `03-terminal` sheets say "no energy" and cite this record; the EU sink, if it ships, gets its own row.
 - The config flag for the EU sink is registered with M01's config and documented there.
-- [OPEN-QUESTIONS](../new-spec/OPEN-QUESTIONS.md) Q2 tracks whether the sink ships and as what.
+- Settled as Q2 in [OPEN-QUESTIONS](../new-spec/OPEN-QUESTIONS.md) (decision D7).
 
 ## Alternatives considered
 

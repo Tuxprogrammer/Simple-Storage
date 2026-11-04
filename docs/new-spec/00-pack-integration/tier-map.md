@@ -1,6 +1,6 @@
 # Per-item tier map (M05 input)
 
-The per-item tier map [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) §4 assigns to S2/M05. Every block and item the mod registers gets **exactly one tier** within the 0003 band — early game up to **HV** — gated by (a) the minimum machine voltage of its final recipe and (b) at least one input unobtainable before that tier. Item inventory from 01-core `mod-lifecycle.md` row 6 (S1-verified registry names): 15 blocks + 7 items = **22 rows below** (`painted_trim` is the painted state of `trim` — same item, no separate recipe).
+The per-item tier map [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) §4 assigns to S2/M05. Every block and item the mod registers gets **exactly one tier** within the 0003 band — early game up to **HV** — gated by the one rule in the Gating notes below: for machine-recipe rows the final-recipe machine tier equals the item's tier (assembler at that tier) and the circuit of that tier is unobtainable before it; ULV crafting-table rows have no machine and no tier-gating input. Item inventory from 01-core `mod-lifecycle.md` row 6 (S1-verified registry names): 15 blocks + 7 items = **22 rows below** (`painted_trim` is the painted state of `trim` — same item, no separate recipe).
 
 **Verified tier facts used here** ([gtnh-tiers-and-energy.md](gtnh-tiers-and-energy.md)): LV = 32 EU/t (cheapest machine, `V[1]`), MV = 128 EU/t (`V[2]`), HV = 512 EU/t (`V[3]`); every single-block GT machine exists at tiers 1–12 (LV–UMV); the assembler (`gt.recipe.assembler`) exists at all of them.
 
@@ -36,14 +36,14 @@ The per-item tier map [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) �
 - **Floor (reachable early):** crate, trims and paint kit are ULV crafting-table items; cabinet, storage terminal, filters and configurator are LV (one LV machine or their LV-circuit crafting gate). ✔ matches 0003 §3 "early game items … LV or below".
 - **Network parts MV–HV:** cable, connectors, interface, proxy, connector-tool and basic hopper and basic wireless at MV; no network part above HV. ✔
 - **Advanced at HV:** crafting terminal, advanced wireless terminal, level emitter, polymorphic filter — all HV, nothing above. ✔
-- **Cap: HV = 512 V** in this GT build (refined number, see [gtnh-tiers-and-energy.md](gtnh-tiers-and-energy.md) §shift). The cap is enforced by the M05 dev self-check: any recipe whose output tier exceeds HV, or that uses an input/machine above the output's tier, fails the check (0003 §Consequences).
+- **Cap: HV = 512 V** in this GT build (verified cap, see [gtnh-tiers-and-energy.md](gtnh-tiers-and-energy.md) §Correction to 0003). The cap is enforced by the M05 dev self-check: any recipe whose output tier exceeds HV, or that uses an input/machine above the output's tier, fails the check (0003 §Consequences).
 
 ## Gating notes
 
 - The **circuit** (`circuitLV`/`circuitMV`/`circuitHV`) is the tier gate: GT makes circuits in the Circuit Assembler (`gt.recipe.circuitassembler`, exists at tiers 1–14 — [recipes-and-materials.md](recipes-and-materials.md)), and the tier of the circuit is the tier of the machine that made it. A `circuitMV` cannot exist before the player has an MV circuit assembler, so no MV row is obtainable earlier.
 - **Secondary materials** (steel plates at LV, brass/glass fibre at MV, gold- and silver-based parts at HV) are tier-appropriate GT materials obtainable by that tier (inferred from GT's ore progression; the verifiable gate is the circuit). No mod-own material appears (0003 §1).
 - **Crafting-table rows** (ULV): the machine-voltage half of the gate is trivially met (no machine); the band floor is the gate. No ULV item uses a machine-tier input.
-- **Nothing obtainable before its tier:** M05's dev self-check runs the rule per row — final-recipe machine tier ≥ item tier is *not* required (a lower-tier machine could in principle make a higher-tier item), but the *input* check is: at least one input in the row must be unobtainable before the item's tier. The circuit column is that input for every LV/MV/HV row.
+- **Nothing obtainable before its tier:** M05's dev self-check runs the rule per row — for a machine-recipe row, the final-recipe machine tier **equals** the item's tier (assembler at that tier) and at least one input (the circuit of that tier) is unobtainable before that tier; ULV crafting-table rows have no machine and no tier-gating input. No recipe may use a machine or input above the item's tier, and no output may exceed the HV cap (512V). The circuit column is that input for every LV/MV/HV row.
 
 ## Sources
 

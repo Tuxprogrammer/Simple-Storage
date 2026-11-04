@@ -31,14 +31,13 @@ So "power-free utility block with its own GUI" is exactly how the pack's non-mec
 - GTNHLib 0.11.54 (tag `0.11.54`, git-ignored `reference/src/GTNHLib`): provides the pack's **blockstate registry** (`com.gtnewhorizon.gtnhlib.blockstate.*`) for property-based blocks — the 1.7.10-friendly way to register blocks with properties (our cable/connector/trim state variants) without per-state block classes; and the annotation config system (below).
 - **Config (01-core `config.md` upstream → 1.7.10):** GTNHLib's `@Config` annotation (`com.gtnewhorizon.gtnhlib.config.Config`, GTNHLib src/main/java/com/gtnewhorizon/gtnhlib/config/Config.java#L14) with `modid`, `category`, `configSubDirectory`, `filename`, `categoryCulling`, and `@Config.Sync` for client-visible values (Config.java#L251); `ConfigurationManager` parses fields into `config/simplestoragenh.cfg` and the pack's automatic config screen renders it (GTNHLib `SimpleGuiFactory`, S3 [integration-opportunities.md](integration-opportunities.md) §Config conventions). Per [config-safe-registration](../../../.claude/skills/config-safe-registration/SKILL.md): register everything, gate behavior; the EU-sink flag changes behavior only.
 
-## Capability system basics for the inventory access the terminals need
+## Inventory access the terminals need (no capability system in 1.7.10)
 
-1.7.10 Forge's capability system (deobfuscated Forge 10.13.4.1614 API; the universal jar ships SRG names — the dev build deobfuscates them):
+1.7.10 Forge has **no capability system**: the pack's Forge 10.13.4.1614 universal jar contains no `net.minecraftforge.common.capabilities` classes (checked: zero capability entries in the jar listing). "Does this block expose an X" is answered by interface checks on the tile entity:
 
-- `net.minecraftforge.common.capabilities.Capability<T>` + `CapabilityManager.INSTANCE.register(...)`; providers implement `ICapabilityProvider` (`hasCapability`, `getCapability`) — the standard 1.7.10 mechanism for "does this block expose an X".
 - **For inventory access specifically, the pack's convention is simpler and is what our terminals should target:**
   - `net.minecraft.inventory.IInventory` (vanilla) — chests, vanilla hoppers, most storage neighbors.
-  - `net.minecraftforge.items.IInventory`/`ISidedInventory` (Forge) — sided access; **every GT MTE implements `ISidedInventory`** (IMetaTileEntity.java#L50), so one code path reads both GT machines and ordinary blocks.
+  - `net.minecraft.inventory.ISidedInventory` (vanilla 1.7.10) — sided access; **every GT MTE implements `ISidedInventory`** (IMetaTileEntity.java#L50), so one code path reads both GT machines and ordinary blocks.
   - AE2: ME inventories are reached through AE2's own grid/storage API (AE2 `IStorageChannel`/`IGridNode` — the ME interface precedent S3 recorded in [integration-opportunities.md](integration-opportunities.md) §AE2) — for M05's AE2 compat, behind `Loader.isModLoaded("appeng")`.
   - GT's `gregtech.api.interfaces.IItemContainer` (IItemContainer.java#L10) is an **item-registration helper** (ItemList-style stack factory), *not* an inventory-access interface — do not confuse the two.
 - **Decision (D10):** the port's `PlatformInventoryAccess` (01-core `platform-layer.md`) resolves, in order: `ISidedInventory` (sided) → `IInventory` (vanilla) → AE2 storage (optional compat) → `EMPTY`. Our own blocks implement `ISidedInventory` so they are readable by the rest of the pack (hoppers, AE2 buses, GT) without extra glue.
@@ -47,5 +46,5 @@ So "power-free utility block with its own GUI" is exactly how the pack's non-mec
 
 - GT5-Unofficial `5.09.54.265`: `gregtech/api/interfaces/metatileentity/IMetaTileEntity.java#L50,#L607`, `gregtech/api/interfaces/IItemContainer.java#L10`, `gregtech/loaders/preload/LoaderMetaTileEntities.java`, `gregtech/api/metatileentity/implementations/MTEBasicMachineWithRecipe.java`.
 - GTNHLib `0.11.54`: `src/main/java/com/gtnewhorizon/gtnhlib/config/Config.java#L14,#L251`, `.../config/ConfigurationManager.java`, `.../config/SimpleGuiFactory.java`, `.../blockstate/`.
-- Forge `10.13.4.1614` (pack jar `reference/gtnh-pack/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar`; capability classes present under SRG names).
+- Forge `10.13.4.1614` (pack jar `reference/gtnh-pack/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar`; no capability classes, so inventory access is by interface, D10).
 - S3: [shipped-mods.md](shipped-mods.md), [integration-opportunities.md](integration-opportunities.md).

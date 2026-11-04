@@ -40,7 +40,7 @@ One config file, `config/simplestoragenh.cfg` (GTNHLib `@Config` annotation, `mo
 | `modules.wireless` | `true` | wireless + advanced wireless terminals |
 | `modules.integration.nei` | `true` | NEI plugin (only meaningful with NEI loaded) |
 | `modules.integration.waila` | `true` | Waila providers (only with Waila loaded) |
-| `modules.integration.appeng` | `false` | AE2 storage compat (M05; off at alpha per [machine-model.md](new-spec/00-pack-integration/machine-model.md) D10) |
+| `modules.integration.appeng` | `false` | AE2 storage compat (M05; flag registered in M01, behavior built in M05; off at alpha per [machine-model.md](new-spec/00-pack-integration/machine-model.md) D10 and D14) |
 | `euSink.enabled` | `false` | the 0004 optional EU sink ([0004](design/0004-energy-and-machine-model.md) §3, decision D7) |
 | `euSink.euPerTick` | `8` | sink rate (ULV rate, `GTValues.V[0]` — [gtnh-tiers-and-energy.md](new-spec/00-pack-integration/gtnh-tiers-and-energy.md)) |
 | `network.inventoryConnectorRange` | `16` (4–256) | port of upstream `inventoryConnectorRange` (01-core `config.md`) |
@@ -48,7 +48,7 @@ One config file, `config/simplestoragenh.cfg` (GTNHLib `@Config` annotation, `mo
 | `network.invCableConnectorMaxScanSize` | `2048` | port of upstream `invCableConnectorMaxScanSize` |
 | `wireless.reach` | `16` (4–64) | port of upstream `wirelessReach` (basic wireless terminal) |
 | `wireless.advRange` | `64` (16–512) | port of upstream `advWirelessRange` |
-| `wireless.beaconLvl` / `beaconLvlDim` | `1` / `4` | ports of upstream `wirelessTermBeaconLvl*` (-1 disables, 0 = one beacon suffices) |
+| `wireless.beaconLvl` / `beaconLvlDim` | `1` / `4` (range -1–4) | ports of upstream `wirelessTermBeaconLvl*` (-1 disables, 0 = one beacon suffices) |
 | `network.linkBeaconLvl` / `linkBeaconRange` / `linkBeaconLvlSameDim` / `linkBeaconLvlCrossDim` | `0` / `4096` / `1` / `2` | ports of upstream `invLinkBeacon*` (cable-connector linking) |
 | `behavior.runMultithreaded` | `true` | port of upstream `runMultithreaded` |
 | `behavior.basicHopperCooldown` | `10` (1–200) | port of upstream `basicHopperCooldown` |

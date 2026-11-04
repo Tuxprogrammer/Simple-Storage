@@ -3,7 +3,7 @@
 <!-- Bugs in UPSTREAM Tom's Simple Storage 2.11.3 at 95bb61d, listed so this backport does not reproduce them.
      Suspected, not confirmed at runtime; no fixes designed here. Merged from every area index. -->
 
-S1 landed 2026-11-03: 54 bug rows reported across the 6 areas, 51 unique after cross-area dedup (3 pairs reported by two areas; INT-04 checked and verified not a bug).
+S1 landed 2026-11-03: 54 rows reported, 51 unique IDs after cross-area dedup: 50 suspected bugs plus INT-04, checked and found not a bug (3 pairs reported by two areas).
 
 The ID is the first area's ID; **Also** lists the same bug as reported by other areas. Severity is one of crash, gameplay, performance, visual or cosmetic.
 
@@ -82,7 +82,7 @@ The ID is the first area's ID; **Also** lists the same bug as reported by other 
 | UI-02 | — | `06-client-ui` | EnumCycleButton narration key constructed dynamically, exists for no value | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/widget/EnumCycleButton.java:26` |
 | UI-07 | — | `06-client-ui` | IconButton base narration is empty | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/widget/IconButton.java:25` |
 
-## Not a bug
+## Not bugs
 
 <!-- Per CONVENTIONS.md: a finding later checked and found correct keeps its ID and row; its severity becomes "not a bug" and the row gives the evidence. -->
 

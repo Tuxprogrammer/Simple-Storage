@@ -4,7 +4,7 @@ How this mod differs from Tom's Simple Storage 2.11.3 and how it fits into GT Ne
 
 Target pack: **GTNH 2.9.0** ([0002](../design/0002-target-pack.md), S3-verified).
 
-Status: `00-pack-integration` is written (spikes S2 and S3, 2026-11-03); the area specs `01` to `06` are written as their milestones build (M02 to M06, [ROADMAP](../ROADMAP.md)).
+Status: `00-pack-integration` is written (spikes S2 and S3, 2026-11-03); the area specs `01` to `06` are written as their milestones build (M02 to M06, [ROADMAP](../ROADMAP.md)). Areas 01 to 06 are written by the milestones that build them (M01 writes 01-core, M02 02-storage, M03 03-terminal and 06-client-ui, M04 04-wireless, M06 05-integration; see ROADMAP).
 
 ## What this mod is for
 

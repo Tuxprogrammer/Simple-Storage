@@ -56,7 +56,7 @@ Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none
 | API family | Used for | 1.7.10 counterpart |
 |---|---|---|
 | Deferred registration (`GameObject`), config (`Config`, AutoConfig), the mod network API (`DataPacket`) | `01-core` | pre-init registration (`GameRegistry` + GTNHLib blockstate registry for property blocks); config via GTNHLib `@Config` (single file, D16); `PacketSimple`/`PacketCustom` channels (S2) |
-| Item handlers/capabilities (inventory access classes) | `01-core`/`02-storage` | Forge capability system (`ICapabilityProvider`/`hasCapability`); inventory access resolves `ISidedInventory` → `IInventory` → AE2 (optional) (S2, D10 — 00-pack-integration machine-model.md) |
+| Item handlers/capabilities (inventory access classes) | `01-core`/`02-storage` | no capability system exists in 1.7.10 Forge; inventory access resolves `ISidedInventory` → `IInventory` → AE2 (optional) (S2, D10 — 00-pack-integration machine-model.md) |
 | Block entities (all `*BlockEntity`) | `02`/`03`/`04` | tile entities (ordinary 1.7.10 TEs per D9, not GT MetaTileEntities) (S2) |
 | Data-driven recipes | all | **GT recipe maps** — `gt.recipe.assembler` via `GTRecipeBuilder#addTo` (S2 resolved, D8 — 00-pack-integration recipes-and-materials.md) |
 | Menu/screen classes (`*Menu`/`*Screen`) | `02`/`03`/`04` | container/screen (naming only) |

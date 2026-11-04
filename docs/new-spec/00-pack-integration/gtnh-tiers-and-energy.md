@@ -29,7 +29,7 @@ Tier names, voltages and the tier lookup all come from `gregtech/api/enums/GTVal
 | 14 | MAX (Maximum Voltage) | 2147483640 (`Integer.MAX_VALUE-7`) | 2147483640 |
 | 15 | MAX+ | 8589934592 | (error tier; "not really a real tier", GTValues.java#L94) |
 
-**Shift vs classic GT5 (refinement to [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md), note "refined by S2"):** classic GT5 1.7.10 ran LV=8, MV=32, HV=128, EV=512, IV=2048, LuV=8192, ZPM=32768, UV=131072. The GTNH fork (this build) inserts a real ULV tier at 8 V and shifts every other name up one index: **LV=32, MV=128, HV=512, EV=2048, IV=8192, LuV=32768, ZPM=131072, UV=524288**. The tier *order* ULV < LV < MV < HV < EV < IV < LuV < ZPM < UV < UHV < UEV < UIV < UMV < UXV < MAX < MAX+ is the one [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) assumed, but the **HV cap is 512 V here, not 128 V**. Do not trust online GT5 snippets: the 2024 GT5-Unofficial rename/shift is exactly the trap the gtnh-integration-research skill warns about.
+**Correction to [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md):** the original 0003 draft wrote the HV cap as **128V**, a slip — 128V is **MV** in this build. The voltages above are what classic GT5 already had (ULV=8, LV=32, MV=128, HV=512, EV=2048, IV=8192, LuV=32768, ZPM=131072, UV=524288), so the verified cap is **HV = 512V** and the tier *order* is the one [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) assumed. Do not trust GT5 numbers from memory or old snippets: the 128V slip is exactly the trap the gtnh-integration-research skill warns about.
 
 **Practical voltage for recipes:** `GTValues.VP` (GTValues.java#L97-L108) is `V × 30/32` — the "recipe voltage you should use if you expect the recipe to use a full amp of that tier" (headroom for cable/transformer loss).
 
@@ -55,7 +55,7 @@ Tier names, voltages and the tier lookup all come from `gregtech/api/enums/GTVal
 | All terminals, storage blocks, cables, connectors, interface, proxy, hopper, filters, wireless items, configurator | none (power-free, [0004](../../design/0004-energy-and-machine-model.md) §1) | none |
 | Level Emitter | none | 8 EU/t (ULV rate) while powered |
 
-The dev self-check for M05 (per [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) §3): any machine recipe in our `GTRecipeBuilder` usage must use a machine tier ≤ the item's tier, and the optional sink must read the tier table from `GTValues.V`, never hard-coded voltages.
+The dev self-check for M05 (per [0003](../../design/0003-gtnh-layer-and-tier-ceiling.md) §3-4): for a machine-recipe row, the final-recipe machine tier **equals** the item's tier (assembler at that tier) and at least one input (the circuit of that tier) is unobtainable before that tier; ULV crafting-table rows have no machine and no tier-gating input. No recipe may use a machine or input above the item's tier, and no output may exceed the HV cap (512V). The optional sink must read the tier table from `GTValues.V`, never hard-coded voltages.
 
 ## Sources
 

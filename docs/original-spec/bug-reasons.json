@@ -1,0 +1,6 @@
+{
+  "INT-01": ["cannot occur", "Bug is in upstream's Gradle build comment-out of the EMI plugin; this mod's build is the GTNH buildscript and the EMI plugin is not ported by decision (EMI is not in GTNH 2.9.0; D11, recipe-viewer.md). Upstream code stays at 26.2 for reference"],
+  "INT-02": ["cannot occur", "Bug is a Fabric `fabric.mod.json` entrypoint; there is no Fabric loader here. The NEI plugin is auto-discovered by class scan (D11, recipe-viewer.md)"],
+  "INT-09": ["cannot occur", "Bug is Sophisticated Storage compat on Fabric; neither is in the target pack, so the compat is not ported by decision (API-MAP.md, 0002)"],
+  "CORE-08": ["cannot occur", "Polymorph is not in the pack, so by decision the polymorph terminal widget is not registered (ROADMAP M03; also reported as INT-08). Upstream code stays at 26.2"]
+}
