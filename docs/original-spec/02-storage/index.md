@@ -112,3 +112,5 @@ Note: trim block items have no `item.*` keys — `BlockItem` falls back to the b
 ## Deviations in the new mod
 
 - The area table calls this "the storage item with internal inventory": upstream 26.2 has **no standalone storage item** — the filing cabinet is a block. The new spec should say so and decide whether the 1.7.10 port keeps it a block (recommended for GTNH crate parity).
+
+See also the row in [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: index).

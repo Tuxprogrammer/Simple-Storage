@@ -37,3 +37,7 @@ Codec, `BlockStateProperties`, `TickerUtil` (platform ticker), `NeoForgeBlock` m
 
 ## Bugs
 STOR-05 (Math.abs rescan gate, `InventoryInterfaceBlockEntity.java:31`); affected by STOR-03.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: inventory-interface).

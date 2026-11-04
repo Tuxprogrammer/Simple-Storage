@@ -39,3 +39,7 @@ Presents the proxied block's inventory to the cable network as if the network we
 
 ## Bugs
 None.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: inventory-proxy).

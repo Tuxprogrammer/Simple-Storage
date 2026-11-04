@@ -39,4 +39,4 @@
 
 ## Deviations in the new mod
 
-None yet.
+See the [03-terminal deviation table](../../new-spec/03-terminal/index.md#deviation-table) (row `filing-cabinet-gui`).

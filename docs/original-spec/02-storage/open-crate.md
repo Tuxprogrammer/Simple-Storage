@@ -40,3 +40,7 @@ A virtual `Container` (implemented via `IInventoryAccess` adapter in 01-core `in
 
 ## Bugs
 STOR-01 (Math.abs scan gate, `OpenCrateBlockEntity.java:31`); STOR-04 (phantom append slot, `OpenCrateBlockEntity.java:40-41` + `:108-109`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: open-crate).

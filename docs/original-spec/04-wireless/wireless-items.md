@@ -10,7 +10,7 @@
 | 6 | **Data formats** | Advanced item binding: data component `toms_storage:bound_pos` (`WorldPos` record: `ResourceKey<Level>` dimension + `BlockPos`), codec fields `bound_dim` (dimension key) and `bounds_pos` (pos — note the extra "s", see WIRE-05). Written via `DataComponentPatch` on bind. |
 | 7 | **Output** | Basic: a remote activation of the looked-at terminal (its normal right-click behavior, e.g. opening the menu). Advanced: remote activation of its bound terminal; the binding component on the item; action-bar messages `chat.toms_storage.terminal_bound` / `terminal_invalid_block` / `terminal_not_loaded`. |
 | 8 | **Relationships** | `ClientUtil.tooltip` (06-client-ui) renders the tooltips (shift-gated). `Platform.checkUse` (01-core platform-layer.md) posts the synthetic right-click event for the basic item. `PlayerInvUtil.findItem` + `WirelessTerminal.open`/`canOpen` are the keybind open path (01-core network.md step 5). The terminal-side reach check (`canInteractWith`) and beacon scan are 03-terminal (`StorageTerminalBlockEntity`) consuming these items' `getRange` — see range-and-sync.md. Client outline while holding the basic item: `ClientUtil.drawTerminalOutline` (06-client-ui). |
-| 9 | **NeoForge dependencies** | Data components (`bound_pos` — the 1.7.10 counterpart is item NBT; on 1.16 the binding was NBT keys `BindX`/`BindY`/`BindZ`/`BindDim`, see [On 1.16](#on-116)); `InteractionResult.SUCCESS_SERVER`; block tags; `PlayerInteractEvent.RightClickBlock` via `Platform.checkUse`. |
+| 9 | **NeoForge dependencies** | Data components (`bound_pos` — the 1.7.10 counterpart is item NBT; on 1.16 the binding was NBT keys `BindX`/`BindY`/`BindZ`/`BindDim`, see [On 1.16](#on-115--on-116)); `InteractionResult.SUCCESS_SERVER`; block tags; `PlayerInteractEvent.RightClickBlock` via `Platform.checkUse`. |
 | 10 | **Bugs** | `WIRE-01` (unconditional SUCCESS_SERVER), `WIRE-02` (tooltip typo), `WIRE-03` (invalid/unloaded bound target not consumed), `WIRE-05` (codec field name). |
 
 ## Behavior detail
@@ -51,4 +51,4 @@
 
 ## Deviations in the new mod
 
-None yet.
+See [new-spec 04-wireless](../../new-spec/04-wireless/index.md) (row: wireless-items).

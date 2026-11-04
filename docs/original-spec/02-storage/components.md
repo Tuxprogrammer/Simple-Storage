@@ -37,3 +37,7 @@ Data component system (NeoForge item components), `RecordCodecBuilder`, `TagKey.
 
 ## Bugs
 None.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: components).

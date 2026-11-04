@@ -45,3 +45,7 @@ Redstone signal (15/0) on the back-facing side; block state `POWERED` drives the
 
 ## Bugs
 STOR-06 (Math.abs tick gate, `LevelEmitterBlockEntity.java:41`); STOR-07 (NBT Count load-default 0 vs runtime default 1, `LevelEmitterBlockEntity.java:91`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: level-emitter).

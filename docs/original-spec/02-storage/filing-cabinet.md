@@ -44,3 +44,7 @@ Contents drop as item entities on removal; GUI access via `FilingCabinetMenu`/`F
 
 ## Bugs
 STOR-02 (lock semantics — `FilingCabinetContainer.java:61-77` + `:94-99`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: filing-cabinet).

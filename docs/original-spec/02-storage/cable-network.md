@@ -8,7 +8,7 @@
 - `RemoteConnections`: per-dimension `SavedData` loaded from the **overworld** data storage; id `toms_storage:rc`.
 
 ## Numbers
-- Channel name length limit: 50 chars (`makeChannel`); empty/overlong names fall back to `"Channel " + System.currentTimeMillis()` (see STOR-06).
+- Channel name length limit: 50 chars (`makeChannel`); empty/overlong names fall back to `"Channel " + System.currentTimeMillis()` (see STOR-10).
 - `findOthers(world, pos, lvl)`: `lvl` is the beacon level; connectors are kept only while their BE is loaded and `isAccessibleFrom(world, pos, lvl)`.
 
 ## Behavior
@@ -53,3 +53,7 @@ Saved data `toms_storage:rc`: `{connections: [{id, owner, owner_name, name, publ
 
 ## Bugs
 STOR-10 (time-based channel name fallback, `RemoteConnections.java:131`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: cable-network).

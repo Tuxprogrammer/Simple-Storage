@@ -52,3 +52,7 @@ No NBT of its own (state is re-derived from the world each scan).
 
 ## Bugs
 STOR-03 (`hasConnectedInventories()` = `!isRemoved()`, `InventoryConnectorBlockEntity.java:188`); STOR-05 (Math.abs rescan gate, `InventoryConnectorBlockEntity.java:50`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: inventory-connector).

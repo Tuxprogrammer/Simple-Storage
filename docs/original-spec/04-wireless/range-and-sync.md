@@ -41,4 +41,4 @@
 
 ## Deviations in the new mod
 
-None yet.
+See [new-spec 04-wireless](../../new-spec/04-wireless/index.md) (row: range-and-sync).

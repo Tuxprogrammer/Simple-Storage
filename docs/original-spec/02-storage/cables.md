@@ -53,3 +53,7 @@ A graph of connected cable blocks + functional nodes consumed by `InventoryCable
 
 ## Bugs
 None.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: cables).

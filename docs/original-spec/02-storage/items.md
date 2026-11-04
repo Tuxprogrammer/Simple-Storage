@@ -38,3 +38,7 @@ Data components (`DataComponentPatch`, component registry), `SoundEvents.BUCKET_
 
 ## Bugs
 None.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: items).

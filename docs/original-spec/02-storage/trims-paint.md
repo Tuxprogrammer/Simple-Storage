@@ -42,3 +42,7 @@ Model property registration (`FACADE_STATE`), client model data update, attachme
 
 ## Bugs
 None.
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: trims-paint).

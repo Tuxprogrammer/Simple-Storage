@@ -55,3 +55,7 @@ Codec, `BlockStateProperties.ENABLED`, `TickerUtil` (platform ticker), `Containe
 
 ## Bugs
 STOR-08 (dead `waiting == 2` branch, `BasicInventoryHopperBlockEntity.java:101`); STOR-09 (unfiltered network-top hopper re-checks every tick, `BasicInventoryHopperBlockEntity.java:83`).
+
+## Deviations in the new mod
+
+See [new-spec 02-storage](../../new-spec/02-storage/index.md) (row: hopper).
