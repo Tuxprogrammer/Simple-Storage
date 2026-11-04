@@ -16,16 +16,22 @@ Review the docs for inconsistencies and undecided items, then bring them up to t
 ## Division of labor (owner rule)
 qwen creates new documents; Sonnet reviews and edits; Claude decides and integrates. qwen plugin v2 is async (see memory `qwen-delegation`): `qwen_start`, then Bash `run_in_background` the `wait` command. Keep qwen briefs to one file to write, <=2 reads, a step plan, max_turns ~12; a 14-file read list failed at 41 turns.
 
-## Not done / known gaps vs Lost Cities
-1. Citation density: original sheets average ~1.6 `file:line` cites each (82 total / 51 sheets); LC cites per claim. Upstream is `git show 26.2:<path>`.
-2. Not a gap: the `mod-port-budget` skill says area indexes should be <=40-line maps, but Lost Cities' own indexes average ~116 lines (ours ~92) and the repo template needs 7 sections. The skill rule and the LC practice disagree; owner may want the skill relaxed or a short map block added at the top of each index.
-3. Not present: `docs/config.md` (player-facing config reference), `docs/api.md`, `docs/reviews/`. Premature before code; revisit at M01/M05.
-4. Decision log is D1-D16; LC is D269 because it records every settled choice. Settle P-rows and Q5-Q9 into D-rows as the owner decides.
+## Since the first handoff (all committed, newest 19ab3cb)
+- Navigation: docs/INDEX.md (level 1, 36 lines); every area index.md is a <=40-line map (facts/coverage/bugs/lang siblings; new-spec deviations.md + proposals.md). The skill's 40-line rule wins over Lost Cities.
+- Citations: 1,077 verified `file:line` cites over 51 original sheets (was 82). 41 claims the code contradicts are marked inline `(UNVERIFIED: ...)`.
+- Owner decisions D17-D29 recorded and propagated (decision log, tier map, 0001-0003, PACK-CHANGES, ROADMAP, new-spec areas). Highlights: GT hard dependency; network parts LV (basic wireless MV); English only; TYPE sort, narrator, recipe book, ViveCraft, waterlogging not ported; open key ships unbound; one hopper (the "mid/fast variants" proposal was a misreading).
+- OPEN-QUESTIONS has no open rows. BUGS-COVERAGE: 40 untested, 10 cannot occur, 1 not a bug.
+
+## Not done
+1. **Correction pass for the 41 UNVERIFIED flags** (grep -rn UNVERIFIED docs/original-spec). Several touch the bug register: TERM-10 (the shift-step table is actually symmetric), TERM-12 (same-tick growth cannot index a stale array; residual risk is elsewhere), TERM-11 shift-click behavior, STOR/trims paint-scrape claims. Fix the sheet text, then re-judge each affected BUGS.md row (keep, rewrite or move to Not bugs) and rerun tools/bugs-coverage/generate.py.
+2. Spec sheets still describe upstream's now-dropped features (narrator, recipe book, TYPE sort) as upstream facts; that is correct, the new-spec rows record the deviation.
+3. Not present, premature before code: docs/config.md, docs/api.md, docs/reviews/.
+4. Decision log holds D1-D29; keep adding a row whenever a choice is settled.
 
 ## Next 3 steps
-1. Present Q5-Q9 and the 36 proposals to the owner; record accepted ones as decision-log rows D17+ and move them to Settled in `docs/new-spec/OPEN-QUESTIONS.md` (grep, do not cat).
-2. Fold in two skill findings: Q6 gets "plus a test that checks key defaults against the pack's key list"; M05 gets "recipes get free programmed-circuit numbers; test clashes against a dumped full-pack recipe set" (`gt-first-design`).
-3. Optionally raise citation density with Sonnet editors per area (disjoint files), `git show 26.2:<path>` as the source.
+1. Run the correction pass above with Sonnet editors per area (disjoint files; `git show 26.2:<path>` is the source), then review BUGS.md rows by hand.
+2. Re-run the link check and index-length check (all index.md <= 40 lines) after any docs change.
+3. M01 can start: entry gate is met; its scope now includes the `required-after` dependency declaration (D17) and a reminder that tests for the four+1 static checks need failing fixtures.
 
-## Open questions for the owner
-Q5 (GT hard dependency), Q6-Q9, P01-P06 (see OPEN-QUESTIONS). Also: should 0001/0002 be edited for Q5 once decided (README and 0002 still say GTNHLib is the one hard dependency)?
+## Division of labor and tooling (unchanged)
+qwen creates new documents (one file to write, <=2 reads, step plan, max_turns ~12); Sonnet reviews and edits; Claude decides and integrates. qwen plugin v2 is async. Questions to the owner are batched with context, options, consequences and a recommendation; decisions are recorded as decision-log rows.
