@@ -6,7 +6,7 @@
 Sources (upstream 26.2@95bb61d): `NeoForge/src/platform-shared/java/com/tom/storagemod/block/FilingCabinetBlock.java`, `.../block/entity/FilingCabinetBlockEntity.java`, `.../util/FilingCabinetContainer.java`; short names below are `Class.java:line` in those files (class declarations: FilingCabinetBlock.java:34, FilingCabinetBlockEntity.java:23, FilingCabinetContainer.java:14).
 
 ## Inputs
-- Placement: `getStateForPlacement` — FACING = opposite of the clicked horizontal face (default NORTH; `HORIZONTAL_FACING`) (FilingCabinetBlock.java:36, 69-70). (UNVERIFIED: the code uses `context.getHorizontalDirection().getOpposite()`, i.e. the placer's horizontal look direction reversed, not the clicked face, FilingCabinetBlock.java:70.)
+- Placement: `getStateForPlacement` — FACING = `context.getHorizontalDirection().getOpposite()`, i.e. the placer's horizontal look direction reversed, not the clicked face (default NORTH; `HORIZONTAL_FACING`) (FilingCabinetBlock.java:36, 69-70).
 - Right-click (server): opens `FilingCabinetMenu` via `player.openMenu(be)`; no distance check at the block level (FilingCabinetBlock.java:74-84).
 - Block item tooltip: `tooltip.toms_storage.filing_cabinet` = "Store multiple variants of the same item" (FilingCabinetBlock.java:43-45).
 
@@ -16,7 +16,7 @@ Sources (upstream 26.2@95bb61d): `NeoForge/src/platform-shared/java/com/tom/stor
 - `getMaxStackSize() = 1` per slot (FilingCabinetContainer.java:80-82).
 
 ## Behavior
-1. (server) `onPlace`: FACING set to opposite of click direction. (UNVERIFIED: no `onPlace` override exists in FilingCabinetBlock.java; FACING is set in `getStateForPlacement`, FilingCabinetBlock.java:69-70.)
+1. Placement: there is no `onPlace` override; FACING is set in `getStateForPlacement` to the placer's horizontal direction reversed (FilingCabinetBlock.java:69-70).
 2. (server) `affectNeighborsAfterRemoval`: redstone-style neighbor update after removal (NeoForge hook) (FilingCabinetBlock.java:98-101).
 3. BE holds a `FilingCabinetContainer` (512 slots); `onRemove` drops contents via `dropContents` (FilingCabinetBlockEntity.java:24, 79-80).
 4. BE is `Nameable` (custom name stored as component, nullable) (FilingCabinetBlockEntity.java:23, 35, 74).

@@ -22,7 +22,7 @@
 
 ### PlatformItem (base item)
 
-4. (both) `PlatformItem` adds an `onRightClick(player, stack, pos, hand)` hook returning `InteractionResult` (default `PASS`). (NF PlatformItem.java:22-24) NF: `onItemUseFirst` is `final` and delegates to `onRightClick` (NF PlatformItem.java:17-20; UNVERIFIED: `onItemUseFirst` takes a `UseOnContext` with a clicked block position, so it fires when the item is used on a block, not "while not on a block", PlatformItem.java:18-19) (item right-click while not on a block). Fabric: no `onItemUseFirst`; a `UseItemCallback` in the Fabric mod initializer calls `onRightClick` instead.
+4. (both) `PlatformItem` adds an `onRightClick(player, stack, pos, hand)` hook returning `InteractionResult` (default `PASS`). (NF PlatformItem.java:22-24) NF: `onItemUseFirst` is `final` and delegates to `onRightClick` (NF PlatformItem.java:17-20; `onItemUseFirst` takes a `UseOnContext`, so it fires when the item is used on a block, with `context.getClickedPos()` as `pos`, PlatformItem.java:18-19). Fabric: no `onItemUseFirst`; a `UseItemCallback` in the Fabric mod initializer calls `onRightClick` instead.
 5. (both) SH items that need this hook extend `PlatformItem` (e.g. the filter items, 02-storage territory).
 
 ### PlatformBlockEntity (base block entity)

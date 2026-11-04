@@ -26,7 +26,7 @@ Sources (upstream 26.2@95bb61d): `NeoForge/src/platform-shared/java/com/tom/stor
 Deterministic.
 
 ## Data formats
-`paint` data component: a `BlockState` (codec-registered, 01-core) (UNVERIFIED: the registry id is `paint_state`, persistent codec `BlockState.CODEC`, Content.java:125). `configurator`, `simple_item_filter`, `tag_filter` components on filter items — see `components.md`.
+`paint` data component: a `BlockState` (codec-registered, 01-core; the registry id is `paint_state`, persistent codec `BlockState.CODEC`, Content.java:125). `configurator`, `simple_item_filter`, `tag_filter` components on filter items — see `components.md`.
 
 ## Output
 Painted blocks; tooltip lines on all TS block items.

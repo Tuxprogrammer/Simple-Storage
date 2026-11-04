@@ -11,7 +11,7 @@
 | 7 | **Output** | Filter container contents (item filter), tag list + allow/deny (tag filter), allow/deny + matchNBT (item filter); nested filter GUIs opened by `IItemFilter.openGui` (02-storage `components.md`). |
 | 8 | **Relationships** | `SimpleItemFilter`/`TagFilter` (03-terminal `filters.md`), `IItemFilter.openGui` (02-storage `components.md`), `PhantomSlot`/`FilterSlot`/`ItemFilterSlot` (this sheet), `AbstractTagFilter`/`AbstractSimpleItemFilter` (01-core `platform-layer.md`), `NetworkHandler` (01-core `network.md`), `ListWidget` (06-client-ui), `ToggleButton`/`IconButton` (06-client-ui). |
 | 9 | **NeoForge dependencies** | `DataSlots` (container data slots — no 1.7.10 counterpart), `ItemStack.CODEC` (1.7.10: `writeToNBT`), `TagKey`/`Identifier.CODEC` (1.7.10: `IItemTags` names as strings), `EditBox`-free here (lists instead), `ProblemReporter.DISCARDING` (malformed tags dropped). |
-| 10 | **Bugs** | `TERM-11` (item-filter shift-click only fills the first empty phantom slot whose item differs — a 9-slot grid with a partial duplicate layout can leave a matching item unplaced while a different empty slot exists; inferred edge, no repro). |
+| 10 | **Bugs** | `TERM-11` (item-filter shift-click writes only into the first empty phantom slot and never replaces a different item; if an earlier slot already holds the same item the scan stops and nothing is placed, so the stack is not duplicated; the item is placed only when no matching slot precedes the first empty one, IM:95-101). |
 
 ## Behavior detail
 
@@ -35,7 +35,7 @@
 7. 9 `PhantomSlot`s over the filter's 9-slot container (positions in Numbers); player slots standard (y=84/142); `inv.startOpen(player)` (IM:44) / `stopOpen` on close (IM:115); with a real `SimpleItemFilter`: data slots read `isMatchNBT()`/`isAllowList()`; the plain (client) constructor uses set-only data slots and a `SimpleContainer(9)` (IM:24-29).
 8. `clickMenuButton(btn)`: `v = btn & 1`, `btn >>= 1`; 0 → `filter.setMatchNBT(v)`, 1 → `filter.setAllowList(v)`. Returns false (IM:64-72).
 9. `stillValid`: `isValid.getAsBoolean() && container.stillValid(player)` (IM:79-81) (the `isValid` supplier is `() -> true` for the standalone menu; callers pass e.g. `() -> stack.getItem() == filterItem`).
-10. `quickMoveStack`: shift-click from player → count-1 copy into the first phantom slot that is empty or holds a *different* item (scan stops at the first matching item — **`TERM-11`**) (IM:88-107; UNVERIFIED: the scan only ever writes into an EMPTY slot, a slot holding a different item is skipped, never replaced, IM:95-101).
+10. `quickMoveStack`: shift-click from player → count-1 copy into the first EMPTY phantom slot, scanning slots 0-8 in order; the scan stops without writing at the first slot holding the same item and components, and a slot holding a different item is skipped, never replaced (**`TERM-11`**) (IM:88-107, scan IM:95-101).
 11. `removed`: `stopOpen`, `filter.flush()` (persist the filter into the item), `refresh.run()` (callers pass e.g. `markFilterDirty`) (IM:113-118).
 
 ### ItemFilterScreen (client)
@@ -49,7 +49,7 @@
 15. Slot 0: `PhantomSlot(SimpleContainer(1), 0, 8, 15)` — the item being tagged (TM:39). Player slots standard (TM:42-50). Data slot allowList (from `filter.isAllowList()`) (TM:51).
 16. `clickMenuButton`: same encoding, target 0 → `filter.setAllowList(v)` (TM:55-62).
 17. `broadcastChanges`: after super, once per open (`synced` flag) sends `l` = all tag locations of the filter as strings (TM:73-83).
-18. `quickMoveStack`: shift-click → count-1 copy into slot 0 only if it is empty or holds a different item (TM:91-108; UNVERIFIED: code writes only when slot 0 is empty, a different item there is left untouched, TM:99-103).
+18. `quickMoveStack`: shift-click → count-1 copy into slot 0 only if it is empty; if slot 0 holds the same item it returns without change, and a different item there is left untouched (TM:91-108, TM:99-103).
 19. `removed`: `filter.flush()`, `refresh.run()` (TM:114-118).
 20. `receive` (server): `l` list of `Identifier` (tag locations) → `filter.setTags(...)` (TM:121-125).
 

@@ -7,7 +7,7 @@
 | 3 | **Numbers** | `IntDataSlots`: `MASK = 0xFFFF` (IntDataSlots.java:9) — the supplier value is a 32-bit int split into two 16-bit halves, so one `IntDataSlots` object occupies **2** `ContainerData` slots (`getCount() = 2`) (IntDataSlots.java:31-33); slot 0 = low 16 bits, slot 1 = high 16 bits. (IntDataSlots.java:17-18, 23-24) |
 | 4 | **Behavior** | Ordered steps in [Behavior detail](#behavior-detail). |
 | 5 | **Determinism** | None. |
-| 6 | **Data formats** | None (values ride the menu's data-slot sync, 16-bit unsigned per slot for `IntDataSlots`). |
+| 6 | **Data formats** | None (values ride the menu's data-slot sync, 16 bits per slot for `IntDataSlots`; the slot-1 read is signed). |
 | 7 | **Output** | Data slot objects added to menus (03-terminal/06-client-ui) that sync integer state (e.g. sort order, mode flags, beacon level display) between the menu (server) and screen (client). |
 | 8 | **Relationships** | Used by terminal menus/screens (03-terminal/06-client-ui). No other users found in 26.2. |
 | 9 | **NeoForge dependencies** | None (vanilla `DataSlot`/`ContainerData`). |
@@ -21,7 +21,7 @@
 
 ### IntDataSlots
 
-2. (both) `IntDataSlots.create(consumer, supplier)` implements `ContainerData` (IntDataSlots.java:8, 35-37) with `getCount() = 2`. `get(off)`: reads `supplier.getAsInt()`, masks the 16-bit half at bit offset `off << 4`, and returns it as an unsigned 0–65535 value. (UNVERIFIED: the half is extracted with a signed `>>`, so slot 1 reads negative when bit 31 of the supplier value is set; slot 0 is 0–65535, IntDataSlots.java:16-19) `set(off, val)`: merges `val & 0xFFFF` into the cached `value` at that half (the other half is preserved from the cached `value`), pushes the merged 32-bit int through the consumer, updates the cache, and runs `onUpdate`. (IntDataSlots.java:21-28)
+2. (both) `IntDataSlots.create(consumer, supplier)` implements `ContainerData` (IntDataSlots.java:8, 35-37) with `getCount() = 2`. `get(off)`: reads `supplier.getAsInt()`, masks the 16-bit half at bit offset `off << 4`, and returns it shifted down with a signed `>>`, so slot 0 reads 0–65535 but slot 1 reads negative (-32768..-1) when bit 31 of the supplier value is set (IntDataSlots.java:16-19). `set(off, val)`: merges `val & 0xFFFF` into the cached `value` at that half (the other half is preserved from the cached `value`), pushes the merged 32-bit int through the consumer, updates the cache, and runs `onUpdate`. (IntDataSlots.java:21-28)
 3. (both) Note: the cached `value` starts at 0 (IntDataSlots.java:13) and is only updated via `set` — a value read back from the supplier after a supplier-side change is not reflected in the cache until the next `set` merges it. *Inferred* acceptable because menus write through the consumer on every change; flag for porters: if a supplier changes behind the menu's back, a subsequent `set` of one half would overwrite the other half with the stale cached value.
 
 ## Deviations in the new mod

@@ -3,7 +3,7 @@
 | # | Field | Contents |
 |---|---|---|
 | 1 | **Identity** | `LevelEmitterMenu` (SH `menu/LevelEmitterMenu.java`), `LevelEmitterScreen` (SH `screen/LevelEmitterScreen.java`, texture `toms_storage:textures/gui/level_emitter.png`). Menu type `Content.levelEmitterMenu`; title `menu.toms_storage.level_emitter` = "Level Emitter". Opened from the Level Emitter block (02-storage `level-emitter.md`). Sources: `SH` = `NeoForge/src/platform-shared/java/com/tom/storagemod/` on branch `26.2`; short refs are `LevelEmitterMenu.java:NN` (LM) and `LevelEmitterScreen.java:NN` (LS). (LM:19, LS:24-25) |
-| 2 | **Inputs** | Filter item (single-slot phantom), count text field (max 100 chars, integer ≥ 0), less-than toggle, 8 amount buttons (+1/+10/+100/+1000, −1/−10/−100/−1000; with SHIFT held they become the "sv" step −1/−10/−100/−1000 — i.e. SHIFT doubles the step magnitude per the `sv` table), player inventory (UNVERIFIED: the SHIFT steps are +1/+16/+32/+64 and −1/−16/−32/−64, not −1/−10/−100/−1000, LS:83-91). |
+| 2 | **Inputs** | Filter item (single-slot phantom), count text field (max 100 chars, integer ≥ 0), less-than toggle, 8 amount buttons (+1/+10/+100/+1000, −1/−10/−100/−1000; with SHIFT held they become +1/+16/+32/+64 and −1/−16/−32/−64, LS:83-91), player inventory. |
 | 3 | **Numbers** | Phantom filter slot at (43, 38) (LM:80). Text field at (leftPos+70, topPos+41), width 89 (LS:55), max length 100 (LS:56). Less-than toggle at (leftPos−18, topPos+5) (LS:72) with icons `icons/greater_than` (off) / `icons/less_than` (on) (LS:73-74). Amount buttons (text, 20 px tall) (LS:110): +1 at (leftPos+20, topPos+16) w20; +10 at +45 w25; +100 at +75 w30; +1000 at +110 w35 (LS:83-86); negative row at topPos+56: −1 (x20 w20), −10 (x45 w25), −100 (x75 w30), −1000 (x110 w35) (LS:88-91). Player slots: 3 rows at y=84, hotbar at y=142 (LM:82-90). Count default 1 (LM:24), min 0 (LS:118). |
 | 4 | **Behavior** | See Behavior detail. |
 | 5 | **Determinism** | None (no randomness). |
@@ -11,7 +11,7 @@
 | 7 | **Output** | Filter item and count/threshold written to the Level Emitter block entity; redstone output computed by the block (02-storage `level-emitter.md`). |
 | 8 | **Relationships** | `LevelEmitterBlockEntity` (02-storage `level-emitter.md`), `PhantomSlot` (03-terminal `item-filter-gui.md`), `AbstractFilteredMenu`/`AbstractFilteredScreen` (03-terminal `item-filter-gui.md`), `KeyUtil.hasShiftDown` (03-terminal `terminal-utils.md`), `ClientUtil.multilineTooltip` (06-client-ui), `ToggleButton` (06-client-ui). |
 | 9 | **NeoForge dependencies** | `DataSlots`/`IntDataSlots` with `onUpdate` hooks (NeoForge container data slots — no 1.7.10 counterpart), `EditBox`, `Button` with dynamic messages, `RenderPipelines` blit. |
-| 10 | **Bugs** | `TERM-10` (LS:83-91; the SHIFT "double step" table is asymmetric: the +1000 button's sv is −64, so SHIFT+1000 button decreases the count by 64 (UNVERIFIED: the +1000 button's sv is +64, LS:86), and the negative buttons' sv magnitudes (−1/−10/−100/−1000) are not the doubles of their v values (UNVERIFIED: the table is symmetric, negatives are −1/−16/−32/−64, LS:88-91). |
+| 10 | **Bugs** | `TERM-10` (LS:83-91; the SHIFT step table is symmetric: +1/+16/+32/+64 and −1/−16/−32/−64. The suspected asymmetry does not exist; the only oddity is that the SHIFT steps for the 100 and 1000 buttons (32, 64) are smaller than the plain steps, so SHIFT does not "double" the step). |
 
 ## Behavior detail
 

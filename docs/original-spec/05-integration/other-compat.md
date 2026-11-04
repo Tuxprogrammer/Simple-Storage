@@ -18,7 +18,7 @@
 
 ### The One Probe (`TheOneProbeHandler`, NeoForge only)
 
-1. **(both, init)** `StorageMod.enqueueIMC(InterModEnqueueEvent)` (NF/StorageMod.java:80-81; UNVERIFIED: the method exists only in the NeoForge `StorageMod`, a grep of Fabric/.../StorageMod.java finds no `theoneprobe` reference): when TOP is loaded, `InterModComms.sendTo("theoneprobe", "getTheOneProbe", ...)` with a supplier that reflectively instantiates `TheOneProbeHandler` (reflection keeps the compile-time dependency one-directional); on any `Throwable` it logs `"Failed to init TheOneProbeHandler"` and returns `null`.
+1. **(NF only, init)** `StorageMod.enqueueIMC(InterModEnqueueEvent)` (NF/StorageMod.java:80-81; the Fabric `StorageMod` has no `theoneprobe` reference): when TOP is loaded, `InterModComms.sendTo("theoneprobe", "getTheOneProbe", ...)` with a supplier that reflectively instantiates `TheOneProbeHandler` (reflection keeps the compile-time dependency one-directional); on any `Throwable` it logs `"Failed to init TheOneProbeHandler"` and returns `null`.
 2. **(server→TOP)** TOP invokes `apply(ITheOneProbe)`: stores the probe in the static `theOneProbeImp` and calls `theOneProbeImp.registerProvider(this)` (TheOneProbeHandler.java:38-41).
 3. **(client)** `addProbeInfo(mode, probeInfo, player, world, blockState, data)` — three independent checks on the probed block entity `te = world.getBlockEntity(data.getPos())`:
    1. (TheOneProbeHandler.java:47-52) If `te` is an `InventoryConnectorBlockEntity`: add `tooltip.toms_storage.connector_info.size` (free, all), a progress bar `(all − free) / all` with filled color `0xFF8e691d` / alternate `0xFF342f26` and hidden text, and `tooltip.toms_storage.connector_info.inv` (blocks). Note the progress is called with total `usage.all()`, which can be `0` (`INT-07`).
@@ -52,7 +52,7 @@
 ### `ServerEvents` (NeoForge compat handlers)
 
 1. `BreakBlockEvent` (priority `LOW`) (ServerEvents.java:19-25): if the broken block's entity `hasData(Platform.BLOCK_FILTER)`, the block-filter attachment's contents are dropped at the break position (the filter item is not lost when a configured block is broken).
-2. `LeftClickBlock` (priority `LOW`) (ServerEvents.java:27-35): if the player's main-hand item implements `ILeftClickListener` and `onLeftClick(player, hand)` (UNVERIFIED: the call is `onLeftClick(stack, pos, player)` and the handler returns early on the client side, ServerEvents.java:29, :32) returns true, the event is canceled (used by filter/configurator items — areas `02-storage`/`03-terminal`).
+2. `LeftClickBlock` (priority `LOW`) (ServerEvents.java:27-35): if the player's main-hand item implements `ILeftClickListener` and `onLeftClick(stack, pos, player)` (ServerEvents.java:31-32; the handler returns early on the client side, ServerEvents.java:29) returns true, the event is canceled (used by filter/configurator items — areas `02-storage`/`03-terminal`).
 
 ### Fabric ModMenu (`ModMenu`)
 
