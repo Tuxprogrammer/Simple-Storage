@@ -70,7 +70,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - dependencies pinned to the pack per [0002](design/0002-target-pack.md) and the [Recommended dependencies](new-spec/00-pack-integration/integration-opportunities.md#recommended-dependencies-q4) table: GT5-Unofficial 5.09.54.265, GTNHLib 0.11.54 (`api`), NEI 2.8.171-GTNH, and the optional compat set (AE2 rv3-beta-1095-GTNH, waila 1.19.34, InGame-Info-XML 2.9.8, BetterQuesting 3.8.92-GTNH, EnhancedLootBags 1.3.5, Chisel 2.17.34-GTNH) as `compileOnly`, guarded by `Loader.isModLoaded` in the `compat` package;
 - the package skeleton (`CONTRIBUTING.md` § Architecture);
 - JUnit wired into the build;
-- the static checks (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`);
+- the static checks (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`);
 - the network channel with validated packet base classes;
 - config with module flags per `config-safe-registration` and D16 (one `config/simplestoragenh.cfg`, GTNHLib `@Config`; the key catalog is the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table — `modules.*`, `euSink.*`, `network.*`, `wireless.*`, `behavior.*`);
 - the dev self-check (its tier-cap checks land in M05 per [0003](design/0003-gtnh-layer-and-tier-ceiling.md) § Consequences);
@@ -102,7 +102,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - [ ] The cable network walks and caches the graph per level per `cable-network.md`; a network built from cables, connectors, proxies and interfaces answers the same contents from every attached face, and `hasConnectedInventories` reflects actual connections (STOR-03).
 - [ ] The staggered-tick gates hold for every position hash, including `Integer.MIN_VALUE` (STOR-01, STOR-05 and STOR-06 with `doesNotReproduce` tests).
 - [ ] Every `STOR` bug of the ported logic (STOR-01 to STOR-10) and CORE-05/CORE-06 have their `doesNotReproduce<ID>_…` test, and the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md) (provenance header, Javadoc, `Avoids:` lines).
-- [ ] The static checks pass on the new code (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world.
+- [ ] The static checks pass on the new code (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`); the dev self-check passes on a fresh world.
 - [ ] `modules.storage` and `modules.network` gate behavior only, never registration: with each flag off the blocks still register and the behavior is inert, tested.
 - [ ] `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 - [ ] Every Proposed row of [new-spec 02-storage](new-spec/02-storage/index.md) (P02-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
@@ -123,7 +123,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - [ ] Every `TERM` bug of the ported logic (TERM-01 to TERM-12) and CORE-07/CORE-10 have their `doesNotReproduce<ID>_…` test; CORE-08 (the polymorphic widget) is recorded as "not registered — polymorph is not in the pack"; the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md).
 - [ ] The widget kit ships with every narrator key defined (`LangKeysTest`): the UI-01 to UI-07 bugs are fixed where the widget lands here, with tests where one can be written (the EnumCycleButton NPE, the scrollbar grab rect, the popup click rects, the missing and dynamically built keys).
 - [ ] The crafting terminal's auto-fill reserves item accounting per cell (TERM-05), and the `IAutoFillTerminal` contract answers `updateSearch`, `sendMessage`, `getStoredItems` and `isSmartSearch` per the 05-integration shared viewer contract.
-- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world; `modules.terminal` gates behavior only, never registration.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`); the dev self-check passes on a fresh world; `modules.terminal` gates behavior only, never registration.
 - [ ] `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 - [ ] Every Proposed row of [new-spec 03-terminal](new-spec/03-terminal/index.md) (P03-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
 - [ ] Every Proposed row of [new-spec 06-client-ui](new-spec/06-client-ui/index.md) (P06-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
@@ -143,7 +143,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - [ ] The advanced item binds to exactly one terminal (sneak + right-click) and opens that exact terminal from anywhere, including another dimension, via the `B` keybind; when the bound terminal is invalid or its chunk is unloaded, the use is consumed consistently on both sides (WIRE-03).
 - [ ] Beacon levels compute per `BeaconLevelCalc` (8-block radius, 40-tick refresh) with a per-position phase that holds for every hash including `Integer.MIN_VALUE` (WIRE-04/TERM-04), granting same-dimension access at `wireless.beaconLvl` and cross-dimension at `wireless.beaconLvlDim`, with −1 disabling each rule.
 - [ ] Every `WIRE` bug of the ported logic (WIRE-01 to WIRE-05) has its `doesNotReproduce<ID>_…` test, and the ported files pass the [ported-code gate](design/0001-port-policy-and-licensing.md); `bound_pos` keeps a stable NBT key (WIRE-05) so old saves load.
-- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); no client-only state on the server; the dev self-check passes on a fresh world.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`); no client-only state on the server; the dev self-check passes on a fresh world.
 - [ ] `modules.wireless` gates behavior only, never registration; `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 - [ ] Every Proposed row of [new-spec 04-wireless](new-spec/04-wireless/index.md) (P04-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
 
@@ -165,7 +165,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - [ ] The config is final per D16: one `config/simplestoragenh.cfg`, every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table registered with its default, entries labeled (CORE-01) and no zero defaults before per-world sync (CORE-09); module flags gate behavior only, never registration, with `modules.integration.appeng` off at alpha (D14).
 - [ ] The crafting-table rows use GT tools in the grid and the tools are not consumed (recipes-and-materials.md, checked in a real-pack run).
 - [ ] Every tier-gated recipe is visible in NEI at its tier in the real pack (GT's own recipe handlers render the assembler recipes); the AE2 compat surface, if built, sits behind `Loader.isModLoaded("appeng")` in the `compat` package and off by default.
-- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); `./gradlew spotlessApply build` and the dev self-check are clean on a fresh world.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`); `./gradlew spotlessApply build` and the dev self-check are clean on a fresh world.
 
 ## M06 · Pack content and compatibility
 
@@ -184,7 +184,7 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 - [ ] The jar-shipped quest line loads via the BQ importer in the real pack: the three tier-band lines of PACK-CHANGES.md exist with namespaced IDs `simplestoragenh.*` (risk R3: the pack may instead override from its quest repo per D12 — either way the line content matches PACK-CHANGES.md).
 - [ ] The EnhancedLootBags placement rows (ULV to HV) and the TooMuchLoot note from PACK-CHANGES.md are delivered or recorded with a decision; the config table is complete, and every compat has its module flag (`.appeng` registered by M01, its behavior built in M05), gating behavior only, never registration.
 - [ ] Every Proposed row of [new-spec 05-integration](new-spec/05-integration/index.md) (P05-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
-- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`); the dev self-check passes on a fresh world; `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
+- [ ] The static checks pass (`ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest`); the dev self-check passes on a fresh world; `./gradlew spotlessApply build` and `./gradlew runServer` are clean with the pack's core dependencies, no errors from this mod.
 
 ## Alpha gate
 
