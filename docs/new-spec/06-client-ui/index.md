@@ -5,4 +5,4 @@ Status: *draft* (new-spec pass, 2026-11-03). Compares each sheet in [original-sp
 | File | What it holds |
 |---|---|
 | [deviations.md](deviations.md) | Sheets, how to read the table, the deviation table (6 rows) |
-| [proposals.md](proposals.md) | Contradictions with other docs; proposed, not decided (8 rows) |
+| [proposals.md](proposals.md) | Contradictions with other docs; accepted proposals (8 rows) |

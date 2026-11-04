@@ -6,9 +6,9 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 
 | Status | IDs |
 |---|---|
-| cannot occur | 4 |
+| cannot occur | 10 |
 | not a bug | 1 |
-| MISSING | 46 |
+| MISSING | 40 |
 
 - **tested**: a `doesNotReproduce` test proves the bug does not come back.
 - **MISSING**: neither a test nor a reason; fix this before calling the area done.
@@ -46,23 +46,23 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | UI-05 | — | gameplay | MISSING |  |
 | CORE-02 | — | performance | MISSING |  |
 | STOR-09 | — | performance | MISSING |  |
-| TERM-09 | — | performance | MISSING |  |
+| TERM-09 | — | performance | cannot occur | The ComparatorType TYPE sort cache is not ported: the TYPE sort mode is dropped by decision (D27); ordinal 5 stays reserved and inert |
 | INT-06 | — | performance | MISSING |  |
 | INT-05 | — | visual | MISSING |  |
 | UI-06 | — | visual | MISSING |  |
-| CORE-01 | — | cosmetic | MISSING |  |
+| CORE-01 | — | cosmetic | cannot occur | The importantInfo config key is not ported by decision (D22); upstream code stays at 26.2 |
 | CORE-07 | UI-03 | cosmetic | MISSING |  |
 | CORE-10 | — | cosmetic | MISSING |  |
 | STOR-08 | — | cosmetic | MISSING |  |
 | STOR-10 | — | cosmetic | MISSING |  |
 | TERM-03 | — | cosmetic | MISSING |  |
 | TERM-06 | — | cosmetic | MISSING |  |
-| TERM-07 | — | cosmetic | MISSING |  |
+| TERM-07 | — | cosmetic | cannot occur | Its narrator text is part of the narrator layer, not ported by decision (D21); upstream code stays at 26.2 |
 | TERM-08 | — | cosmetic | MISSING |  |
 | TERM-10 | — | cosmetic | MISSING |  |
 | WIRE-02 | — | cosmetic | MISSING |  |
 | WIRE-05 | — | cosmetic | MISSING |  |
-| UI-01 | — | cosmetic | MISSING |  |
-| UI-02 | — | cosmetic | MISSING |  |
-| UI-07 | — | cosmetic | MISSING |  |
+| UI-01 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
+| UI-02 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
+| UI-07 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
 | INT-04 | — | not bugs | not a bug | Checked and not a bug ([BUGS.md](BUGS.md#not-bugs)); no test needed |

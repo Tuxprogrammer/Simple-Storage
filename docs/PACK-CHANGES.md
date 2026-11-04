@@ -15,7 +15,7 @@ Suggested quest lines, one per tier band of the tier map:
 | Quest line (jar-shipped) | Quests (items, in tier order) | Why this order |
 |---|---|---|
 | "Storing Things Simply" (ULV→LV) | 1. craft Open Crate → 2. craft Inventory Trim → 3. craft Filing Cabinet → 4. craft Storage Terminal → 5. craft Item Filter + Tag Item Filter → 6. craft Inventory Configurator → 7. (optional) craft Paint Kit | The LV-or-below band: first ingots → a terminal on a plain chest → filters. Teach the cabinet's single-item-type lock (quest text) before the network. |
-| "The Inventory Network" (MV) | 1. Inventory Cable → 2. Framed Inventory Cable → 3. Inventory Cable Connector (+Framed) → 4. Inventory Connector → 5. Inventory Proxy → 6. Inventory Interface → 7. Basic Inventory Hopper → 8. Wireless Terminal | The MV band: wire a two-chest network first (quest: "connect two inventories and open them from one terminal"), then the hopper in/out and wireless reach. |
+| "The Inventory Network" (LV, plus one MV quest) | 1. Inventory Cable → 2. Framed Inventory Cable → 3. Inventory Cable Connector (+Framed) → 4. Inventory Connector → 5. Inventory Proxy → 6. Inventory Interface → 7. Basic Inventory Hopper → 8. Wireless Terminal (the one MV quest) | The LV band (D18): wire a two-chest network first (quest: "connect two inventories and open them from one terminal"), then the hopper in/out; the basic Wireless Terminal is the single MV step, a mid-game reward for the MV circuit. |
 | "Advanced Storage" (HV) | 1. Crafting Terminal → 2. Advanced Wireless Terminal → 3. Level Emitter → 4. Polymorphic Item Filter | The HV top of the band: crafting terminal + auto-fill, bound remote access, redstone automation, component-matching filters. |
 
 Quest mechanics notes: use BQ's standard item-quest type (no jar-quest needed for item crafting); the "connect two inventories" quest needs a BQ quest trigger the pack already supports (S3: BQ 3.8.92-GTNH quest JSON under `config/betterquesting/DefaultQuests/`); keep quest IDs namespaced `simplestoragenh.*` so pack overrides are a drop-in.
@@ -24,7 +24,7 @@ Quest mechanics notes: use BQ's standard item-quest type (no jar-quest needed fo
 
 | Source (S3-verified) | Suggested content | Why |
 |---|---|---|
-| EnhancedLootBags 1.3.5 (ULV–EV tiered bags) | ULV bags: Open Crate, Inventory Trim. LV bags: Filing Cabinet, Item Filter. MV bags: Inventory Cable, Inventory Connector, Storage Terminal. HV bags: Crafting Terminal, Level Emitter. | The bag tiers line up 1:1 with our tier band; a player pulling an MV bag finds a ready-to-wire network part (inferred placement, pack tunes the odds). |
+| EnhancedLootBags 1.3.5 (ULV–EV tiered bags) | ULV bags: Open Crate, Inventory Trim. LV bags: Filing Cabinet, Item Filter, Storage Terminal, Inventory Cable, Inventory Connector, Inventory Proxy, Inventory Interface, Basic Inventory Hopper. MV bags: Wireless Terminal. HV bags: Crafting Terminal, Level Emitter. | The bag tiers line up 1:1 with our tier band; a player pulling an LV bag finds a ready-to-wire network part (inferred placement, pack tunes the odds). |
 | LootGames 2.2.14 (seed-determined dungeons) | Filing Cabinet and Open Crate in dungeon chests; Inventory Connector + cable in dungeon "workshop" rooms. | Dungeon storage should be the early tier, not the network (inferred). |
 | TooMuchLoot 4.3.0-GTNH (16 vanilla loot categories from XML at server start) | **No default change from this mod.** Server owners who want chests to contain storage can add `filing_cabinet` to a dungeon category in TML's XML — documented here, not shipped by the mod. | Keeps the mod jar free of vanilla loot edits (house rule: pack changes live in the pack). |
 
@@ -64,6 +64,7 @@ Pack-side notes: the pack ships pre-configured `config/` (195 files, S3) — no 
 | InGame-Info-XML 2.9.8 | optional per-block info pages (cabinet, terminal, emitter) as pack-side XML | richer tooltips than Waila lines; nice-to-have |
 | GuideNH 1.3.55 | optional mod guide page | discoverability in the in-game guide |
 | NEI 2.8.171-GTNH | none required (plugin auto-discovered, [recipe-viewer.md](new-spec/00-pack-integration/recipe-viewer.md)); the pack's `config/NEI/handlerordering.csv` *may* order our handlers relative to GT's `gtneioreplugin` | avoids recipe-panel overlap only if the pack cares about ordering |
+| Key bindings | none shipped: the advanced wireless terminal's open key ships unbound (D28), so no pack key file is needed | avoids silent clashes |
 | BetterQuesting | none if the jar-shipped line is accepted (D12); otherwise the three quest lines above move to the pack's quest repo | delivery choice |
 
 ## Pack-wide issues found

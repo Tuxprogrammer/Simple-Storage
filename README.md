@@ -19,7 +19,7 @@ Store items in blocks, reach them from a terminal across the whole network — b
 
 ## Requirements
 
-- **GT New Horizons 2.9.0**, server and client. The pack provides GTNHLib, the one hard dependency.
+- **GT New Horizons 2.9.0**, server and client. The pack provides GTNHLib and GT5-Unofficial, both hard dependencies (`required-after`).
 
 ## Installing
 

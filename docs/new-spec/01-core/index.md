@@ -6,4 +6,4 @@ Status: *draft* (new-spec pass, 2026-11-03). Compares each sheet in [original-sp
 |---|---|
 | [config.md](config.md) | Per-key config mapping |
 | [deviations.md](deviations.md) | Sheets, how to read the table, the deviation table (12 rows) |
-| [proposals.md](proposals.md) | Contradictions with other docs; proposed, not decided (7 rows) |
+| [proposals.md](proposals.md) | Contradictions with other docs; accepted proposals (7 rows) |
