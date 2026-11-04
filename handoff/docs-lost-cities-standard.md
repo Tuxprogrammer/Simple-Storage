@@ -25,12 +25,12 @@ qwen creates new documents; Sonnet reviews and edits; Claude decides and integra
 ## State after 7919a62 and the M01 start
 - The 41 UNVERIFIED flags are corrected; the bug register is re-judged (52 IDs: 50 suspected, TERM-10 and INT-04 not bugs, TERM-13 new). Coverage 40 untested / 10 cannot occur / 2 not a bug.
 - M01 landed in 2870e6f plus a follow-up: pinned dependencies, GTNHLib config (modules, network, wireless, behavior, euSink), ModuleState, packet base classes (adapted from the sibling Lost Cities repo), the five static checks with failing fixtures, dev self-check, `.changelogs/unreleased.md`. `./gradlew spotlessApply build` passes locally.
-- M01 boxes ticked: build/tests/static checks, dependencies. Still open: `runServer` boot (needs the Minecraft EULA accepted by the owner; the tracked `run/` has no eula.txt), `runClient` main menu, self-check on a fresh world, `required-after` proof on a server without GT, config documentation test, packet-base-class tests for position and authorization rules, P01 rows settled in the shipped deviation table.
-- `tools/remote/remote.sh` is not configured for this repo (`.env` has only the Lost Cities host keys); builds ran locally on JDK 21.
+- M01 exit gate complete (all boxes ticked). Evidence, all on the build host (ai-server, never the laptop): `build` green in 41 s; `runServer` booted ("Done"), mod loaded, config file generated, no mod errors, clean stop; `runClient` reached the main menu under Xvnc (Xvfb fails: LWJGL 2 RandR); the same server without GT fails with "The mod simplestoragenh requires mods [gregtech]". The build host uses an rsync copy in `~/simple-storage-build` (remote.sh not configured; `.env` has only the Lost Cities keys).
+- qwen: root cause of the failed M01 jobs was `--bare` giving workers only Edit and Read. Fixed in the plugin (see `~/.claude/local-plugins/qwen-agents/NOTES.md`). Owner rule: never patch a failed qwen run by hand; diagnose from `transcript.jsonl` and rerun.
 
 ## Next 3 steps
-1. Owner accepts the EULA (or asks me to), then run `./gradlew runServer` and `runClient`; tick the boxes.
-2. Add tests: config key table against PACK-CHANGES, packet position/authorization rules, `required-after` check.
-3. Settle the P01 rows against what shipped, then start M02 (Storage).
+1. Configure `tools/remote/remote.sh` for the build host (replace the rsync copy), commit the Xvnc client-gate script as a tool.
+2. Start M02 (Storage) with qwen briefs per the recipe in NOTES.md.
+3. Record M01 cost (calls, agents) beside the exit-gate evidence per mod-port-budget.
 
 Division of labor (unchanged): qwen creates new documents and boilerplate (one file per job, small plan; two of three M01 jobs ran out of turns and I finished them), Sonnet reviews and edits, Claude decides and integrates.

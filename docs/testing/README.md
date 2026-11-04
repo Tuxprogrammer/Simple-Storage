@@ -1,6 +1,6 @@
 # Testing
 
-How to run each test layer of [CONTRIBUTING § Testing](../../CONTRIBUTING.md#testing). The repo has no Java code yet; every test class and command that does not exist yet is marked **planned (M0x)** with its milestone. The bug-coverage generator exists today. Testing guidance lives in the `testing-gtnh-mods` skill; the rules are below.
+How to run each test layer of [CONTRIBUTING § Testing](../../CONTRIBUTING.md#testing). Every test class and command that does not exist yet is marked **planned (M0x)** with its milestone. The bug-coverage generator exists today. Testing guidance lives in the `testing-gtnh-mods` skill; the rules are below.
 
 ## Verification tiers
 
@@ -15,7 +15,7 @@ Lanes run T1 and T2 only; the integrator runs T3 once per batch.
 
 ## 1. Unit tests
 
-- **Framework:** JUnit 5 in `src/test/java`, mirroring the main package structure; run with `./gradlew test` — **planned (M01)**, the registration and config it covers land in M01 (Core).
+- **Framework:** JUnit 5 in `src/test/java`, mirroring the main package structure; run with `./gradlew test` — **exists (M01)**, the registration and config it covers land in M01 (Core).
 - **What they cover:**
   - every formula and decision in `filter`, `sort` and `inventory`: filter matching, sort and arrangement, slot and stack operations;
   - **inventory round-trips:** storing and retrieving a stack preserves it exactly, NBT included;
@@ -26,7 +26,7 @@ Lanes run T1 and T2 only; the integrator runs T3 once per batch.
 
 ## 2. Static checks
 
-Tests that read the compiled classes and resources and fail the build — **planned (M01)**:
+Tests that read the compiled classes and resources and fail the build — **exists (M01)**:
 
 | Check | Proves |
 |---|---|
@@ -45,7 +45,7 @@ Each static check is proven by a fixture that makes it fail, so none can pass be
 
 ## 4. In-world scenarios
 
-`/simplestoragenh test <name|all|list>` (op only; dev only, or `-Dsimplestoragenh.testHooks=true` in a release jar) — **planned (M01)**: runs registered scenarios on the server and reports `PASS`/`FAIL` lines and a `Scenarios: N passed, M failed` summary to the log and the sender's chat. Storage scenarios exercise store/retrieve through a terminal, filter behavior, sort arrangements and connector routing between two storages. Each feature adds its scenario, listed in `docs/testing/`.
+`/simplestoragenh test <name|all|list>` (op only; dev only, or `-Dsimplestoragenh.testHooks=true` in a release jar) — **exists (M01)**: runs registered scenarios on the server and reports `PASS`/`FAIL` lines and a `Scenarios: N passed, M failed` summary to the log and the sender's chat. Storage scenarios exercise store/retrieve through a terminal, filter behavior, sort arrangements and connector routing between two storages. Each feature adds its scenario, listed in `docs/testing/`.
 
 - **Multiplayer:** for anything synced, two clients on a dedicated server: the second client sees the same inventory contents, GUI state matches, the server wins on conflict, and nothing desyncs after a relog.
 
@@ -72,10 +72,10 @@ For every ID in `BUGS.md` it lists the guarding test, or the reason recorded in 
 |---|---|
 | `tools/bugs-coverage/generate.py` and `BUGS-COVERAGE.md` generation | exists today |
 | `docs/original-spec/bug-reasons.json` convention | exists today (status records) |
-| Unit tests, `./gradlew test` | planned (M01) |
-| `ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest` | planned (M01) |
-| `./gradlew runServer` smoke boot, dev self-check | planned (M01); self-check tier-cap checks planned (M05) |
-| `/simplestoragenh test` scenarios | planned (M01) |
+| Unit tests, `./gradlew test` | exists (M01) |
+| `ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest` | exists (M01) |
+| `./gradlew runServer` smoke boot, dev self-check | exists (M01); self-check tier-cap checks planned (M05) |
+| `/simplestoragenh test` scenarios | exists (M01) |
 | Real-pack server and client runs, screenshots | planned (alpha/beta gates, T4) |
 
 ## Running and waiting on long jobs

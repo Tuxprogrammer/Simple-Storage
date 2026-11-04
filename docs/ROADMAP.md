@@ -79,14 +79,14 @@ Status: **S1 to S4 are done** (2026-11-03). S1 delivered the six original-spec a
 
 **Exit gate:**
 - [x] `./gradlew spotlessApply build` passes, with at least one real unit test and every static check running (each proven by a fixture that makes it fail).
-- [ ] `./gradlew runServer` boots with the pack's core dependencies and no errors from this mod.
-- [ ] `./gradlew runClient` reaches the main menu.
+- [x] `./gradlew runServer` boots with the pack's core dependencies and no errors from this mod.
+- [x] `./gradlew runClient` reaches the main menu.
 - [x] `dependencies.gradle` carries every coordinate of the Recommended dependencies table at the pack's pinned version and the build resolves them (GT5-Unofficial 5.09.54.265, GTNHLib 0.11.54, NEI 2.8.171-GTNH, AE2 rv3-beta-1095-GTNH, waila 1.19.34, InGame-Info-XML 2.9.8, BetterQuesting 3.8.92-GTNH, EnhancedLootBags 1.3.5, Chisel 2.17.34-GTNH).
-- [ ] The dev self-check passes on a fresh world.
-- [ ] GT5-Unofficial and GTNHLib are declared `required-after`: a server without GT fails at load with a clear message (D17).
-- [ ] Module flags load, save and are documented: every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table is registered with its default, and flags gate behavior only, never registration.
-- [ ] Packet base classes reject out-of-range, wrong-position and unauthorized requests, with tests (CORE-02: the client→server `DataPacket` is bounded and field-whitelisted).
-- [ ] Every Proposed row of [new-spec 01-core](new-spec/01-core/index.md) (P01-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
+- [x] The dev self-check passes on a fresh world.
+- [x] GT5-Unofficial and GTNHLib are declared `required-after`: a server without GT fails at load with a clear message (D17).
+- [x] Module flags load, save and are documented: every key of the [PACK-CHANGES.md § Configs](PACK-CHANGES.md) table is registered with its default, and flags gate behavior only, never registration.
+- [x] Packet base classes reject out-of-range, wrong-position and unauthorized requests, with tests (CORE-02: the client→server `DataPacket` is bounded and field-whitelisted).
+- [x] Every Proposed row of [new-spec 01-core](new-spec/01-core/index.md) (P01-*) is settled — built as recommended, or changed with a decision-log row — and the area's deviation table matches what shipped.
 
 ## M02 · Storage
 
