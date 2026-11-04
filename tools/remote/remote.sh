@@ -7,6 +7,8 @@
 #                                                      sync, then build (default: spotlessCheck build)
 #   remote.sh devserver <slot> [<rev>] [-- <slot-devserver args...>]
 #                                                      sync, then runServer to "Done", then stop
+#   remote.sh devclient <slot> [<rev>] [-- <args>]
+#                                                      syncs, runs the dev client under a virtual display until the main menu appears
 #   remote.sh realpack  [--slot <slot>] [-- <run.sh args...>]
 #                                                      boot the real-pack server (with the slot's jar)
 #   remote.sh client    [-- <client-run.sh args...>]
@@ -130,6 +132,13 @@ case "$cmd" in
         do_sync "$SLOT" "$REV" "$BUNDLE"
         rc=0; remote "$ROOT/bin/slot-devserver.sh" "$SLOT" "${REST[@]}" | tee "$out" || rc=$?
         fetch_from_output "$out" log "devserver" || true
+        exit "$rc"
+        ;;
+    devclient)
+        parse_slot_rev "$@"
+        do_sync "$SLOT" "$REV" "$BUNDLE"
+        rc=0; remote "$ROOT/bin/slot-devclient.sh" "$SLOT" "${REST[@]}" | tee "$out" || rc=$?
+        fetch_from_output "$out" log "devclient" || true
         exit "$rc"
         ;;
     realpack)
