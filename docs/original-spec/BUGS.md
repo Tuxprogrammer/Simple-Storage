@@ -3,7 +3,7 @@
 <!-- Bugs in UPSTREAM Tom's Simple Storage 2.11.3 at 95bb61d, listed so this backport does not reproduce them.
      Suspected, not confirmed at runtime; no fixes designed here. Merged from every area index. -->
 
-S1 landed 2026-11-03: 54 rows reported, 51 unique IDs after cross-area dedup: 50 suspected bugs plus INT-04, checked and found not a bug (3 pairs reported by two areas).
+S1 landed 2026-11-03: 54 rows reported, 51 unique IDs after cross-area dedup (3 pairs reported by two areas). The citation pass of 2026-11-03 checked claims against the code: TERM-10 moved to Not bugs, TERM-11 and TERM-12 were re-described, and TERM-13 was added, so the register now holds 50 suspected bugs plus INT-04 and TERM-10, checked and found not bugs (52 IDs).
 
 The ID is the first area's ID; **Also** lists the same bug as reported by other areas. Severity is one of crash, gameplay, performance, visual or cosmetic.
 
@@ -12,7 +12,7 @@ The ID is the first area's ID; **Also** lists the same bug as reported by other 
 | ID | Also | Area(s) | Title | Location |
 |---|---|---|---|---|
 | TERM-02 | — | `03-terminal` | Unbounded enum index on stale sort NBT | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/AbstractStorageTerminalScreen.java:138` |
-| TERM-12 | — | `03-terminal` | MultiChangeTracker stale array after same-tick network growth | `NeoForge/src/platform-shared/java/com/tom/storagemod/inventory/MultiInventoryAccess.java:194-223` |
+| TERM-12 | — | `03-terminal` | `streamWrappedStacks` indexes `connected` by a stale `items` length after a same-tick network change | `NeoForge/src/platform-shared/java/com/tom/storagemod/inventory/MultiInventoryAccess.java:194-229` |
 | INT-02 | — | `05-integration` | Fabric declares an `emi` entrypoint whose class is not compiled | `Fabric/src/main/resources/fabric.mod.json` (entrypoints), `Fabric/build.gradle:127` |
 | INT-07 | — | `05-integration` | TOP progress with zero total | `NeoForge/src/main/java/com/tom/storagemod/top/TheOneProbeHandler.java:50` |
 | UI-04 | — | `06-client-ui` | EnumCycleButton NPE if pressed before first state set | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/widget/EnumCycleButton.java:45` |
@@ -37,7 +37,8 @@ The ID is the first area's ID; **Also** lists the same bug as reported by other 
 | TERM-01 | — | `03-terminal` | Mouse-wheel scroll step hardcodes 5 rows | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/AbstractStorageTerminalScreen.java:688` |
 | TERM-04 | WIRE-04 | `03-terminal`, `04-wireless` | Beacon scan gate unsatisfiable for one position hash | `NeoForge/src/platform-shared/java/com/tom/storagemod/block/entity/StorageTerminalBlockEntity.java:148` |
 | TERM-05 | — | `03-terminal` | Auto-fill item accounting not reserved per cell | `NeoForge/src/platform-shared/java/com/tom/storagemod/menu/TerminalCraftingFiller.java:41-67` |
-| TERM-11 | — | `03-terminal` | Item-filter shift-click fill order | `NeoForge/src/platform-shared/java/com/tom/storagemod/menu/ItemFilterMenu.java:95-102` |
+| TERM-11 | — | `03-terminal` | Item-filter shift-click duplicates an item that sits after the first empty slot | `NeoForge/src/platform-shared/java/com/tom/storagemod/menu/ItemFilterMenu.java:95-101` |
+| TERM-13 | — | `03-terminal` | Filing cabinet `mayPlace` scans only the visible 45-slot window | `NeoForge/src/platform-shared/java/com/tom/storagemod/menu/FilingCabinetMenu.java:50-58` |
 | WIRE-01 | — | `04-wireless` | Basic wireless item force-returns SUCCESS_SERVER | `NeoForge/src/platform-shared/java/com/tom/storagemod/item/WirelessTerminalItem.java:42` |
 | WIRE-03 | — | `04-wireless` | Invalid/unloaded bound terminal not consumed | `NeoForge/src/platform-shared/java/com/tom/storagemod/item/AdvWirelessTerminalItem.java:77` |
 | INT-01 | — | `05-integration` | EMI plugin classes never compiled on either loader | `NeoForge/build.gradle:134`, `Fabric/build.gradle:127` |
@@ -75,7 +76,6 @@ The ID is the first area's ID; **Also** lists the same bug as reported by other 
 | TERM-06 | — | `03-terminal` | Filing cabinet wheel scroll divides by (rows−5) | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/FilingCabinetScreen.java:93-94` |
 | TERM-07 | — | `03-terminal` | Keep-last button narrator reuses "skip" | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/InventoryConfiguratorScreen.java:70-71` |
 | TERM-08 | — | `03-terminal` | Typed channel name lookup is ambiguous | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/InventoryLinkScreen.java:130-137` |
-| TERM-10 | — | `03-terminal` | Level emitter SHIFT-step table is asymmetric | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/LevelEmitterScreen.java:83-91` |
 | WIRE-02 | — | `04-wireless` | Typo in advanced terminal tooltip | `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json:82` |
 | WIRE-05 | — | `04-wireless` | `bound_pos` codec field name inconsistent | `NeoForge/src/platform-shared/java/com/tom/storagemod/components/WorldPos.java:18` |
 | UI-01 | — | `06-client-ui` | 11 narrator keys referenced in code are missing from all lang files | `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json` (missing `narrator.toms_storage.*` keys) |
@@ -89,6 +89,7 @@ The ID is the first area's ID; **Also** lists the same bug as reported by other 
 | ID | Also | Area(s) | Title | Location |
 |---|---|---|---|---|
 | INT-04 | — | `05-integration` | EMI inventory skips slot 0 — checked: slot 0 is the crafting result slot in `CraftingTerminalMenu`, so excluding it is correct | `NeoForge/src/platform-shared/java/com/tom/storagemod/emi/EmiTransferHandler.java:48` |
+| TERM-10 | — | `03-terminal` | Level emitter SHIFT-step table — checked: symmetric (±1/16/32/64 against ±1/10/100/1000); the SHIFT steps are a deliberate fine-adjust set, so not a bug | `NeoForge/src/platform-shared/java/com/tom/storagemod/screen/LevelEmitterScreen.java:83-91` |
 
 <!-- In this mod: a regression test per reproducible bug, named doesNotReproduce<ID>_<what>,
      and the change's "Inherited bugs avoided" list names the IDs. Ported files list them on their Avoids: line. -->

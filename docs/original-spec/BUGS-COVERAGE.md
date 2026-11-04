@@ -7,7 +7,7 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | Status | IDs |
 |---|---|
 | cannot occur | 10 |
-| not a bug | 1 |
+| not a bug | 2 |
 | MISSING | 40 |
 
 - **tested**: a `doesNotReproduce` test proves the bug does not come back.
@@ -37,6 +37,7 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | TERM-04 | WIRE-04 | gameplay | MISSING |  |
 | TERM-05 | — | gameplay | MISSING |  |
 | TERM-11 | — | gameplay | MISSING |  |
+| TERM-13 | — | gameplay | MISSING |  |
 | WIRE-01 | — | gameplay | MISSING |  |
 | WIRE-03 | — | gameplay | MISSING |  |
 | INT-01 | — | gameplay | cannot occur | Bug is in upstream's Gradle build comment-out of the EMI plugin; this mod's build is the GTNH buildscript and the EMI plugin is not ported by decision (EMI is not in GTNH 2.9.0; D11, recipe-viewer.md). Upstream code stays at 26.2 for reference |
@@ -59,10 +60,10 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | TERM-06 | — | cosmetic | MISSING |  |
 | TERM-07 | — | cosmetic | cannot occur | Its narrator text is part of the narrator layer, not ported by decision (D21); upstream code stays at 26.2 |
 | TERM-08 | — | cosmetic | MISSING |  |
-| TERM-10 | — | cosmetic | MISSING |  |
 | WIRE-02 | — | cosmetic | MISSING |  |
 | WIRE-05 | — | cosmetic | MISSING |  |
 | UI-01 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
 | UI-02 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
 | UI-07 | — | cosmetic | cannot occur | Narrator layer is not ported by decision (D21); upstream code stays at 26.2 |
 | INT-04 | — | not bugs | not a bug | Checked and not a bug ([BUGS.md](BUGS.md#not-bugs)); no test needed |
+| TERM-10 | — | not bugs | not a bug | Checked and not a bug ([BUGS.md](BUGS.md#not-bugs)); no test needed |
