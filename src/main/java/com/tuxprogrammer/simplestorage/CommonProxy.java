@@ -2,6 +2,8 @@ package com.tuxprogrammer.simplestorage;
 
 import com.tuxprogrammer.simplestorage.config.SimpleStorageConfig;
 import com.tuxprogrammer.simplestorage.core.DevSelfCheck;
+import com.tuxprogrammer.simplestorage.core.InGameHooks;
+import com.tuxprogrammer.simplestorage.core.Registration;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -14,6 +16,7 @@ public class CommonProxy {
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
         SimpleStorageConfig.register();
+        Registration.registerAll();
         SimpleStorage.LOG.info("Simple Storage version " + Tags.VERSION);
     }
 
@@ -26,5 +29,7 @@ public class CommonProxy {
     }
 
     // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {}
+    public void serverStarting(FMLServerStartingEvent event) {
+        InGameHooks.registerCommand(event);
+    }
 }
