@@ -19,7 +19,7 @@ export XKB_DIR=/usr/share/X11/xkb
 export REMOTE_JDK8="$BR/shared/jdk8" REMOTE_JDK17="$BR/shared/jdk17" REMOTE_JDK21="$BR/shared/jdk21"
 # Some 1.7.10 mods and tools look under ${user.home}/.gradle (MCP mappings) or write ${user.home}/.java;
 # point user.home at a shim whose .gradle links to $GRADLE_USER_HOME.
-export JAVA_TOOL_OPTIONS="-Duser.home=$BR/shared/home"
+export JAVA_TOOL_OPTIONS="-Duser.home=$BR/shared/home ${JAVA_EXTRA_OPTIONS:-}"
 
 # remote_xvfb N: start Xvfb on :N (inside REMOTE_DISPLAY_MIN..MAX), pid in $BR/logs/xvfb-N.pid.
 remote_xvfb() {

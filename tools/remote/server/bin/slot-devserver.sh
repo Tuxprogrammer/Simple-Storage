@@ -28,7 +28,7 @@ rm -f "$done_f" "$fifo"; mkfifo "$fifo"
 exec 3<>"$fifo"
 T0=$(date +%s) STATUS=error BOOT_S="" RC=""
 if [ "$AUTOTEST" = 1 ]; then
-    export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:-} -Dsimplestoragenh.autotest=true -Dsimplestoragenh.testHooks=true"
+    export JAVA_EXTRA_OPTIONS="${JAVA_EXTRA_OPTIONS:-} -Dsimplestoragenh.autotest=true -Dsimplestoragenh.testHooks=true"
 fi
 REMOTE_STDIN="$fifo" REMOTE_LOG="$log" REMOTE_BUILD_TIMEOUT=$(( TIMEOUT + 3600 )) "$BR/bin/slot-build.sh" "$slot" runServer > /dev/null 2>&1 &
 bpid=$!
@@ -69,9 +69,10 @@ if [ "$AUTOTEST" = 1 ]; then
         sleep 2
     done
     SCENARIOS="$(grep -aoE 'Scenarios: [0-9]+ passed, [0-9]+ failed' "$log" 2>/dev/null | tail -1)"
+    PASSED="$(printf '%s' "$SCENARIOS" | sed -n 's/^Scenarios: \([0-9][0-9]*\) passed.*/\1/p')"
     if [ -z "$SCENARIOS" ]; then
-        STATUS=scenarios-missing
-    elif echo "$SCENARIOS" | grep -qE ' 0 failed$' && [ "${SCENARIOS%% passed*}" -gt 0 ]; then
+        SCENARIOS="(none)"; STATUS=scenarios-missing
+    elif echo "$SCENARIOS" | grep -qE ' 0 failed$' && [ "${PASSED:-0}" -gt 0 ]; then
         STATUS=ok
     else
         STATUS=scenarios-failed
@@ -80,6 +81,6 @@ if [ "$AUTOTEST" = 1 ]; then
     grep -F '[scenario] FAIL' "$log" 2>/dev/null | tail -20
 fi
 printf 'stop\n' >&3
-STATUS=stop-timeout
+[ "$STATUS" = ok ] || STATUS=stop-timeout
 for _ in $(seq 1 180); do alive || break; sleep 1; done
 if ! alive; then wait "$bpid"; RC=$?; [ "$RC" = 0 ] && STATUS=ok || STATUS=gradle-failed; fi
