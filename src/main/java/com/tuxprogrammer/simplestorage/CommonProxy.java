@@ -1,5 +1,7 @@
 package com.tuxprogrammer.simplestorage;
 
+import com.tuxprogrammer.simplestorage.config.SimpleStorageConfig;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -10,9 +12,7 @@ public class CommonProxy {
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
-        Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
-
-        SimpleStorage.LOG.info(Config.greeting);
+        SimpleStorageConfig.register();
         SimpleStorage.LOG.info("Simple Storage version " + Tags.VERSION);
     }
 

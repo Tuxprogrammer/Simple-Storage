@@ -1,0 +1,60 @@
+simplestoragenh.behavior=Behavior
+simplestoragenh.behavior.tooltip=Behavior settings
+simplestoragenh.behavior.basichoppercooldown=Basic hopper cooldown
+simplestoragenh.behavior.basichoppercooldown.tooltip=Basic hopper transfer cooldown in ticks.
+simplestoragenh.behavior.blockedblocks=Blocked blocks
+simplestoragenh.behavior.blockedblocks.tooltip=Blocks the inventory connector skips.
+simplestoragenh.behavior.blockedmods=Blocked mods
+simplestoragenh.behavior.blockedmods.tooltip=Mod ids the inventory connector skips.
+simplestoragenh.behavior.runmultithreaded=Run multithreaded
+simplestoragenh.behavior.runmultithreaded.tooltip=Run the network update multithreaded.
+simplestoragenh.eusink=Eusink
+simplestoragenh.eusink.tooltip=Eusink settings
+simplestoragenh.eusink.enabled=Enabled
+simplestoragenh.eusink.enabled.tooltip=Whether the level emitter draws EU while active.
+simplestoragenh.eusink.eupertick=Eu per tick
+simplestoragenh.eusink.eupertick.tooltip=EU per tick drawn while active (8 is the ULV rate).
+simplestoragenh.modules=Modules
+simplestoragenh.modules.tooltip=Modules settings
+simplestoragenh.modules.integration=Integration
+simplestoragenh.modules.integration.tooltip=Integration settings
+simplestoragenh.modules.integration.appeng=Appeng
+simplestoragenh.modules.integration.appeng.tooltip=AE2 storage compat (off at alpha).
+simplestoragenh.modules.integration.nei=Nei
+simplestoragenh.modules.integration.nei.tooltip=NEI plugin (only meaningful with NEI loaded).
+simplestoragenh.modules.integration.waila=Waila
+simplestoragenh.modules.integration.waila.tooltip=Waila providers (only with Waila loaded).
+simplestoragenh.modules.network=Network
+simplestoragenh.modules.network.tooltip=Cables, cable connectors, inventory connectors, proxy, interface and hopper.
+simplestoragenh.modules.storage=Storage
+simplestoragenh.modules.storage.tooltip=Storage blocks (cabinet, crate, trims).
+simplestoragenh.modules.terminal=Terminal
+simplestoragenh.modules.terminal.tooltip=Storage + crafting terminals.
+simplestoragenh.modules.wireless=Wireless
+simplestoragenh.modules.wireless.tooltip=Wireless + advanced wireless terminals.
+simplestoragenh.network=Network
+simplestoragenh.network.tooltip=Network settings
+simplestoragenh.network.invcableconnectormaxscansize=Cable connector max scan size
+simplestoragenh.network.invcableconnectormaxscansize.tooltip=Maximum scan size for inventory cable connectors.
+simplestoragenh.network.inventoryconnectorrange=Inventory connector range
+simplestoragenh.network.inventoryconnectorrange.tooltip=Inventory connector reach in blocks.
+simplestoragenh.network.linkbeaconlvl=Link beacon lvl
+simplestoragenh.network.linkbeaconlvl.tooltip=Link beacon level for cable connectors (-1 disables, 0 = one beacon suffices).
+simplestoragenh.network.linkbeaconlvlcrossdim=Link beacon lvl cross dim
+simplestoragenh.network.linkbeaconlvlcrossdim.tooltip=Link beacon level for cable connectors across dimensions (-1 disables, 0 = one beacon suffices).
+simplestoragenh.network.linkbeaconlvlsamedim=Link beacon lvl same dim
+simplestoragenh.network.linkbeaconlvlsamedim.tooltip=Link beacon level for cable connectors in the same dimension (-1 disables, 0 = one beacon suffices).
+simplestoragenh.network.linkbeaconrange=Link beacon range
+simplestoragenh.network.linkbeaconrange.tooltip=Link beacon range in blocks for cable connectors.
+simplestoragenh.network.onlytrimsconnect=Only trims connect
+simplestoragenh.network.onlytrimsconnect.tooltip=Only trims connect to the cable network.
+simplestoragenh.wireless=Wireless
+simplestoragenh.wireless.tooltip=Wireless settings
+simplestoragenh.wireless.advrange=Adv range
+simplestoragenh.wireless.advrange.tooltip=Advanced wireless terminal range in blocks.
+simplestoragenh.wireless.beaconlvl=Beacon lvl
+simplestoragenh.wireless.beaconlvl.tooltip=Wireless terminal beacon level (-1 disables, 0 = one beacon suffices).
+simplestoragenh.wireless.beaconlvldim=Beacon lvl dim
+simplestoragenh.wireless.beaconlvldim.tooltip=Wireless terminal beacon level across dimensions (-1 disables, 0 = one beacon suffices).
+simplestoragenh.wireless.reach=Reach
+simplestoragenh.wireless.reach.tooltip=Basic wireless terminal reach in blocks.

@@ -14,10 +14,18 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
     modid = SimpleStorage.MODID,
     version = Tags.VERSION,
     name = "Simple Storage",
-    acceptedMinecraftVersions = "[1.7.10]")
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = SimpleStorage.DEPENDENCIES)
 public class SimpleStorage {
 
     public static final String MODID = "simplestoragenh";
+
+    /**
+     * Load order and hard dependencies (D17): GregTech and GTNHLib must be present, so a server without them fails at
+     * load with FML's missing-dependency message. NEI, Waila and AE2 are optional and only ordered before this mod.
+     */
+    public static final String DEPENDENCIES = "required-after:gregtech;required-after:gtnhlib;"
+        + "after:NotEnoughItems;after:Waila;after:appliedenergistics2";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     @SidedProxy(
