@@ -29,5 +29,5 @@ Status: *research notes* (spikes S3 + S2). Facts about the pack are *verified* a
 ## Related areas
 
 - Design record [0002-target-pack](../../design/0002-target-pack.md) accepts the target version and pins.
-- S2 lane: upstream behavior spec (which integrations map to what) and the `compat` package layout.
+- [Upstream behavior spec](../../original-spec/README.md) (written by S1; the S2 and S3 spikes are done) says which integrations map to what; the `compat` package layout is in [recipe-viewer.md](recipe-viewer.md) §What M06 builds.
 - M01 applies the dependency pins from [integration-opportunities.md](integration-opportunities.md) to `dependencies.gradle`.

@@ -41,8 +41,8 @@ Upstream's Jade plugin (`JadePlugin implements IWailaPlugin`, NeoForge) maps to 
 
 ## Config conventions
 
-- The pack ships a pre-configured `config/` folder (195 files in the server pack); per-mod `.cfg` files there are the pack's overrides of mod defaults.
-- **GTNHLib 0.11.54** ([GTNewHorizons/GTNHLib](https://github.com/GTNewHorizons/GTNHLib), tag 0.11.54): the pack's config convention — annotation-driven config (`@GTNHConfig`-style) plus the automatic config screen its mod-list mixin gives every registered config (cross-reference: Lost Cities 00-pack-integration index, same pack/tag). Its config code uses fastutil, which the game gets from GTNHLib's dependency loader at launch (see Lost Cities `dependencies.gradle` comment, same pin).
+- The pack ships a pre-configured `config/` folder (195 entries in the server pack); per-mod `.cfg` files there are the pack's overrides of mod defaults.
+- **GTNHLib 0.11.54** ([GTNewHorizons/GTNHLib](https://github.com/GTNewHorizons/GTNHLib), tag 0.11.54): the pack's config convention — annotation-driven config (GTNHLib `@Config`, D16) plus the automatic config screen its mod-list mixin gives every registered config (cross-reference: Lost Cities 00-pack-integration index, same pack/tag). Its config code uses fastutil, which the game gets from GTNHLib's dependency loader at launch (see Lost Cities `dependencies.gradle` comment, same pin).
 
 ## What upstream integrates (source side)
 
@@ -62,7 +62,7 @@ Upstream Tom's Storage (branch 26.2, local branch `upstream-src`) ships recipe-v
 | JEI / REI / EMI plugin (one of three, selected per loader) | One NEI plugin class `NEI…Config implements IConfigureNEI` (auto-discovered; name must start `NEI`, end `Config`) | NEI ClientHandler.java#L317-L346, tag 2.8.171-GTNH |
 | JEI `IGuiContainerHandler` (click-to-craft in the terminal) | `API.registerGuiOverlayHandler` + `INEIGuiHandler` / `API.registerGuiOverlay` over the terminal GUI | NEI API.java#L54-L294, tag 2.8.171-GTNH; AE2 `NEIGuiHandler` precedent |
 | REI/EMI "terminal shows stored items" category | `IUsageHandler` rendering the terminal's inventory as PositionedStacks | AE2 `NEICellViewHandler implements IUsageHandler`, tag rv3-beta-1095-GTNH |
-| Recipe transfer / ghost drag (JEI/REI/EMI) | NEI fast-transfer over the terminal GUI (`INEIGuiHandler`, `codechicken.nei.FastTransferManager`); ghost drag is not a built-in NEI concept — scope decision for S2 | NEI API.java, tag 2.8.171-GTNH |
+| Recipe transfer / ghost drag (JEI/REI/EMI) | NEI fast-transfer over the terminal GUI (`INEIGuiHandler`, `codechicken.nei.FastTransferManager`); ghost drag is not a built-in NEI concept — settled by D11 (ghost-drag is a beta candidate) | NEI API.java, tag 2.8.171-GTNH |
 | Jade block info for storage blocks/item | Waila `IWailaBlock` via `IWailaRegistrar` (IMC `Waila`/`register`), optionally an InGame-Info-XML page | waila `IWailaRegistrar` javadoc, tag 1.19.34; GT precedent `gregtech.crossmod.waila.Waila` |
 | Mod options (upstream config screen) | GTNHLib annotation config + auto config screen | GTNHLib 0.11.54 (manifest); Lost Cities index cross-ref |
 | Questbook line | BetterQuesting importer (`IImportRegistry.registerImporter`) or a pack-side quest line | BQ tag 3.8.92-GTNH, `IImporter`/`IImportRegistry` |
@@ -79,8 +79,8 @@ To be applied in M01 (not this lane). Pattern per [dependencies.gradle](../../..
 | Applied-Energistics-2-Unofficial | `compileOnly { transitive = false }` | `com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-1095-GTNH:dev` | Main storage-compat surface (ME interfaces/part transfer) |
 | waila | `compileOnly` | `com.github.GTNewHorizons:waila:1.19.34:dev` | Jade-equivalent block info |
 | InGame-Info-XML | `compileOnly` | `com.github.GTNewHorizons:InGame-Info-XML:2.9.8:dev` | XML info pages |
-| BetterQuesting | `compileOnly` | `com.github.GTNewHorizons:BetterQuesting:3.8.92-GTNH:dev` | Only if a jar-shipped quest line is adopted |
-| EnhancedLootBags | `compileOnly` | `com.github.GTNewHorizons:EnhancedLootBags:1.3.5:dev` | Only if loot bags are used in our content |
-| Chisel | `compileOnly` | `com.github.GTNewHorizons:Chisel:2.17.34-GTNH:dev` | Only if Chisel blocks enter our palette |
+| BetterQuesting | `compileOnly` | `com.github.GTNewHorizons:BetterQuesting:3.8.92-GTNH:dev` | **Required (D12):** questbook line ships; pin added in M01 |
+| EnhancedLootBags | `compileOnly` | `com.github.GTNewHorizons:EnhancedLootBags:1.3.5:dev` | Optional, M06 |
+| Chisel | `compileOnly` | `com.github.GTNewHorizons:Chisel:2.17.34-GTNH:dev` | Optional, M06 |
 
 Guarded by `Loader.isModLoaded("<modid>")` or `@Optional`, with the code kept in a `compat` package (gtnh-integration-research skill, §5).

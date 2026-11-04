@@ -5,7 +5,7 @@ The standard every area of this spec meets, so the terminal's menu, a filter, a 
 ## What is documented
 
 - **Version:** Tom's Simple Storage Mod `2.11.3` on upstream branch `26.2` at `95bb61d` (Minecraft 26.2, NeoForge 26.2.0.90). The NeoForge side (the `NeoForge/src/platform-shared/` code plus the `NeoForge/` sources) is the port baseline; the Fabric side (`Fabric/`) exists, and where a fact differs by loader the sheet says which loader it came from. Source paths are relative to the repository root on that commit.
-- **Older branches:** upstream has older branches (`1.15`, `1.16`, `1.17`, `1.18`, `1.19`, `1.19.x`, `1.20.x`, `1.21.x`, `26.1`, `master`). Where an older branch — `1.15` and `1.16` above all, whose Forge APIs are closest to 1.7.10's — solves the same problem with an API closer to 1.7.10, the sheet adds a short **"On <branch>"** note: what exists there, file paths, and whether it behaves differently.
+- **Older branches:** upstream has older branches (from the local `upstream` remote: `1.15`, `1.16`, `1.17`, `1.18`, `1.19`, `1.19.x`, `1.20.x`, `1.21.1`, `1.21.4`, `1.21.5`, `1.21.8`, `1.21.10`, `1.21.11`, `26.1`, `master`, plus `fabric-1.16` to `fabric-1.19.3`, `hopper-patch-2` and `snapshot`). Where an older branch — `1.15` and `1.16` above all, whose Forge APIs are closest to 1.7.10's — solves the same problem with an API closer to 1.7.10, the sheet adds a short **"On <branch>"** note: what exists there, file paths, and whether it behaves differently.
 
 ## Ground rules
 

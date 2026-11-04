@@ -45,7 +45,7 @@ The terminal family: the storage terminal and crafting terminal blocks and their
 - Lang keys covered: all keys used by in-scope classes are listed with exact text in the per-sheet "Lang keys" sections and in the table below.
 - Corrections made to earlier statements: none.
 
-## Lang keys (in scope, exact text from `NeoForge/src/main/resources/lang/en_us.json`)
+## Lang keys (in scope, exact text from `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json`)
 
 | Key | Text |
 |---|---|

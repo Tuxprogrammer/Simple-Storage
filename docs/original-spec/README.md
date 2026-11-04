@@ -9,7 +9,7 @@ Status: **written** — S1 landed 2026-11-03: 6 areas, 51 system sheets, COVERAG
 | `01-core` | Mod lifecycle and registration, the mod config, network, platform layer (NeoForge/Fabric split), shared utilities | `CORE` |
 | `02-storage` | The storage item with its internal inventory, the storage block and its block entity, item components | `STOR` |
 | `03-terminal` | The terminal block and entity, its screen, menu and slots, the filter and sorting systems, the inventory stack logic | `TERM` |
-| `04-wireless` | The wireless terminal block and entity and its screen, range and synchronization mechanics | `WIRE` |
+| `04-wireless` | The basic and advanced wireless terminal items and the `WirelessTerminal` interface, with range and synchronization mechanics | `WIRE` |
 | `05-integration` | JEI/REI/EMI recipe-viewer plugins, Jade integration, other compat | `INT` |
 | `06-client-ui` | Screen widgets, client package, lang keys, textures, sounds | `UI` |
 

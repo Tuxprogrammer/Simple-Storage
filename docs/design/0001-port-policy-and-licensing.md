@@ -7,7 +7,7 @@
 
 ## Context
 
-Simple Storage backports Tom's Simple Storage Mod to Minecraft 1.7.10 for GT New Horizons. Upstream is **MIT** (Copyright (c) 2020 tom5454) on every branch. The baseline is branch `26.2` at commit `95bb61d` (mod version 2.11.3, Minecraft 26.2, NeoForge 26.2.0.90) of [tom5454/Toms-Storage](https://github.com/tom5454/Toms-Storage). Older branches exist too (`1.15`, `1.16`, `1.17`, `1.18`, `1.19`, `1.19.x`, `1.20.x`, `1.21.x`, `26.1`, `master`), all under the same MIT license.
+Simple Storage backports Tom's Simple Storage Mod to Minecraft 1.7.10 for GT New Horizons. Upstream is **MIT** (Copyright (c) 2020 tom5454) on every branch. The baseline is branch `26.2` at commit `95bb61d` (mod version 2.11.3, Minecraft 26.2, NeoForge 26.2.0.90) of [tom5454/Toms-Storage](https://github.com/tom5454/Toms-Storage). Older branches exist too (`1.15`, `1.16`, `1.17`, `1.18`, `1.19`, `1.19.x`, `1.20.x`, `1.21.1`, `1.21.4`, `1.21.5`, `1.21.8`, `1.21.10`, `1.21.11`, `26.1`, `fabric-1.16` to `fabric-1.19`, `master`), all under the same MIT license.
 
 The owner's standing rule for ported code is that a port does not come in until it meets the quality bar of native code. Cloning for speed is how bad code ships. The goal is "faithful to the functionality, not to the bugs".
 

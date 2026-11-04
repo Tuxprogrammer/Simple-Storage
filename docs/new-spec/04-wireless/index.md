@@ -13,7 +13,7 @@ Implementation: none yet (roadmap M04).
 
 ## How to read the table
 
-- **Original**: link to the original-spec sheet. **Here**: `same`, `changed`, `dropped`, `deferred` or `new`.
+- **Original**: link to the original-spec sheet. **Here**: `same`, `changed`, `not ported` (by decision; the upstream code remains at the 26.2 branch), `deferred` or `new`.
 - **Decision**: D# or 000N; `Proposed P04-n` means not decided.
 - **Bugs**: IDs from [BUGS.md](../../original-spec/BUGS.md).
 - Tiers cite [tier-map.md](../00-pack-integration/tier-map.md) (D13); recipes are assembler recipes (D8). The items are power-free (D9, [0004](../../design/0004-energy-and-machine-model.md)).
@@ -33,7 +33,6 @@ Implementation: none yet (roadmap M04).
 |---|---|---|
 | [wireless-items.md](../../original-spec/04-wireless/wireless-items.md) step 1 | `Config.get().wirelessRange` | same sheet Numbers row, index and [PACK-CHANGES.md](../../PACK-CHANGES.md):46-55 use `wirelessReach` / `wireless.reach` |
 | [tier-map.md](../00-pack-integration/tier-map.md) | basic reach "16 blocks" | upstream base reach 6 blocks (not a conflict with `wireless.reach`, a pack deviation to record) |
-| [OPEN-QUESTIONS.md](../OPEN-QUESTIONS.md):16 | tier table shifted | D15 matches classic GT5 |
 
 ## Proposed (not decided)
 

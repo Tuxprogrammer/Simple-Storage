@@ -41,11 +41,11 @@ The storage side of Tom's Simple Storage: the blocks that hold or expose invento
 ## Coverage
 
 - Source files read: 46 of 46 in scope (verified against the area file list — batches 02-b1…02-b7, re-read in full during the writing phase).
-- Lang keys covered: every key used by in-scope classes is in the table below (exact text from `NeoForge/src/main/resources/lang/en_us.json`).
+- Lang keys covered: every key used by in-scope classes is in the table below (exact text from `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json`).
 - Textures/models referenced but not inspected: trim/cable/connector/emitter/hopper/crate/cabinet models and their client renderers (06-client-ui).
 - Corrections made to earlier statements: `FilingCabinetContainer` lock semantics corrected after re-reading (lock cleared only when the whole cabinet is empty; `setItem` re-locks unconditionally — see `filing-cabinet.md`).
 
-## Lang keys (in scope, exact text from `NeoForge/src/main/resources/lang/en_us.json`)
+## Lang keys (in scope, exact text from `NeoForge/src/platform-shared/resources/assets/toms_storage/lang/en_us.json`)
 
 | Key | Text |
 |---|---|

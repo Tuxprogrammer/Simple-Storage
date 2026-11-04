@@ -11,7 +11,7 @@ No extra sheets; the tables below cover everything. The terminal-side widget wor
 | Column | Meaning |
 |---|---|
 | Original | The original-spec sheet (linked). |
-| Here | `same`, `changed`, `dropped`, `deferred`, `new`. |
+| Here | `same`, `changed`, `not ported` (by decision; the upstream code remains at the 26.2 branch), `deferred`, `new`. |
 | What changes | Concrete names and 1.7.10 classes; a fact about a mod not read in `00-pack-integration/` or API-MAP is marked "unverified". |
 | Decision | D-row or record (Accepted), or `Proposed P05-n`. |
 | Bugs | [BUGS.md](../../original-spec/BUGS.md) IDs. |
@@ -21,9 +21,10 @@ No extra sheets; the tables below cover everything. The terminal-side widget wor
 | Original | Here | What changes | Decision | Bugs |
 |---|---|---|---|---|
 | [jei](../../original-spec/05-integration/jei.md) | changed | JEI is not in the pack; the viewer is NEI. Alpha plugin `compat/nei/NEISimpleStorageConfig implements IConfigureNEI` (found by NEI's ASM scan: name starts with `NEI`, ends with `Config`): an `ICraftingHandler` for the assembler recipes, an `IUsageHandler` for network inventory contents, `API.registerGuiOverlay` on terminal, cabinet and filter GUIs, and an `INEIGuiHandler` fast transfer. The JEI clickable area and its wrong rectangle (83, 35 + rows*18, 28, 23 px) are not carried over; the overlay button is placed over the crafting result slot (120, 129). 16x16 px ghost targets and `ISearchHandler` search sync are beta candidates. Auto-fill keeps the contract `IAutoFillTerminal` (`CompoundTag{fill: recipeId}` becomes an `NBTTagCompound` field in the packet). | D11, recipe-viewer.md; ghost drag and search sync Proposed P05-1 | INT-10 |
-| [rei](../../original-spec/05-integration/rei.md) | dropped | REI has no 1.7.10 counterpart (none). Its missing-slot colors `0x40ff0000` / `0x67aaaa00` are replaced by NEI's own overlay highlight (API-MAP, recipe-viewer.md). The guessed missing-slot index remap is not ported; the overlay computes missing slots from the real grid index. | D11 | INT-05 |
-| [emi](../../original-spec/05-integration/emi.md) | dropped | EMI has no 1.7.10 counterpart (none). The upstream EMI code is dead (never compiled, declared entrypoint with no class, "craft" never sends the fill packet), so nothing is lost. Ghost fill `0x8822BB33` and missing fill `0x44FF0000` are not used. INT-04 is not a bug: slot 0 is the crafting result slot in `CraftingTerminalMenu`, so excluding it is correct, and the NEI overlay keeps that exclusion. | D11 | INT-01, INT-02, INT-03, INT-04 (not a bug), INT-05 |
+| [rei](../../original-spec/05-integration/rei.md) | not ported | REI has no 1.7.10 counterpart (none). Its missing-slot colors `0x40ff0000` / `0x67aaaa00` are replaced by NEI's own overlay highlight (API-MAP, recipe-viewer.md). The guessed missing-slot index remap is not ported; the overlay computes missing slots from the real grid index. | D11 | INT-05 |
+| [emi](../../original-spec/05-integration/emi.md) | not ported | EMI has no 1.7.10 counterpart (none). The upstream EMI code is dead (never compiled, declared entrypoint with no class, "craft" never sends the fill packet), so nothing is lost. Ghost fill `0x8822BB33` and missing fill `0x44FF0000` are not used. INT-04 is not a bug: slot 0 is the crafting result slot in `CraftingTerminalMenu`, so excluding it is correct, and the NEI overlay keeps that exclusion. | D11 | INT-01, INT-02, INT-03, INT-04 (not a bug), INT-05 |
 | [jade](../../original-spec/05-integration/jade.md) | changed | Jade maps to Waila 1.19.34 `IWailaBlock`, registered with `FMLInterModComms.sendMessage("Waila", "register", "<fqcn>")` (GT precedent `gregtech.crossmod.waila.Waila`). Providers for inventory_connector (`free/all/blocks`), inventory_config (`bf/skip/pr/filter`) and inventory_hopper (`filter/enabled`) become tile-entity-specific providers (filing cabinet, terminal slot stats, level emitter, cable/connector, hopper, configurator), registered per class, not for every block; the NBT keys stay so the data shape is identical. Everything guarded by `Loader.isModLoaded("Waila")`. | recipe-viewer.md ("What M06 builds"), ROADMAP M06; provider split Proposed P05-2 | INT-06 |
+| [jade](../../original-spec/05-integration/jade.md) (extra providers) | new | Upstream Jade has three components (inventory connector usage, block-filter config, hopper filter). M06 lists six Waila providers: filing cabinet contents, terminal stats, level emitter, network size, hopper filter, configurator state, so three are new here. | Proposed P05-5 | none |
 | [other-compat](../../original-spec/05-integration/other-compat.md) | mixed | See per-integration map below. | see map | INT-07, INT-08, INT-09 |
 | [index](../../original-spec/05-integration/index.md) | changed | Shared viewer contract (`IAutoFillTerminal`: `updateSearch`, `sendMessage`, `getStoredItems`, `isSmartSearch`) is implemented by the crafting terminal and consumed by the NEI plugin. Module `modules.integration` flags gate behavior only. | D16, ROADMAP M03 exit gate | INT-01..INT-10 |
 
@@ -43,16 +44,12 @@ No extra sheets; the tables below cover everything. The terminal-side widget wor
 | ServerEvents (`BreakBlockEvent` drops filter, `LeftClickBlock` -> `ILeftClickListener`) | Forge `BlockEvent.BreakEvent` / `PlayerInteractEvent` on `MinecraftForge.EVENT_BUS` (unverified) | API-MAP | Proposed P05-4 |
 | Terminal-contents recipe category | NEI `IUsageHandler`, not REI/EMI-derived | D11 | D11 |
 | AE2 storage access | optional, off at alpha | D10; AE2 rv3-beta-1095-GTNH | D10 |
-| GT recipe display | assembler `ICraftingHandler` on `gt.recipe.assembler` | D8; GT precedent `gregtech.nei.NEIGTConfig` (GT5-Unofficial 5.09.54.265) | D8, D11 |
+| GT recipe display | none of ours: GT's own `gregtech/nei/GTNEIDefaultHandler.java` renders every `gt.recipe.assembler` recipe (GT5-Unofficial 5.09.54.265) | D8, D11 | D8, D11 |
 
 ## Contradictions with other docs
 
 | Where | Quote | Conflicts with |
 |---|---|---|
-| [jei.md:62](../../original-spec/05-integration/jei.md) | "the port may drop EMI/REI and keep JEI" | API-MAP and D11: JEI is not in the pack, the target is NEI |
-| [recipe-viewer.md](../00-pack-integration/recipe-viewer.md) | terminal-contents category listed as REI/EMI-derived | the sheets show upstream has no such category; it is a new NEI `IUsageHandler` (D11) |
-| [OPEN-QUESTIONS.md:20](../OPEN-QUESTIONS.md) (Q1) | tier table "shifted one tier up" | [decision-log.md:23](../../design/decision-log.md) D15 "no shift"; D15 wins |
-| [API-MAP.md:59](../../original-spec/API-MAP.md) | capability system for inventory access | D10 chain; capability system on Forge 10.13.4.1614 unverified |
 | Original 05 sheets (emi, jei, rei, jade, other-compat) | "None (original spec only; ...)" | not the literal "None yet."; left untouched |
 
 ## Proposed (not decided)
@@ -63,3 +60,4 @@ No extra sheets; the tables below cover everything. The terminal-side widget wor
 | P05-2 | One Waila provider per tile entity or one shared provider with per-class payloads? | Per-class providers registered individually; keep the upstream NBT keys | M06 |
 | P05-3 | Add TOP or Sophisticated Storage compat on 1.7.10? | No (not in the pack); record as "none" and reopen only if the pack adds them | Owner, M06 |
 | P05-4 | Event hooks for filter-drop on break and left-click listeners | Forge event bus handlers behind `modules.*` flags; verify event class names at Forge 10.13.4.1614 first | M03 / M06 |
+| P05-5 | The M06 Waila list has six providers against upstream Jade's three. Keep all six? | Keep the six; they are cheap Waila providers. Owner to confirm | Owner, M06 |

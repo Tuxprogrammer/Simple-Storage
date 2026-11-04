@@ -25,16 +25,16 @@ Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none
 |---|---|---|
 | `WidgetSprites` + `blitSprite(RenderPipelines.GUI_TEXTURED, …)` + nine-slice mcmeta (`gui.scaling`) | icon buttons, list rows, scroll thumb | **no direct counterpart** — 1.7.10: `Gui.drawModalRectWithCustomSize` (nine-slice via nine blits) + `TextureManager` binding; no `SpriteCollection` (1.10+) (inferred from 1.7.10 API, S2) |
 | `RecipeBookComponent`/`GhostSlots`/`PlaceRecipeHelper` | crafting terminal recipe book | **no counterpart** — vanilla 1.7.10 has no recipe book (added 1.14); the terminal's book is a mod feature (S2) |
-| `RenderPipeline` + `RegisterRenderPipelinesEvent` + named pipeline location `toms_storage:pipeline/lines` | no-depth line pipeline | **no direct 1.7.10 counterpart** for named pipeline locations — 1.7.10: `RenderType.create` (Forge) |
+| `RenderPipeline` + `RegisterRenderPipelinesEvent` + named pipeline location `toms_storage:pipeline/lines` | no-depth line pipeline | **no direct 1.7.10 counterpart** for named pipeline locations — 1.7.10: unverified (no such name found in pack sources: no Forge `RenderType.create` in GT5, NEI, GTNHLib or AE2 clones) |
 | `IrisPipelines.assignPipeline(…, ShaderKey.LINES)` | Iris shader override of the line pipeline | the pack's 1.7.10 shader mod is **Angelica 2.2.43 (Embeddium)**, not Iris (S3 MOD-INDEX); pipeline-assignment API unverified — treat as optional (inferred, S2) |
 | `SubmitCustomGeometryEvent`/`SubmitNodeCollector` (NF) / `LevelRenderEvents.END_MAIN` (FB) | world-space outlines (terminal, configurator) | Forge `RenderWorldLastEvent` (1.7.10) |
 | `RegisterGuiLayersEvent` (NF) / `HudElementRegistry`-style overlay (FB) | configurator HUD overlay | Forge `RenderGameOverlayEvent` (1.7.10) |
-| `RegisterMenuScreensEvent` (NF) / `MenuScreens.register` (FB) | the 8 menu screens | 1.7.10: container/screen classes + `GuiContainer.register` in pre-init (naming only) |
+| `RegisterMenuScreensEvent` (NF) / `MenuScreens.register` (FB) | the 8 menu screens | 1.7.10: container/screen classes + `GameRegistry`/`NetworkRegistry.registerGuiHandler` with an `IGuiHandler`; `GuiContainer.register` is unverified (no such name found in pack sources) |
 | `RegisterKeyMappingsEvent` (NF) / `KeyMappingHelper` (FB) | `B` keybind open-terminal | 1.7.10: `KeyBinding` + client-tick `isPressed` |
-| `ItemTooltipEvent` (NF) / `ItemTooltipCallback` (FB) | tooltip extension | 1.7.10: `Item.addTooltip` |
+| `ItemTooltipEvent` (NF) / `ItemTooltipCallback` (FB) | tooltip extension | 1.7.10: `Item#addInformation(ItemStack, EntityPlayer, List, boolean)` (GT5 `gregtech/api/items/GTGenericItem.java:98`) |
 | `ModelEvent.ModifyBakingResult` (NF) / `ModelLoadingPlugin.modifyBlockModelOnLoad` (FB) | painted-block model wrapping | **no baking event in 1.7.10** (model baking is 1.13+); painted blocks use a custom `IBlockRenderer`/tile-entity-driven rendering (inferred, S2) |
 | `DynamicBlockStateModel`/`BlockStateModelSet` (NF) / `BlockStateModel.UnbakedRoot`/`emitQuads` (FB) | per-state model swap to the facade state | **no direct 1.7.10 counterpart** — 1.7.10: custom block renderer / tile-entity-driven rendering reading the facade state from the TE (the FB path reads the tile entity directly — closer to the 1.7.10 model) (S2) |
-| `IClientBlockExtensions.collectDynamicTintValues` (NF) / `BlockColorRegistry` (FB) | facade-state tints | 1.7.10: `IBlockColor`/`BlockColorMap` registration |
+| `IClientBlockExtensions.collectDynamicTintValues` (NF) / `BlockColorRegistry` (FB) | facade-state tints | 1.7.10: GTNHLib `com.gtnewhorizon.gtnhlib.client.model.color.IBlockColor` + `BlockColor.registerBlockColors` (GTNHLib `src/main/java/com/gtnewhorizon/gtnhlib/client/model/color/BlockColor.java:28`); `BlockColorMap` unverified (no such name found in pack sources) |
 | `ModelData` (`FACADE_STATE`) | NF facade state transport | 1.7.10: tile-entity-driven rendering (the FB path reads the tile entity directly — closer to the 1.7.10 model) |
 | `ModMenuApi` (FB) | config screen | **none** in 1.7.10 (config screens registered directly) |
 | `IConfigScreenFactory`/Cloth (NF) | config screen | GTNHLib 0.11.54 `SimpleGuiFactory`/automatic config screen for `@Config` classes (S3; S2) |
@@ -46,10 +46,10 @@ Each NeoForge/Fabric API upstream relies on and its 1.7.10 counterpart, or "none
 
 | API | Used for | 1.7.10 counterpart |
 |---|---|---|
-| `BreakBlockEvent` / `LeftClickBlock` (NF `ServerEvents`) | filter drop on break; left-click item interface | Forge `BlockEvent.BreakEvent` / `PlayerInteractEvent.LeftClickBlock` |
+| `BreakBlockEvent` / `LeftClickBlock` (NF `ServerEvents`) | filter drop on break; left-click item interface | Forge `BlockEvent.BreakEvent` / `PlayerInteractEvent` with `Action.LEFT_CLICK_BLOCK` (unverified: no Forge source clone under reference/src) |
 | `ItemStack.CODEC` + `TagValueInput` (Jade/TOP filter payloads) | filter ItemStack in NBT | NBT on `ItemStack` (data components → NBT) |
-| `Component.translatable`/`I18n` | lang lookup | `I18n.translate` (same lineage) |
-| `RenderPipelines.GUI_TEXTURED` + `GuiGraphicsExtractor` | GUI drawing | 1.7.10: `Gui`/`GuiDrawHelper` (naming only) |
+| `Component.translatable`/`I18n` | lang lookup | `net.minecraft.util.StatCollector.translateToLocal` |
+| `RenderPipelines.GUI_TEXTURED` + `GuiGraphicsExtractor` | GUI drawing | 1.7.10: `Gui`/`GuiContainer` drawing; `GuiDrawHelper` unverified (no such name found in pack sources) |
 
 ## Platform and registration (areas `01`–`04`)
 

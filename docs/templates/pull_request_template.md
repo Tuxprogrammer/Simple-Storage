@@ -1,4 +1,4 @@
-<!-- Copy to .github/pull_request_template.md in your mod. -->
+<!-- Copy to .github/pull_request_template.md when the repo adopts it (not adopted yet). -->
 
 ## What and why
 

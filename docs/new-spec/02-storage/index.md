@@ -16,7 +16,7 @@ No extra sheets at draft stage; the NBT key lists are in the table below.
 ## How to read the table
 
 - **Original**: link to the original-spec sheet.
-- **Here**: `same`, `changed`, `dropped`, `deferred` or `new`.
+- **Here**: `same`, `changed`, `not ported` (by decision; the upstream code remains at the 26.2 branch), `deferred` or `new`.
 - **Decision**: a decision-log row (D#) or design record (000N). `Proposed P02-n` means no record settles it yet.
 - **Bugs**: IDs from [BUGS.md](../../original-spec/BUGS.md) the row must not reproduce.
 - Tier and recipe rows cite [tier-map.md](../00-pack-integration/tier-map.md) (D13) and do not restate recipes. All machine recipes go in `gt.recipe.assembler` unless the tier map says crafting table (D8).
@@ -32,7 +32,7 @@ No extra sheets at draft stage; the NBT key lists are in the table below.
 | [open-crate](../../original-spec/02-storage/open-crate.md) | changed | Virtual inventory of `EntityItem`s in front, no NBT. Rescan interval and the phantom append slot per sheet; the staggered tick must not use `Math.abs` of a hash. Tier: ULV crafting table (`open_crate`). | D13, Proposed P02-1 | STOR-01, STOR-04 |
 | [inventory-proxy](../../original-spec/02-storage/inventory-proxy.md) | changed | Pass-through over the front block via the D10 chain (`ISidedInventory`, `IInventory`, AE2 optional off at alpha, `EMPTY`). Paintable. Tier: MV assembler (`inventory_proxy`). Power-free. | D8, D9, D10, D13 | none |
 | [trims-paint](../../original-spec/02-storage/trims-paint.md) | changed | Trim and painted trim keep behavior. Painted block stores a facade block + meta; the 1.7.10 NBT keys and renderer are not specified upstream (component `paint`) and not yet decided. Tier: ULV crafting table for `trim`; `painted_trim` has no recipe (made with the paint kit), per tier-map. | D13, Proposed P02-2 | none |
-| [cables](../../original-spec/02-storage/cables.md) | changed | Cable and framed cable keep connection rules. Block state in 1.7.10 is meta or TE; waterlogging is dropped (no such mechanic in 1.7.10, unverified). Tier: MV assembler (`inventory_cable`, `inventory_cable_framed`). | D8, D9, D13, Proposed P02-3 | none |
+| [cables](../../original-spec/02-storage/cables.md) | changed | Cable and framed cable keep connection rules. Block state in 1.7.10 is meta or TE; waterlogging is not ported by decision (no such mechanic in 1.7.10, unverified). Tier: MV assembler (`inventory_cable`, `inventory_cable_framed`). | D8, D9, D13, Proposed P02-3 | none |
 | [cable-connector](../../original-spec/02-storage/cable-connector.md) | changed | FACING plus 6 connection flags keep. Beacon-gated inventory-link GUI kept as gated behavior (`network.linkBeacon*` keys). Tier: MV assembler (`inventory_cable_connector`, `inventory_cable_connector_framed`). | D8, D13, D16 | none |
 | [inventory-connector](../../original-spec/02-storage/inventory-connector.md) | changed | Scan every 20 ticks, range from `network.inventoryConnectorRange` (16, 4-256), `network.onlyTrimsConnect`, `network.invCableConnectorMaxScanSize` (2048). Staggered phase must be non-negative. Tier: MV assembler (`inventory_connector`). | D8, D10, D13, D16 | STOR-03, STOR-05 |
 | [inventory-interface](../../original-spec/02-storage/inventory-interface.md) | changed | Pass-through view of a connector's merged inventory, 20-tick scan, same phase fix. Tier: MV assembler (`inventory_interface`). | D8, D10, D13 | STOR-05 |
@@ -48,10 +48,7 @@ No extra sheets at draft stage; the NBT key lists are in the table below.
 
 | Where | Says | Conflicts with |
 |---|---|---|
-| [cable-network.md](../../original-spec/02-storage/cable-network.md) (Numbers) | "see STOR-06" for the time-based channel name fallback | BUGS.md lists it as STOR-10 |
 | [inventory-connector.md](../../original-spec/02-storage/inventory-connector.md), [index.md](../../original-spec/02-storage/index.md) | config names `invConnectorScanRange`, `onlyTrims` | [PACK-CHANGES.md](../../PACK-CHANGES.md):46-47 `network.inventoryConnectorRange`, `network.onlyTrimsConnect` |
-| [machine-model.md](../00-pack-integration/machine-model.md) (capability section), [API-MAP.md](../../original-spec/API-MAP.md):59 | 1.7.10 Forge has `Capability` / `net.minecraftforge.items.IInventory` | Forge 10.13.4.1614 jar in the pack reference: no capability classes found; D10 does not depend on them |
-| [OPEN-QUESTIONS.md](../OPEN-QUESTIONS.md):16 (Q1) | tier table shifted one tier up vs classic GT5 | D15: matches classic GT5, no shift |
 
 ## Proposed (not decided)
 

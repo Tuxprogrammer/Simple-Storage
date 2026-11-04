@@ -21,7 +21,7 @@ The official 2.9.0 server pack was downloaded 2026-11-02 and extracted to git-ig
 
 - URL: `https://downloads.gtnewhorizons.com/ServerPacks/GT_New_Horizons_2.9.0_Server_Java_17-26.zip` (from versions.json; 568,348,402 bytes).
 - **Forge confirmed:** the pack ships `forge-1.7.10-10.13.4.1614-1.7.10-universal.jar` — Forge 10.13.4.1614, matching the buildscript pin.
-- 216 mod jars in `mods/`; every one matches a manifest 2.9.0 entry by name or version (reconciliation details in [shipped-mods.md](shipped-mods.md)).
+- 216 mod jars in `mods/` (the folder has 217 entries; the extra one is the OpenSecurity directory); every one matches a manifest 2.9.0 entry by name or version (reconciliation details in [shipped-mods.md](shipped-mods.md)).
 - The Java 17–26 server build starts via `startserver-java9.sh` + `java9args.txt`.
 - Shipped `server.properties` defaults: `motd=GT:New Horizons 2.9.0`, `level-type=rwg`, `white-list=true`, `op-permission-level=2`, `allow-nether=true`, `online-mode=true`, `pvp=true`, `difficulty=3`, `gamemode=0`, `spawn-protection=1`, `max-players=20`, `view-distance=8`, `enable-command-block=true`, `spawn-npcs=true`, `generate-structures=true`.
 - The zip also ships `changelog from 2.8.4 to 2.9.0.md`.

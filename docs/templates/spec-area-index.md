@@ -33,6 +33,14 @@ What could not be verified, and why (could not run it, could not hear the audio,
 
 | ID | Title | Location | What looks wrong | Severity |
 |---|---|---|---|---|
-| AREA-01 | | `path/Class.java:123` | | crash / gameplay / visual / cosmetic |
+| AREA-01 | | `path/Class.java:123` | | crash / gameplay / performance / visual / cosmetic / not a bug |
 
 <!-- Merged and deduplicated into BUGS.md. Suspected, not confirmed; no fixes designed here. -->
+
+## Lang keys (optional)
+
+<!-- Optional: keys used by the in-scope classes, with exact text and source file. Omit if the area has none. -->
+
+## Deviations in the new mod (optional)
+
+<!-- Optional: what the port does differently; "None yet." until the new spec exists. Omit if the area has no new-spec counterpart. -->

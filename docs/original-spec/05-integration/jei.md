@@ -59,4 +59,4 @@ All steps below are **(client)** unless labeled otherwise; `(server)` is used wh
 
 ## Deviations in the new mod
 
-None (original spec only; the port may drop EMI/REI and keep JEI — decision for S2, see [API-MAP](../API-MAP.md)).
+JEI is not in the pack; NEI per D11. (Upstream-only wording: the original spec said the port may drop EMI/REI and keep JEI; that is superseded.)
