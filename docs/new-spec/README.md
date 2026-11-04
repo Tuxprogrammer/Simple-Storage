@@ -14,7 +14,7 @@ Every change here serves that, and every system uses what the pack already has b
 
 ## How to read
 
-- Each area mirrors an original-spec area, plus `00-pack-integration` for cross-cutting pack topics. Its `index.md` has a **deviation table**: every original sheet, what this mod does instead, and the decision behind it.
+- Each area mirrors an original-spec area, plus `00-pack-integration` for cross-cutting pack topics. Its `index.md` is a map of at most 40 lines. The **deviation table** (every original sheet, what this mod does instead, and the decision behind it) is in `deviations.md`; contradictions and proposals are in `proposals.md`.
 - **Status words.**
   - *Accepted* means a decision record in [docs/design/](../design/README.md) settles it; the record is linked.
   - *Proposed* means this spec suggests it and the owner has not decided. Every proposal is listed in [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) with its recommendation and what settles it: the milestone that builds it, or the owner.

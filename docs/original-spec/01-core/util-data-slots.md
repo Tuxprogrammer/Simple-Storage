@@ -26,4 +26,4 @@
 
 ## Deviations in the new mod
 
-See the [`util-data-slots` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).
+See the [`util-data-slots` row of the new-spec 01-core deviation table](../../new-spec/01-core/deviations.md#deviation-table).

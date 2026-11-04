@@ -67,4 +67,4 @@
 
 ## Deviations in the new mod
 
-See the [03-terminal deviation table](../../new-spec/03-terminal/index.md#deviation-table) (row `storage-terminal`).
+See the [03-terminal deviation table](../../new-spec/03-terminal/deviations.md#deviation-table) (row `storage-terminal`).

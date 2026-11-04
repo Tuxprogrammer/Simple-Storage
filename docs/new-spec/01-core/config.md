@@ -1,8 +1,8 @@
 # Config key mapping (upstream to 1.7.10)
 
-Maps every key in [original-spec config](../../original-spec/01-core/config.md) (`toms_storage@95bb61d`, `Config.java`) to the key in [PACK-CHANGES.md](../../PACK-CHANGES.md) § Configs. Layout is settled by [D16](../../design/decision-log.md): one file `config/simplestoragenh.cfg`, GTNHLib 0.11.54 `@Config` (`Config.java#L14`, `@Config.Sync` at `#L251`; [machine-model.md](../00-pack-integration/machine-model.md) § Config). PACK-CHANGES.md is not edited here; gaps are Proposed in [index.md](index.md#proposed-not-decided).
+Maps every key in [original-spec config](../../original-spec/01-core/config.md) (`toms_storage@95bb61d`, `Config.java`) to the key in [PACK-CHANGES.md](../../PACK-CHANGES.md) § Configs. Layout is settled by [D16](../../design/decision-log.md): one file `config/simplestoragenh.cfg`, GTNHLib 0.11.54 `@Config` (`Config.java#L14`, `@Config.Sync` at `#L251`; [machine-model.md](../00-pack-integration/machine-model.md) § Config). PACK-CHANGES.md is not edited here; gaps are Proposed in [index.md](proposals.md#proposed-not-decided).
 
-How to read: Status is `same` (key, default, range carried), `changed` (renamed or moved), `dropped` (no counterpart, deliberately), or `unmapped` (no PACK-CHANGES row; Proposed). Side/sync: PACK-CHANGES says only that per-world keys use `@Config.Sync` "where a client must see them" and names none (PACK-CHANGES.md:33), so the column is Proposed ([P01-5](index.md#proposed-not-decided)).
+How to read: Status is `same` (key, default, range carried), `changed` (renamed or moved), `dropped` (no counterpart, deliberately), or `unmapped` (no PACK-CHANGES row; Proposed). Side/sync: PACK-CHANGES says only that per-world keys use `@Config.Sync` "where a client must see them" and names none (PACK-CHANGES.md:33), so the column is Proposed ([P01-5](proposals.md#proposed-not-decided)).
 
 ## Server keys (upstream `toms_storage-server.toml`, per world)
 

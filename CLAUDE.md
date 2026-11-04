@@ -50,6 +50,7 @@ Skills live in [.claude/skills/](.claude/skills/); agent definitions in [.claude
 
 | You need… | Read |
 |---|---|
+| Where anything is, level by level (map -> area -> sheet) | [docs/INDEX.md](docs/INDEX.md), then the area `index.md` (each at most 40 lines) |
 | Where something is specified, decided or implemented, here or upstream, when you don't know its name | The `semantic_search` MCP tool ([tools/semantic-search/](tools/semantic-search/README.md)); grep or `git grep <pattern> 26.2` for exact names |
 | Upstream code and assets | The local `26.2` branch, pinned at `95bb61d`: `git show 26.2:<path>`. Never commit to it except to fast-forward from upstream |
 | The binding rules: workflow, porting, architecture, data and sync, GTNH integration, code, tests, assets, landing | [CONTRIBUTING.md](CONTRIBUTING.md), by section (start from [CONTRIBUTING.template.md](CONTRIBUTING.template.md)) |

@@ -53,4 +53,4 @@ See steps 2, 3, 4, 6, 10–17 above; the Fabric `Platform` also registers the cr
 
 ## Deviations in the new mod
 
-See the [`platform-layer` row of the new-spec 01-core deviation table](../../new-spec/01-core/index.md#deviation-table).
+See the [`platform-layer` row of the new-spec 01-core deviation table](../../new-spec/01-core/deviations.md#deviation-table).

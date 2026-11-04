@@ -50,7 +50,7 @@ Each area lists every lang key in its scope with its exact English text, strings
 
 ## Area index
 
-Every `index.md` follows [docs/templates/spec-area-index.md](../templates/spec-area-index.md): Overview, Contents, Key facts, Related areas, Coverage (files read out of files in scope; assets and lang keys covered out of those in scope), Known limits, Suspected bugs.
+Every `index.md` is a map of at most 40 lines (see [docs/templates/spec-area-index.md](../templates/spec-area-index.md)): Overview and Contents. The other sections live in sibling files: Key facts and Related areas in `facts.md`; Coverage (files read out of files in scope; assets and lang keys covered out of those in scope) and Known limits in `coverage.md`; Suspected bugs in `bugs.md`.
 
 ## Bug IDs
 

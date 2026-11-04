@@ -19,42 +19,42 @@ Each row lives in its area index (the source of truth, linked by id); it is list
 
 | # | Question | Recommendation | Settled by |
 |---|---|---|---|
-| [P01-1](01-core/index.md) | Which packet library carries `data` and `open_terminal`, and what is the 1.7.10 payload size limit that the 64000-byte terminal sync cap must respect? | Use the GTNHLib channel base classes ([shipped-mods.md:119](../00-pack-integration/shipped-mods.md)) over `PacketCustom`/`PacketSimple`; split terminal sync into several packets under a conservative per-packet size (limit unverified, measure at M01) | M01 (foundation), M03 for the terminal sync batching |
-| [P01-2](01-core/index.md) | How is `DataPacket` NBT bounded (CORE-02)? | Per-packet decode limit plus a type id that selects a fixed schema; reject and log on overrun, close nothing | M01 |
-| [P01-3](01-core/index.md) | Config: drop `importantInfo` (CORE-01) and `inventoryConnectorMaxSlots`? | Drop both: `importantInfo` only held a notice about the split toml files, which no longer exist; `inventoryConnectorMaxSlots` is inactive upstream | owner, at M01 config review |
-| [P01-4](01-core/index.md) | Which ranges apply to the five keys PACK-CHANGES lists without range (`network.invCableConnectorMaxScanSize`, `network.linkBeaconLvl`, `linkBeaconRange`, `linkBeaconLvlSameDim`, `linkBeaconLvlCrossDim`)? | Carry upstream's ranges: 16-`Integer.MAX_VALUE`; -1 to 4; 0-`Integer.MAX_VALUE`; -1 to 4; -1 to 4. Update PACK-CHANGES.md in M01 | M01 |
-| [P01-7](01-core/index.md) | Filing cabinet rules (CORE-05, CORE-06): keep any stack-size limit at all? | Do not reproduce. Any first item accepted; automation sees real stack sizes; document the final rule in 02-storage | M02 |
-| [P01-5](01-core/index.md) | Which config keys are `@Config.Sync`? | Sync `wireless.reach` and `wireless.advRange` (client outline), nothing else; all other keys server-only | M01 |
-| [P01-6](01-core/index.md) | `BeaconLevelCalc` on 1.7.10: how is the pyramid level read, and are the same base blocks valid? | Compute from the four-level pyramid under the beacon using the vanilla base blocks (iron, gold, emerald, diamond); verify against Forge 10.13.4.1614 source before coding | M04 (wireless uses it) |
-| [P02-1](02-storage/index.md) | Entity scan cadence for the open crate in 1.7.10 (`EntityItem` AABB query every 5 ticks)? | Keep 5 ticks with a non-negative phase (`hash & 0x7fffffff`). | M02 |
-| [P02-2](02-storage/index.md) | Paint/facade storage and rendering in 1.7.10 (TE with block id + meta, custom ISBRH)? | TE NBT `paintBlock` / `paintMeta` style keys; owner picks names. Pack facade support unverified. | M02 |
-| [P02-3](02-storage/index.md) | Drop waterlogging on cables? | Drop; document as a deviation. | M02 |
-| [P02-4](02-storage/index.md) | Ship the mid/fast hopper variants? | Defer: only the basic hopper has a tier-map row. | M04 |
-| [P02-5](02-storage/index.md) | Tag filter source in 1.7.10 (ore dictionary replaces block/item tags)? | Map tags to ore dictionary names; key `tags` stays a string list. | M04 |
-| [P02-6](02-storage/index.md) | Channel-name fallback and `RemoteConnections` saved-data name? | Counter-based fallback, saved-data name `simplestorage_rc`, readers tolerate missing keys. | M02 |
-| [P03-1](03-terminal/index.md) | How does the terminal GUI base handle display slots, scroll and the data packet? | One `GuiContainer` subclass (`TSContainerScreen`) with a `SlotAction` packet, server validates every action | M03 |
-| [P03-2](03-terminal/index.md) | Keep any in-GUI recipe book in the crafting terminal? | Drop it; rely on the NEI overlay (D11); keep per-cell auto-fill reservation (TERM-05) | Owner, M03 |
-| [P03-3](03-terminal/index.md) | The tag filter and item tags: what replaces them in 1.7.10? | `OreDictionary` name filter with the same add/remove list UI; "match components" becomes "match NBT" | Owner, M03 |
-| [P03-4](03-terminal/index.md) | Fix the unsatisfiable beacon scan gate (TERM-04/WIRE-04) in the terminal or the wireless lane? | Fix once in shared code in M03 and let M04 reuse it | M03 and M04 |
-| [P03-5](03-terminal/index.md) | Fix the small UI bugs (TERM-01, 03, 06, 07, 08, 10, 11) as written in the table? | Yes: fix each with a `doesNotReproduce<ID>_` test (ROADMAP M03 exit gate already requires the tests) | M03 |
-| [P03-6](03-terminal/index.md) | Source of the TYPE sort order in 1.7.10 | Creative-tab list order; names from `Item.itemRegistry`; keep the ordinal 5 for old saves | M03 |
-| [P03-7](03-terminal/index.md) | Hash and `CraftingMatrix` on 1.7.10 stacks | NBT-based hash; `CraftingMatrix` over `InventoryCrafting` | M03 |
-| [P03-8](03-terminal/index.md) | Keep multithreaded change tracking (TERM-12)? | Server thread only until a profile shows a need; fix the stale array either way | M03 |
-| [P04-1](04-wireless/index.md) | Binding NBT key set and legacy `BindX/Y/Z/Dim` read support? | Write `bound_dim` + `bounds_pos` fixed to one spelling; read legacy keys. | M04 |
-| [P04-2](04-wireless/index.md) | Equipment-slot search beyond hands and inventory (Baubles in the pack, unverified)? | Hands and inventory only at alpha. | M04 |
-| [P04-3](04-wireless/index.md) | Beacon detection in 1.7.10 (`TileEntityBeacon` levels, unverified)? | Read beacon level via the vanilla TE; confirm in the integration research. | M04 |
-| [P05-1](05-integration/index.md) | Ship NEI ghost-drag into filter slots and NEI search-box sync? | Defer to beta (D11 already marks ghost drag a beta candidate); alpha accepts direct click/drag | M06 |
-| [P05-2](05-integration/index.md) | One Waila provider per tile entity or one shared provider with per-class payloads? | Per-class providers registered individually; keep the upstream NBT keys | M06 |
-| [P05-3](05-integration/index.md) | Add TOP or Sophisticated Storage compat on 1.7.10? | No (not in the pack); record as "none" and reopen only if the pack adds them | Owner, M06 |
-| [P05-4](05-integration/index.md) | Event hooks for filter-drop on break and left-click listeners | Forge event bus handlers behind `modules.*` flags; verify event class names at Forge 10.13.4.1614 first | M03 / M06 |
-| [P06-1](06-client-ui/index.md) | Narrator keys (UI-01, UI-02, UI-07): is a narration layer ported at all? | Drop narrator keys and `createNarrationMessage`; the 1.7.10 GUI stack has no narrator hook (unverified). Keep human-readable tooltips on every button instead | M03 (terminal UI) |
-| [P06-2](06-client-ui/index.md) | Painted-block rendering: `ISimpleBlockRenderingHandler` with TE-held facade, or per-block renderer? | One renderer id with the facade in the TE, shader-safe (skill `client-rendering-shaders`) and tested under Angelica 2.2.43 | M02 (storage blocks) |
-| [P06-3](06-client-ui/index.md) | World outlines without the no-depth pipeline | `RenderWorldLastEvent` with depth test disabled and state restored; test under Angelica 2.2.43 with a shader pack | M03 (terminal outline), M04 (wireless) |
-| [P06-4](06-client-ui/index.md) | Cost of the per-frame 15x15x15 painted-highlight scan (3375 positions) | Throttle to a scan only while the paint item is held, or cache per tick | M03 |
-| [P06-5](06-client-ui/index.md) | Nine-slice and sprite atlas replacement | One shared nine-blit helper, individual PNGs, no atlas | M03 |
-| [P06-6](06-client-ui/index.md) | Recipe book widget: rebuild or drop | Drop; crafting fill is covered by the NEI overlay (D11) | M03 |
-| [P06-7](06-client-ui/index.md) | ViveCraft helper | Drop (no ViveCraft in the pack, API-MAP) | owner, at M03 review |
-| [P06-8](06-client-ui/index.md) | Which locales ship | `en_US` only at alpha; keep the six upstream translations as source for later import under the ported-code rules (D2) | owner, before first release (M06) |
+| [P01-1](01-core/proposals.md) | Which packet library carries `data` and `open_terminal`, and what is the 1.7.10 payload size limit that the 64000-byte terminal sync cap must respect? | Use the GTNHLib channel base classes ([shipped-mods.md:119](00-pack-integration/shipped-mods.md)) over `PacketCustom`/`PacketSimple`; split terminal sync into several packets under a conservative per-packet size (limit unverified, measure at M01) | M01 (foundation), M03 for the terminal sync batching |
+| [P01-2](01-core/proposals.md) | How is `DataPacket` NBT bounded (CORE-02)? | Per-packet decode limit plus a type id that selects a fixed schema; reject and log on overrun, close nothing | M01 |
+| [P01-3](01-core/proposals.md) | Config: drop `importantInfo` (CORE-01) and `inventoryConnectorMaxSlots`? | Drop both: `importantInfo` only held a notice about the split toml files, which no longer exist; `inventoryConnectorMaxSlots` is inactive upstream | owner, at M01 config review |
+| [P01-4](01-core/proposals.md) | Which ranges apply to the five keys PACK-CHANGES lists without range (`network.invCableConnectorMaxScanSize`, `network.linkBeaconLvl`, `linkBeaconRange`, `linkBeaconLvlSameDim`, `linkBeaconLvlCrossDim`)? | Carry upstream's ranges: 16-`Integer.MAX_VALUE`; -1 to 4; 0-`Integer.MAX_VALUE`; -1 to 4; -1 to 4. Update PACK-CHANGES.md in M01 | M01 |
+| [P01-7](01-core/proposals.md) | Filing cabinet rules (CORE-05, CORE-06): keep any stack-size limit at all? | Do not reproduce. Any first item accepted; automation sees real stack sizes; document the final rule in 02-storage | M02 |
+| [P01-5](01-core/proposals.md) | Which config keys are `@Config.Sync`? | Sync `wireless.reach` and `wireless.advRange` (client outline), nothing else; all other keys server-only | M01 |
+| [P01-6](01-core/proposals.md) | `BeaconLevelCalc` on 1.7.10: how is the pyramid level read, and are the same base blocks valid? | Compute from the four-level pyramid under the beacon using the vanilla base blocks (iron, gold, emerald, diamond); verify against Forge 10.13.4.1614 source before coding | M04 (wireless uses it) |
+| [P02-1](02-storage/proposals.md) | Entity scan cadence for the open crate in 1.7.10 (`EntityItem` AABB query every 5 ticks)? | Keep 5 ticks with a non-negative phase (`hash & 0x7fffffff`). | M02 |
+| [P02-2](02-storage/proposals.md) | Paint/facade storage and rendering in 1.7.10 (TE with block id + meta, custom ISBRH)? | TE NBT `paintBlock` / `paintMeta` style keys; owner picks names. Pack facade support unverified. | M02 |
+| [P02-3](02-storage/proposals.md) | Drop waterlogging on cables? | Drop; document as a deviation. | M02 |
+| [P02-4](02-storage/proposals.md) | Ship the mid/fast hopper variants? | Defer: only the basic hopper has a tier-map row. | M04 |
+| [P02-5](02-storage/proposals.md) | Tag filter source in 1.7.10 (ore dictionary replaces block/item tags)? | Map tags to ore dictionary names; key `tags` stays a string list. | M04 |
+| [P02-6](02-storage/proposals.md) | Channel-name fallback and `RemoteConnections` saved-data name? | Counter-based fallback, saved-data name `simplestorage_rc`, readers tolerate missing keys. | M02 |
+| [P03-1](03-terminal/proposals.md) | How does the terminal GUI base handle display slots, scroll and the data packet? | One `GuiContainer` subclass (`TSContainerScreen`) with a `SlotAction` packet, server validates every action | M03 |
+| [P03-2](03-terminal/proposals.md) | Keep any in-GUI recipe book in the crafting terminal? | Drop it; rely on the NEI overlay (D11); keep per-cell auto-fill reservation (TERM-05) | Owner, M03 |
+| [P03-3](03-terminal/proposals.md) | The tag filter and item tags: what replaces them in 1.7.10? | `OreDictionary` name filter with the same add/remove list UI; "match components" becomes "match NBT" | Owner, M03 |
+| [P03-4](03-terminal/proposals.md) | Fix the unsatisfiable beacon scan gate (TERM-04/WIRE-04) in the terminal or the wireless lane? | Fix once in shared code in M03 and let M04 reuse it | M03 and M04 |
+| [P03-5](03-terminal/proposals.md) | Fix the small UI bugs (TERM-01, 03, 06, 07, 08, 10, 11) as written in the table? | Yes: fix each with a `doesNotReproduce<ID>_` test (ROADMAP M03 exit gate already requires the tests) | M03 |
+| [P03-6](03-terminal/proposals.md) | Source of the TYPE sort order in 1.7.10 | Creative-tab list order; names from `Item.itemRegistry`; keep the ordinal 5 for old saves | M03 |
+| [P03-7](03-terminal/proposals.md) | Hash and `CraftingMatrix` on 1.7.10 stacks | NBT-based hash; `CraftingMatrix` over `InventoryCrafting` | M03 |
+| [P03-8](03-terminal/proposals.md) | Keep multithreaded change tracking (TERM-12)? | Server thread only until a profile shows a need; fix the stale array either way | M03 |
+| [P04-1](04-wireless/proposals.md) | Binding NBT key set and legacy `BindX/Y/Z/Dim` read support? | Write `bound_dim` + `bounds_pos` fixed to one spelling; read legacy keys. | M04 |
+| [P04-2](04-wireless/proposals.md) | Equipment-slot search beyond hands and inventory (Baubles in the pack, unverified)? | Hands and inventory only at alpha. | M04 |
+| [P04-3](04-wireless/proposals.md) | Beacon detection in 1.7.10 (`TileEntityBeacon` levels, unverified)? | Read beacon level via the vanilla TE; confirm in the integration research. | M04 |
+| [P05-1](05-integration/proposals.md) | Ship NEI ghost-drag into filter slots and NEI search-box sync? | Defer to beta (D11 already marks ghost drag a beta candidate); alpha accepts direct click/drag | M06 |
+| [P05-2](05-integration/proposals.md) | One Waila provider per tile entity or one shared provider with per-class payloads? | Per-class providers registered individually; keep the upstream NBT keys | M06 |
+| [P05-3](05-integration/proposals.md) | Add TOP or Sophisticated Storage compat on 1.7.10? | No (not in the pack); record as "none" and reopen only if the pack adds them | Owner, M06 |
+| [P05-4](05-integration/proposals.md) | Event hooks for filter-drop on break and left-click listeners | Forge event bus handlers behind `modules.*` flags; verify event class names at Forge 10.13.4.1614 first | M03 / M06 |
+| [P06-1](06-client-ui/proposals.md) | Narrator keys (UI-01, UI-02, UI-07): is a narration layer ported at all? | Drop narrator keys and `createNarrationMessage`; the 1.7.10 GUI stack has no narrator hook (unverified). Keep human-readable tooltips on every button instead | M03 (terminal UI) |
+| [P06-2](06-client-ui/proposals.md) | Painted-block rendering: `ISimpleBlockRenderingHandler` with TE-held facade, or per-block renderer? | One renderer id with the facade in the TE, shader-safe (skill `client-rendering-shaders`) and tested under Angelica 2.2.43 | M02 (storage blocks) |
+| [P06-3](06-client-ui/proposals.md) | World outlines without the no-depth pipeline | `RenderWorldLastEvent` with depth test disabled and state restored; test under Angelica 2.2.43 with a shader pack | M03 (terminal outline), M04 (wireless) |
+| [P06-4](06-client-ui/proposals.md) | Cost of the per-frame 15x15x15 painted-highlight scan (3375 positions) | Throttle to a scan only while the paint item is held, or cache per tick | M03 |
+| [P06-5](06-client-ui/proposals.md) | Nine-slice and sprite atlas replacement | One shared nine-blit helper, individual PNGs, no atlas | M03 |
+| [P06-6](06-client-ui/proposals.md) | Recipe book widget: rebuild or drop | Drop; crafting fill is covered by the NEI overlay (D11) | M03 |
+| [P06-7](06-client-ui/proposals.md) | ViveCraft helper | Drop (no ViveCraft in the pack, API-MAP) | owner, at M03 review |
+| [P06-8](06-client-ui/proposals.md) | Which locales ship | `en_US` only at alpha; keep the six upstream translations as source for later import under the ported-code rules (D2) | owner, before first release (M06) |
 
 ## Settled
 
