@@ -21,28 +21,30 @@ Skills live in [.claude/skills/](.claude/skills/); agent definitions in [.claude
 
 ## Skills
 
-| Skill | Use it when |
-|---|---|
-| [behavior-spec](.claude/skills/behavior-spec/SKILL.md) | Documenting upstream; bug register; deviations |
-| [clean-room-reimplementation](.claude/skills/clean-room-reimplementation/SKILL.md) | License triage for anything not from upstream Tom's Storage; the port rules for MIT code |
-| [gtnh-integration-research](.claude/skills/gtnh-integration-research/SKILL.md) | Any code touching GT, NEI, Waila or another pack mod; dependency bumps |
-| [gt-first-design](.claude/skills/gt-first-design/SKILL.md) | Materials, recipes, tiers, energy, machines, multiblocks, key defaults |
-| [config-safe-registration](.claude/skills/config-safe-registration/SKILL.md) | Module toggles, registration, retiring content, NBT and saved-data formats |
-| [testing-gtnh-mods](.claude/skills/testing-gtnh-mods/SKILL.md) | Unit, static, headless, scenario, real-pack and client tests |
-| [client-rendering-shaders](.claude/skills/client-rendering-shaders/SKILL.md) | Renderers, effects, models; anything that breaks under shaders |
-| [networking-side-safety](.claude/skills/networking-side-safety/SKILL.md) | Packets, sync, GUIs, server crashes on client classes |
-| [in-pack-content-delivery](.claude/skills/in-pack-content-delivery/SKILL.md) | Quests, loot, pack configs; shipping from the jar |
-| [release-and-public-repo](.claude/skills/release-and-public-repo/SKILL.md) | Tags, changelogs, upgrade notes, going public |
-| [port-workflow](.claude/skills/port-workflow/SKILL.md) | Roadmap and gates, decision records, landing, long jobs, agents |
-| [pack-contribution-policy](.claude/skills/pack-contribution-policy/SKILL.md) | Before planning any submission to a pack or another mod |
-| [mod-port-budget](.claude/skills/mod-port-budget/SKILL.md) | Budgets, verification tiers T1–T4 and doc depth for a port run by agents |
-| [orchestrating-parallel-agents](.claude/skills/orchestrating-parallel-agents/SKILL.md) | Spawning, briefing or supervising agents: scope, model, stop rules |
-| [agent-context-budget](.claude/skills/agent-context-budget/SKILL.md) | Any session past ~60 calls or ~150k context; handing off |
-| [integration-merge-choreography](.claude/skills/integration-merge-choreography/SKILL.md) | Landing lanes on `master`: one integrator, when to re-verify |
-| [remote-build-runner](.claude/skills/remote-build-runner/SKILL.md) | Slots, instances and runs on the build server |
-| [waiting-on-remote-jobs](.claude/skills/waiting-on-remote-jobs/SKILL.md) | Waiting on builds, servers, clients or shot runs |
-| [quiet-tool-output](.claude/skills/quiet-tool-output/SKILL.md) | Commands or files with large output: builds, logs, diffs, docs |
-| [cheap-screenshot-review](.claude/skills/cheap-screenshot-review/SKILL.md) | Looking at screenshots or shot-list output |
+**Load the matching skill before you start, not after something goes wrong.** Skills hold the repo's hard-won rules, and ignoring them is how the same mistakes come back. At the start of a task, scan the table below and load every skill whose "Load it when" fits (the Skill tool, or name it); when the task changes, scan again. Sessions past ~60 calls, and anything that spawns or supervises agents, always load the budget skills. Loading is cheap compared with redoing work.
+
+| Skill | Purpose | Load it when |
+|---|---|---|
+| [behavior-spec](.claude/skills/behavior-spec/SKILL.md) | How to write the upstream behavior spec and keep the bug register; the sheet layout and the `doesNotReproduce<ID>` rule | Documenting upstream, adding or reviewing a spec sheet or new-spec area, logging a suspected bug, building a feature from a sheet |
+| [clean-room-reimplementation](.claude/skills/clean-room-reimplementation/SKILL.md) | License triage and the port rules: what may enter the repo and how a port must be rewritten | Any code or art that does not come from upstream Tom's Storage; porting MIT code |
+| [gtnh-integration-research](.claude/skills/gtnh-integration-research/SKILL.md) | Source-first research on another mod at the exact pack tag, with citations; dependency pinning | Any code touching GT, NEI, Waila, AE2, GTNHLib or another pack mod; bumping a dependency; writing a doc claim about another mod |
+| [gt-first-design](.claude/skills/gt-first-design/SKILL.md) | Re-home content onto GT materials, recipe maps, tiers and EU; deconflict with the pack; key defaults | Materials, recipes, tier map, energy, machines, multiblocks, key bindings |
+| [config-safe-registration](.claude/skills/config-safe-registration/SKILL.md) | Register always and gate behavior; IDs are forever; NBT tolerates the past | Module toggles, registering items/blocks/TEs, retiring content, NBT or saved-data formats, config keys |
+| [testing-gtnh-mods](.claude/skills/testing-gtnh-mods/SKILL.md) | The five test layers, scenarios, real-pack runs, flaky-test handling | Writing or running tests; a test hangs, flakes or passes in dev but fails in the pack |
+| [client-rendering-shaders](.claude/skills/client-rendering-shaders/SKILL.md) | 1.7.10 renderers and effects that survive shader packs and Angelica | Renderers, models, particles, HUD; anything that breaks only under shaders |
+| [networking-side-safety](.claude/skills/networking-side-safety/SKILL.md) | Packets, sync and GUIs without loading client classes on the server or trusting clients | Packets, GUIs with buttons, keybind actions, synced state, a `ClassNotFound` for a client class on a server |
+| [in-pack-content-delivery](.claude/skills/in-pack-content-delivery/SKILL.md) | Getting quests, loot and pack configs into the pack from the jar | Quests, loot tables, NEI groups, other mods' configs, deciding jar versus pack |
+| [release-and-public-repo](.claude/skills/release-and-public-repo/SKILL.md) | Tags, changelogs, upgrade notes, and keeping machine-specific data out of git | Cutting a release, writing a changelog, going public, and before committing anything in tool or script folders |
+| [port-workflow](.claude/skills/port-workflow/SKILL.md) | Roadmap gates, decision records, definition of done, landing | Planning milestones, writing or changing a decision record, deciding whether a change is done |
+| [pack-contribution-policy](.claude/skills/pack-contribution-policy/SKILL.md) | Pack and mod contribution, AI and content policies | Before planning or promising any submission to a pack or another mod |
+| [mod-port-budget](.claude/skills/mod-port-budget/SKILL.md) | Token and call budgets, verification tiers T1 to T4, doc depth | Planning a run by agents; a milestone is over budget; deciding how deep a doc should be |
+| [orchestrating-parallel-agents](.claude/skills/orchestrating-parallel-agents/SKILL.md) | Scope, model, brief, stop rules and round limits for subagents | Spawning, briefing or supervising any agent |
+| [agent-context-budget](.claude/skills/agent-context-budget/SKILL.md) | Context-size limits and handoff files | A session past ~60 calls or ~150k context; handing off or restarting |
+| [integration-merge-choreography](.claude/skills/integration-merge-choreography/SKILL.md) | One integrator lands lanes on `master`; when to re-verify | Landing or merging lanes; scheduling shared test resources |
+| [remote-build-runner](.claude/skills/remote-build-runner/SKILL.md) | Slots, instances and runs on the build host | Builds, servers or clients on the build host |
+| [waiting-on-remote-jobs](.claude/skills/waiting-on-remote-jobs/SKILL.md) | Done markers and one capped wait instead of polling | Any job longer than about a minute: builds, servers, clients, benchmarks |
+| [quiet-tool-output](.claude/skills/quiet-tool-output/SKILL.md) | Keep command and file output small | Before commands or reads that may be large: builds, logs, diffs, big docs |
+| [cheap-screenshot-review](.claude/skills/cheap-screenshot-review/SKILL.md) | Review screenshots as contact sheets first | Looking at screenshots or shot-list output |
 
 ## Where to look
 
