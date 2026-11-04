@@ -45,7 +45,7 @@ Each static check is proven by a fixture that makes it fail, so none can pass be
 
 ## 4. In-world scenarios
 
-`/simplestoragenh test <name|all|list>` (op only; dev only, or `-Dsimplestoragenh.testHooks=true` in a release jar) — **exists (M01)**: runs registered scenarios on the server and reports `PASS`/`FAIL` lines and a `Scenarios: N passed, M failed` summary to the log and the sender's chat. Storage scenarios exercise store/retrieve through a terminal, filter behavior, sort arrangements and connector routing between two storages. Each feature adds its scenario, listed in `docs/testing/`.
+`/simplestoragenh test <all|list|TestClass>` (op only; development environment, or `-Dsimplestoragenh.testHooks=true`; JUnit is not shipped in the release jar, so in-game scenarios are dev-only, D32) runs the JUnit classes tagged `ingame` inside the live server with a small reflection runner and prints `PASS`/`FAIL` lines and `Scenarios: N passed, M failed`. `tools/remote/work.sh server` runs all of them unattended on the build host (`-Dsimplestoragenh.autotest=true` stops the server when done; `--flags-off` boots with every behavior module off). Tests that need real Items, Blocks or tile-entity mappings are tagged `ingame`; plain `./gradlew test` excludes them.
 
 - **Multiplayer:** for anything synced, two clients on a dedicated server: the second client sees the same inventory contents, GUI state matches, the server wins on conflict, and nothing desyncs after a relog.
 
@@ -75,7 +75,7 @@ For every ID in `BUGS.md` it lists the guarding test, or the reason recorded in 
 | Unit tests, `./gradlew test` | exists (M01) |
 | `ClientIsolationTest`, `Java8ApiTest`, `PortedCodeGateTest`, `LangKeysTest`, `EventHandlerVisibilityTest` | exists (M01) |
 | `./gradlew runServer` smoke boot, dev self-check | exists (M01); self-check tier-cap checks planned (M05) |
-| `/simplestoragenh test` scenarios | exists (M01) |
+| In-game scenario runner (`/simplestoragenh test`, autotest) | exists (M02) |
 | Real-pack server and client runs, screenshots | planned (alpha/beta gates, T4) |
 
 ## Running and waiting on long jobs

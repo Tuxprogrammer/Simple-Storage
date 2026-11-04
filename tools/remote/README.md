@@ -18,6 +18,7 @@ The scripts find the root from their own location, so none of them names the hos
 | `remote.sh build <slot> [<rev>] [-- <gradle args>]` | Syncs, then `./gradlew --no-daemon` (default `spotlessCheck build`) | `builds/` |
 | `remote.sh devserver <slot> [<rev>] [-- --timeout <s> --cmds '<cmds>']` | Syncs, runs `runServer` until "Done", sends the commands, stops it | `devserver/` |
 | `remote.sh devclient <slot> [<rev>] [-- --timeout <s>]` | Syncs, runs `runClient` under Xvnc (not Xvfb: LWJGL 2 display-mode enumeration fails there) until the main menu logs `Sound engine started`; takes a screenshot | `devclient/` |
+| `tools/remote/work.sh <format\|test\|build\|run\|server\|clean> [args]` | The edit-build loop from a laptop that must never run Gradle: uploads the working tree (uncommitted edits too) to a work directory on the host, runs Gradle there, prints only the useful lines, and for `format` and `build` copies the Spotless-formatted `src/` back. `server [--timeout <s>] [--flags-off]` boots the dev server, runs the in-game scenarios and stops it | `reference/remote/` is not used; logs stay on the host (`logs/work-*.log`) |
 | `remote.sh realpack [--slot <slot>] [-- <run.sh args>]` | Boots the real-pack server, with the slot's built jar if `--slot` is given | `realpack/` |
 | `remote.sh client [-- <client-run.sh args>]` | Runs the real-pack client under Xvfb and takes a screenshot | `client/` |
 | `remote.sh fetch <path>` | Copies a file or folder under `REMOTE_ROOT` | `fetched/` |

@@ -8,7 +8,8 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 |---|---|
 | cannot occur | 10 |
 | not a bug | 2 |
-| MISSING | 40 |
+| tested | 12 |
+| MISSING | 28 |
 
 - **tested**: a `doesNotReproduce` test proves the bug does not come back.
 - **MISSING**: neither a test nor a reason; fix this before calling the area done.
@@ -22,17 +23,17 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | UI-04 | — | crash | MISSING |  |
 | CORE-03 | — | gameplay | MISSING |  |
 | CORE-04 | — | gameplay | MISSING |  |
-| CORE-05 | — | gameplay | MISSING |  |
-| CORE-06 | — | gameplay | MISSING |  |
+| CORE-05 | — | gameplay | tested | `CabinetModelTest#doesNotReproduceCORE05_firstItemMustBeUnstackableAndRefusalKeyIsExposed` |
+| CORE-06 | — | gameplay | tested | `CabinetModelTest#doesNotReproduceCORE06_maxStackSizeIsOneAndNothingStackableCanEnter` |
 | CORE-08 | INT-08 | gameplay | cannot occur | Polymorph is not in the pack, so by decision the polymorph terminal widget is not registered (ROADMAP M03; also reported as INT-08). Upstream code stays at 26.2 |
 | CORE-09 | — | gameplay | MISSING |  |
-| STOR-01 | — | gameplay | MISSING |  |
-| STOR-02 | — | gameplay | MISSING |  |
-| STOR-03 | — | gameplay | MISSING |  |
-| STOR-04 | — | gameplay | MISSING |  |
-| STOR-05 | — | gameplay | MISSING |  |
-| STOR-06 | — | gameplay | MISSING |  |
-| STOR-07 | — | gameplay | MISSING |  |
+| STOR-01 | — | gameplay | tested | `OpenCrateTileEntityTest#doesNotReproduceSTOR01_minValueHashRescansEveryFiveTicks`<br>`StaggerGateTest#doesNotReproduceSTOR01_minValueHashStillFiresEveryFiveTicks` |
+| STOR-02 | — | gameplay | tested | `CabinetModelTest#doesNotReproduceSTOR02_differentTypeCannotReLockTheCabinet`<br>`CabinetModelTest#doesNotReproduceSTOR02_lockComesFromAnyNonEmptySlotNotOnlySlotZero` |
+| STOR-03 | — | gameplay | tested | `CableGraphTest#doesNotReproduceSTOR03_connectorWithNoAttachedInventoriesIsNotAUsableNetwork`<br>`InventoryConnectorTileEntityTest#doesNotReproduceSTOR03_connectorWithNoInventoriesIsNotUsable`<br>`InventoryInterfaceTileEntityTest#doesNotReproduceSTOR03_interfaceIgnoresAConnectorWithNoInventories` |
+| STOR-04 | — | gameplay | tested | `OpenCrateTileEntityTest#doesNotReproduceSTOR04_appendSlotIsConsistentForPlainInventoryConsumers` |
+| STOR-05 | — | gameplay | tested | `ConnectorScanTest#doesNotReproduceSTOR05_minValueHashStillGetsAPhase`<br>`InventoryConnectorTileEntityTest#doesNotReproduceSTOR05_minValueHashStillGetsARescanPhase`<br>`InventoryInterfaceTileEntityTest#doesNotReproduceSTOR05_minValueHashStillGetsARescanPhase`<br>`StaggerGateTest#doesNotReproduceSTOR05_minValueHashStillFiresEveryTwentyTicks` |
+| STOR-06 | — | gameplay | tested | `LevelEmitterTileEntityTest#doesNotReproduceSTOR06_everyPositionHashIsEvaluatedEveryTenTicks`<br>`StaggerGateTest#doesNotReproduceSTOR06_minValueHashStillFiresEveryTenTicks` |
+| STOR-07 | — | gameplay | tested | `EmitterLogicTest#doesNotReproduceSTOR07_missingTagLoadsTheRuntimeDefault`<br>`LevelEmitterTileEntityTest#doesNotReproduceSTOR07_missingCountTagLoadsTheRuntimeDefault` |
 | TERM-01 | — | gameplay | MISSING |  |
 | TERM-04 | WIRE-04 | gameplay | MISSING |  |
 | TERM-05 | — | gameplay | MISSING |  |
@@ -46,7 +47,7 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | INT-10 | — | gameplay | MISSING |  |
 | UI-05 | — | gameplay | MISSING |  |
 | CORE-02 | — | performance | MISSING |  |
-| STOR-09 | — | performance | MISSING |  |
+| STOR-09 | — | performance | tested | `HopperLogicTest#doesNotReproduceSTOR09_unfilteredNetworkSourceBacksOffInsteadOfSpinning`<br>`InventoryHopperTileEntityTest#doesNotReproduceSTOR09_unfilteredNetworkSourceDoesNotSpin` |
 | TERM-09 | — | performance | cannot occur | The ComparatorType TYPE sort cache is not ported: the TYPE sort mode is dropped by decision (D27); ordinal 5 stays reserved and inert |
 | INT-06 | — | performance | MISSING |  |
 | INT-05 | — | visual | MISSING |  |
@@ -54,8 +55,8 @@ Every ID in [BUGS.md](BUGS.md) and how this mod keeps it out: a regression test 
 | CORE-01 | — | cosmetic | cannot occur | The importantInfo config key is not ported by decision (D22); upstream code stays at 26.2 |
 | CORE-07 | UI-03 | cosmetic | MISSING |  |
 | CORE-10 | — | cosmetic | MISSING |  |
-| STOR-08 | — | cosmetic | MISSING |  |
-| STOR-10 | — | cosmetic | MISSING |  |
+| STOR-08 | — | cosmetic | tested | `HopperLogicTest#doesNotReproduceSTOR08_bottomChangePausesExactlyOneCycle`<br>`InventoryHopperTileEntityTest#doesNotReproduceSTOR08_bottomChangePausesExactlyOneCycleInTheTileEntityPath` |
+| STOR-10 | — | cosmetic | tested | `ChannelRegistryTest#doesNotReproduceSTOR10_emptyNameFallsBackToTheSmallestFreeNumber`<br>`ChannelRegistryTest#doesNotReproduceSTOR10_removedNumberIsReused` |
 | TERM-03 | — | cosmetic | MISSING |  |
 | TERM-06 | — | cosmetic | MISSING |  |
 | TERM-07 | — | cosmetic | cannot occur | Its narrator text is part of the narrator layer, not ported by decision (D21); upstream code stays at 26.2 |

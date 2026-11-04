@@ -165,10 +165,10 @@ public class FilingCabinetTileEntityTest {
         cabinet.readFromNBT(inventoryTag(list));
 
         assertEquals(
-            Items.stone_sword,
-            cabinet.getStackInSlot(3)
+            Items.iron_sword,
+            cabinet.getStackInSlot(1)
                 .getItem());
-        assertNull(cabinet.getStackInSlot(1));
+        assertNull(cabinet.getStackInSlot(3));
         assertNull(cabinet.getStackInSlot(10));
     }
 

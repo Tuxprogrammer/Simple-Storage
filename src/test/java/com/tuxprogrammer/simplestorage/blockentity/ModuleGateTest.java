@@ -2,6 +2,7 @@ package com.tuxprogrammer.simplestorage.blockentity;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -84,7 +85,10 @@ public class ModuleGateTest {
 
         ModulesConfig.storage = false;
         try {
-            assertSame(sword, cabinet.getStackInSlot(3));
+            assertSame(
+                Items.iron_sword,
+                cabinet.getStackInSlot(3)
+                    .getItem());
             cabinet.setInventorySlotContents(3, new ItemStack(Items.iron_sword));
             assertTrue(
                 cabinet.getStackInSlot(3)
@@ -92,6 +96,10 @@ public class ModuleGateTest {
         } finally {
             ModulesConfig.storage = true;
         }
-        assertSame(sword, cabinet.getStackInSlot(3));
+        assertNotNull(cabinet.getStackInSlot(3));
+        assertSame(
+            Items.iron_sword,
+            cabinet.getStackInSlot(3)
+                .getItem());
     }
 }

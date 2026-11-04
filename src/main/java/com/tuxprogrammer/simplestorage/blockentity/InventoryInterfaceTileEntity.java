@@ -42,6 +42,9 @@ public class InventoryInterfaceTileEntity extends GatedTileEntity implements Inv
 
     @Override
     protected void serverTick() {
+        if (worldObj == null) {
+            return;
+        }
         if (StaggerGate.isDue(
             worldObj.getTotalWorldTime(),
             Objects.hash(xCoord, yCoord, zCoord),

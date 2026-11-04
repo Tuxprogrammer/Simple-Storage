@@ -7,6 +7,10 @@
 #   work.sh test      [gradle args...]   default args: test
 #   work.sh build     [gradle args...]   default args: spotlessApply build; also copies src/ back
 #   work.sh run       <gradle args...>   any gradle task args, no copy back
+#   work.sh server    [--timeout <s>]    runServer the dev server, which runs the in-game autotest
+#                  [--flags-off]        scenarios and stops itself; success is "Scenarios: n passed, 0 failed", n > 0
+#                                       --flags-off boots with every behavior module off (writes
+#                                       run/server/config/simplestoragenh.cfg); without it that file is removed
 #   work.sh clean     [gradle args...]   remove the host work directory contents (nothing else)
 #
 # Settings come from the git-ignored .env at the main checkout's root (see .env.example): REMOTE_HOST (ssh
@@ -29,15 +33,28 @@ SSH=(ssh -o BatchMode=yes -o ServerAliveInterval=30 "$HOST")
 WORK="$ROOT/wt/work"
 LOG="$ROOT/logs/work-"
 
-[ $# -ge 1 ] || die "usage: $0 format|test|build|run|clean [gradle args...]"
+[ $# -ge 1 ] || die "usage: $0 format|test|build|run|server|clean [gradle args...]"
 cmd="$1"; shift
 case "$cmd" in
     format) args=("${@:-spotlessApply}"); copyback=1 ;;
     test)   args=("${@:-test}"); copyback=0 ;;
     build)  [ $# -eq 0 ] && set -- spotlessApply build; args=("$@"); copyback=1 ;;
     run)    [ $# -ge 1 ] || die "usage: $0 run <gradle task...>"; args=("$@"); copyback=0 ;;
+    server)
+        srv_timeout=600
+        srv_flags_off=0
+        while [ $# -gt 0 ]; do
+            case "$1" in
+                --timeout) shift; [ $# -ge 1 ] || die "usage: $0 server --timeout <s>"; srv_timeout="$1" ;;
+                --timeout=*) srv_timeout="${1#--timeout=}" ;;
+                --flags-off) srv_flags_off=1 ;;
+                *) die "unknown server option: $1 (usage: $0 server [--timeout <s>] [--flags-off])" ;;
+            esac; shift
+        done
+        [[ "$srv_timeout" =~ ^[0-9]+$ ]] || die "--timeout must be an integer number of seconds, got '$srv_timeout'"
+        args=("--timeout=$srv_timeout"); copyback=0 ;;
     clean)  args=("$@"); copyback=0 ;;
-    *) die "unknown command: $cmd (usage: $0 format|test|build|run|clean [gradle args...])" ;;
+    *) die "unknown command: $cmd (usage: $0 format|test|build|run|server|clean [gradle args...])" ;;
 esac
 
 # Upload the working tree (uncommitted edits included). Build/run artifacts and host-only directories are
@@ -51,6 +68,43 @@ if [ "$cmd" = clean ]; then
     "${SSH[@]}" "mkdir -p '$WORK' && find '$WORK' -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true"
     echo "cleaned: $HOST:$WORK/"
     exit 0
+fi
+
+if [ "$cmd" = server ]; then
+    # Dev server settings: offline (dev accounts), eula accepted, small view distance; replace existing
+    # keys, as slot-build.sh does. run/ is excluded from the upload, so this is created on the host.
+    "${SSH[@]}" "
+        d='$WORK/run/server'; mkdir -p \"\$d\"
+        echo 'eula=true' > \"\$d/eula.txt\"
+        p=\"\$d/server.properties\"; touch \"\$p\"
+        for kv in online-mode=false server-port=\${REMOTE_DEV_PORT_MIN:-26110} view-distance=6; do
+            k=\"\${kv%%=*}\"
+            if grep -q \"^\\\$k=\" \"\$p\"; then sed -i \"s|^\\\$k=.*|\\\$kv|\" \"\$p\"; else echo \"\\\$kv\" >> \"\$p\"; fi
+        done
+        f=\"\$d/config/simplestoragenh.cfg\"
+        if [ $srv_flags_off -eq 1 ]; then
+            mkdir -p \"\$d/config\"
+            printf 'modules {\\n    B:network=false\\n    B:storage=false\\n    B:terminal=false\\n    B:wireless=false\\n}\\n' > \"\$f\"
+        else
+            rm -f \"\$f\"
+        fi" || die "could not set up $HOST:$WORK/run/server"
+    srv_timeout="${args[0]#--timeout=}"
+    code="$("${SSH[@]}" "mkdir -p '$ROOT/logs' && cd '$WORK' && . '$ROOT/env.sh' && \
+        export JAVA_TOOL_OPTIONS=\"\$JAVA_TOOL_OPTIONS -Dsimplestoragenh.autotest=true -Dsimplestoragenh.testHooks=true\"; \
+        timeout -k 30 $srv_timeout ./gradlew --no-daemon --console=plain runServer > '$LOG$cmd.log' 2>&1 < /dev/null; echo \"exit=\$?\"" \
+        | sed -n 's/^exit=//p' | tail -1)"
+    [ -n "$code" ] || code=1
+    # Print the useful lines of the log, and pass iff the scenarios all passed with at least one run.
+    "${SSH[@]}" "cat '$LOG$cmd.log' 2>/dev/null" | awk -v code="$code" '
+        /Registered / { if (r < 3) { print; r++ } }
+        /\[scenario\]/ { if (s < 60) { print; s++ } }
+        /ERROR/ && /simplestorage/ { if (e < 10) { print; e++ } }
+        END {
+            print "exit=" code
+            if (match($0, /^Scenarios: ([0-9]+) passed, 0 failed$/, m) && m[1] > 0) exit 0
+            exit (code == 0) ? 1 : 2
+        }'
+    exit "$?"
 fi
 
 # Run Gradle on the host (env.sh sets JAVA_HOME and GRADLE_USER_HOME); the log stays there. The exit code is

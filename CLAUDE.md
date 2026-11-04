@@ -77,7 +77,7 @@ Skills live in [.claude/skills/](.claude/skills/); agent definitions in [.claude
 python3 -I tools/semantic-search/index.py --query "..."   # semantic search from the shell
 ```
 
-Builds and Minecraft runs belong on the build host, not a development laptop. Drive it with [tools/remote/remote.sh](tools/remote/README.md) (`build <slot> <rev>`, `devserver`, `realpack`, `client`); host and paths come from the git-ignored `.env`. Wrap the gradle commands in `tools/agent/quiet-run.sh` and wait on `run.done` (skill `waiting-on-remote-jobs`).
+Builds and Minecraft runs belong on the build host, not a development laptop. Drive it with [tools/remote/remote.sh](tools/remote/README.md) (`build <slot> <rev>`, `devserver`, `realpack`, `client`); host and paths come from the git-ignored `.env`. Wrap the gradle commands in `tools/agent/quiet-run.sh` and wait on `run.done` (skill `waiting-on-remote-jobs`). For the edit-build loop use `tools/remote/work.sh build` (uploads the working tree, formats and tests on the host) and `tools/remote/work.sh server` (in-game scenarios); never run Gradle or Minecraft on the development laptop.
 
 ## Housekeeping
 

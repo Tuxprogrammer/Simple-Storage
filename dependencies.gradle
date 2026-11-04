@@ -68,5 +68,5 @@ tasks.named("test", Test) {
 // The dev server and client also see the test classes and JUnit, so in-game scenarios can run there.
 tasks.matching { it.name == "runServer" || it.name == "runClient" }.configureEach {
     dependsOn("testClasses")
-    classpath(sourceSets.test.output, sourceSets.test.runtimeClasspath)
+    classpath(sourceSets.test.output)
 }

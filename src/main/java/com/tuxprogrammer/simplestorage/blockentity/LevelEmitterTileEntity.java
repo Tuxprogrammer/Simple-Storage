@@ -149,6 +149,9 @@ public class LevelEmitterTileEntity extends GatedTileEntity {
      */
     @Override
     protected void serverTick() {
+        if (worldObj == null) {
+            return;
+        }
         if (!StaggerGate.isDue(
             worldObj.getTotalWorldTime(),
             Objects.hash(xCoord, yCoord, zCoord),

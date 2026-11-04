@@ -190,7 +190,7 @@ public class FilingCabinetTileEntity extends GatedTileEntity implements ISidedIn
             NBTTagCompound entry = list.getCompoundTagAt(i);
             short slot = entry.getShort(NbtKeys.SLOT);
             if (slot < 0 || slot >= SLOTS) continue;
-            NBTTagCompound stackTag = list.getCompoundTagAt(i);
+            NBTTagCompound stackTag = (NBTTagCompound) entry.copy();
             stackTag.removeTag(NbtKeys.SLOT);
             ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
             if (stack == null) continue;
@@ -205,7 +205,7 @@ public class FilingCabinetTileEntity extends GatedTileEntity implements ISidedIn
             NBTTagCompound entry = list.getCompoundTagAt(i);
             short slot = entry.getShort(NbtKeys.SLOT);
             if (slot < 0 || slot >= SLOTS) continue;
-            NBTTagCompound stackTag = list.getCompoundTagAt(i);
+            NBTTagCompound stackTag = (NBTTagCompound) entry.copy();
             stackTag.removeTag(NbtKeys.SLOT);
             ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
             if (stack == null) continue;

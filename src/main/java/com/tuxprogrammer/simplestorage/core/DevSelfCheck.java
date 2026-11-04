@@ -1,7 +1,6 @@
 package com.tuxprogrammer.simplestorage.core;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.util.StatCollector;
@@ -15,8 +14,9 @@ import com.tuxprogrammer.simplestorage.item.ModItems;
  * mod has registered so far and stops the game on a failure. Its tier-cap checks land in M05.
  *
  * <p>
- * Checks today: every config screen key has an English name, the module defaults are the documented ones, and all
- * registered content (blocks, items, tile entities) is registered with a lang entry.
+ * Checks today: every config screen key has an English name, and all registered content (blocks, items, tile
+ * entities) is registered with a lang entry. (The module defaults are covered by a unit test: a server owner may
+ * legitimately turn modules off, and the self-check must pass then.)
  *
  * <p>
  * Side: both.
@@ -47,13 +47,6 @@ public final class DevSelfCheck {
             if (!StatCollector.canTranslate(key)) {
                 failures.add("config key without a lang entry: " + key);
             }
-        }
-        EnumSet<Module> defaults = EnumSet
-            .of(Module.STORAGE, Module.TERMINAL, Module.NETWORK, Module.WIRELESS, Module.NEI, Module.WAILA);
-        if (!ModuleState.configured()
-            .active()
-            .containsAll(defaults)) {
-            failures.add("a module is off in the default configuration; check that no config override is active");
         }
         if (ModBlocks.registeredCount() != ModBlocks.NAMES.size()) {
             failures.add("registered blocks: " + ModBlocks.registeredCount() + " of " + ModBlocks.NAMES.size());

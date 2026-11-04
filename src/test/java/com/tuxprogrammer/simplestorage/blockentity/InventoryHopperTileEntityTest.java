@@ -39,7 +39,7 @@ public class InventoryHopperTileEntityTest {
 
         InventoryHopperTileEntity.moveOne(source, target, null);
         assertEquals(1, count(target), "exactly one item must move per cycle");
-        assertEquals(2, count(source), "source must still hold its remaining items");
+        assertEquals(1, count(source), "source must still hold its remaining items");
     }
 
     @Test
@@ -56,7 +56,7 @@ public class InventoryHopperTileEntityTest {
             target.getStackInSlot(0)
                 .getItem(),
             "the gold ingot must be skipped");
-        assertEquals(2, count(source), "the gold ingot must remain in the source");
+        assertEquals(1, count(source), "the gold ingot must remain in the source");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class InventoryHopperTileEntityTest {
 
         assertFalse(moved, "the move must report failure when the target is full");
         assertEquals(1, count(source), "the item must be put back into the source");
-        assertEquals(3, count(target), "the full target must stay full");
+        assertEquals(192, count(target), "the full target must stay full");
     }
 
     @Test

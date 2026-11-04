@@ -51,27 +51,28 @@ public class InventoryHopperTileEntity extends GatedTileEntity {
      */
     private int lastBottomHash;
 
-    /**
-     * The output side of the hopper for the block metadata.
-     */
-    private ForgeDirection output;
-
     @Override
     protected Module module() {
         return Module.NETWORK;
     }
 
     /**
-     * @return the output side of the hopper
+     * @return the output side of the hopper, derived from the block metadata
      */
     public ForgeDirection getOutput() {
-        return this.output;
+        return this.output();
+    }
+
+    /**
+     * The output side of the hopper, derived from the block metadata (0..5).
+     */
+    private ForgeDirection output() {
+        return ForgeDirection.getOrientation(this.getBlockMetadata() % 6);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.output = ForgeDirection.getOrientation(compound.getInteger("facing") % 6);
         this.filter = compound.hasKey(NbtKeys.FILTER)
             ? ItemStack.loadItemStackFromNBT(compound.getCompoundTag(NbtKeys.FILTER))
             : null;
@@ -81,7 +82,6 @@ public class InventoryHopperTileEntity extends GatedTileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("facing", this.output.ordinal());
         if (this.filter != null) {
             NBTTagCompound filterTag = new NBTTagCompound();
             this.filter.writeToNBT(filterTag);
@@ -122,14 +122,18 @@ public class InventoryHopperTileEntity extends GatedTileEntity {
 
     @Override
     protected void serverTick() {
+        if (worldObj == null) {
+            return;
+        }
         HopperLogic hopperLogic = this.logic();
-        ForgeDirection input = this.output.getOpposite();
+        ForgeDirection output = this.output();
+        ForgeDirection input = output.getOpposite();
         int inputX = this.xCoord + input.offsetX;
         int inputY = this.yCoord + input.offsetY;
         int inputZ = this.zCoord + input.offsetZ;
-        int outputX = this.xCoord + this.output.offsetX;
-        int outputY = this.yCoord + this.output.offsetY;
-        int outputZ = this.zCoord + this.output.offsetZ;
+        int outputX = this.xCoord + output.offsetX;
+        int outputY = this.yCoord + output.offsetY;
+        int outputZ = this.zCoord + output.offsetZ;
 
         boolean topIsNetwork = isNetworkSource(this.worldObj, inputX, inputY, inputZ);
         boolean bottomChanged = this.updateBottomHash(this.worldObj, outputX, outputY, outputZ);

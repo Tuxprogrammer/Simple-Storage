@@ -187,7 +187,6 @@ public class OpenCrateTileEntity extends GatedTileEntity implements ISidedInvent
             items.set(slot, null);
         } else {
             split = stack.splitStack(amount);
-            stack.stackSize -= amount;
         }
         // The physical entity update is not modelled here; the next due tick's rescan()
         // re-reads the world.
