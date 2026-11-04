@@ -139,6 +139,37 @@ class PureFunctionTests(unittest.TestCase):
         self.assertIn("protected files", touched_prompt)
         self.assertIn("tests/t.txt", touched_prompt)
 
+    def test_symbols_in(self):
+        lines = [
+            "x.java:3: error: cannot find symbol",
+            "  symbol:   method getStack()",
+            "  symbol:   class EnumFacing",
+            "  symbol:   method getStack()",
+        ]
+        self.assertEqual(gate.symbols_in(lines),
+                         ["getStack", "EnumFacing"])
+
+    def test_hint_lines(self):
+        index = [("net.minecraft.entity.item.EntityItem", "method",
+                  "public net.minecraft.item.ItemStack getEntityItem()")]
+        result = gate.hint_lines(["getEntityItm"], index)
+        self.assertEqual(len(result), 1)
+        self.assertTrue(result[0].startswith("- getEntityItm: "))
+        self.assertIn("getEntityItem", result[0])
+        self.assertEqual(gate.hint_lines(["zzzzzz"], index), [])
+        self.assertEqual(gate.hint_lines([], index), [])
+
+    def test_build_fix_prompt_hints(self):
+        lines = ["A.java:1: error: x"]
+        files = ["src/A.java"]
+        prompt = gate.build_fix_prompt("BRIEF", 2, lines, files, [],
+                                       hints=["- a: b"])
+        self.assertIn("Real names from the API index", prompt)
+        self.assertIn("- a: b", prompt)
+        self.assertLess(prompt.index("- a: b"), prompt.index("Errors:"))
+        plain = gate.build_fix_prompt("BRIEF", 2, lines, files, [])
+        self.assertNotIn("Real names from the API index", plain)
+
     def test_parse_job_output(self):
         text = (
             "job fake-1: done\n"

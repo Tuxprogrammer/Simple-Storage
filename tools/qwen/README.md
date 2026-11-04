@@ -7,7 +7,9 @@ A deterministic loop around the local qwen worker: run the worker with a brief, 
 | `gate.py` | The gate: `python3 tools/qwen/gate.py --brief FILE --check CMD [options]` |
 | `qwen_cli.py` | `start` and `wait` command line front for the worker plugin's dispatcher (the plugin has no `start` of its own) |
 | `fake_qwen.py` | Scripted stand-in for the worker, used by the tests |
-| `test_gate.py` | `python3 -m unittest tools/qwen/test_gate.py` (plain Python, no Gradle, no model) |
+| `namecheck.py` | Pre-check: greps `src/**/*.java` for the known-bad names in `docs/agent-setup/slips.tsv` (newer-Minecraft and newer-Java names), prints `error:` lines, exit 1 on any. Silence a legitimate hit with `// namecheck:ignore` |
+| `apiindex.py` | `build` a TSV index of public members from `javap`, `find` real names for a wrong one, `check` a class exists. Built on the host by `tools/remote/api-index.sh` into the git-ignored `reference/api/index.tsv` |
+| `test_namecheck.py`, `test_apiindex.py`, `test_gate.py` | `python3 -m unittest tools/qwen/test_gate.py` (plain Python, no Gradle, no model) |
 
 ## Use
 
@@ -40,3 +42,15 @@ The worker can read an absolute path, so a brief can live in a file and the `qwe
 ## Settings
 
 `QWEN_AGENTS_CLI` selects the worker CLI (default: `qwen_cli.py` next to `gate.py`; the tests point it at `fake_qwen.py`). `QWEN_AGENTS_SERVER` selects the dispatcher script `qwen_cli.py` imports (default under the user's `~/.claude/local-plugins/qwen-agents/server/`).
+
+## Cheap checks first, API hints on failure
+
+Chain the pre-check before the build so a wrong 1.7.10 name costs one second, not a build:
+
+```sh
+python3 tools/qwen/gate.py --brief FILE \
+    --check 'python3 tools/qwen/namecheck.py && tools/remote/work.sh test' \
+    --api-index reference/api/index.tsv
+```
+
+With `--api-index`, each fix prompt gets a "Real names from the API index" section for every `symbol:` the compiler could not find (up to 3 candidates per symbol, no model involved). Briefs should also tell the worker it may grep the index file. Regenerate the index with `tools/remote/api-index.sh` when the pack or the dependency pins change. When a mistake shows up twice, add a row to `docs/agent-setup/slips.tsv` and to `forge-1710-names.md`.

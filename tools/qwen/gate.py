@@ -134,13 +134,16 @@ def restore(root, before, patterns):
     return sorted(fixed)
 
 
-def build_fix_prompt(brief, round_no, lines, files, touched):
+def build_fix_prompt(brief, round_no, lines, files, touched, hints=None):
     """Build the prompt for a fix round after a failed check.
 
     The original brief comes first, then a FIX ROUND section telling the
     worker to fix only the named errors, optionally listing the files
     named in the errors and the protected files whose changes were
-    undone, and ending with the error lines in a fenced block.
+    undone, and ending with the error lines in a fenced block.  When
+    `hints` is a non-empty list, a hint section with real API names is
+    inserted after the files/touched parts and before "Errors:"; when
+    it is None or empty the output is unchanged.
     """
     parts = [
         brief,
@@ -159,11 +162,152 @@ def build_fix_prompt(brief, round_no, lines, files, touched):
             "Your last edit changed protected files and those changes were "
             "undone: %s" % ", ".join(touched)
         )
+    if hints:
+        parts.append(
+            "Real names from the API index (use one of these, do not "
+            "invent):"
+        )
+        parts.extend(hints)
     parts.append("Errors:")
     parts.append("```")
     parts.extend(lines)
     parts.append("```")
     return "\n".join(parts)
+
+
+def _difflib_ratio(a, b):
+    """SequenceMatcher ratio of the two strings (pure-python, no model)."""
+    matches = 0
+    a_len, b_len = len(a), len(b)
+    if not a_len or not b_len:
+        return 0.0
+    best = 0
+    for i in range(a_len - b_len + 1):
+        hit = 0
+        for j in range(b_len):
+            if a[i + j] == b[j]:
+                hit += 1
+            else:
+                break
+        if hit > best:
+            best = hit
+    for i in range(b_len - a_len + 1):
+        hit = 0
+        for j in range(a_len):
+            if b[i + j] == a[j]:
+                hit += 1
+            else:
+                break
+        if hit > best:
+            best = hit
+    return 2.0 * best / (a_len + b_len)
+
+
+def symbols_in(lines):
+    """Return the identifiers named on javac ``symbol:`` detail lines.
+
+    For each line of the form ``symbol:   method getStack()`` or
+    ``symbol:   class EnumFacing`` or ``symbol:   variable foo``, the
+    identifier is returned, in order, without duplicates.
+    """
+    pattern = re.compile(
+        r"symbol:\s+(?:method|class|variable)\s+([A-Za-z_][A-Za-z0-9_]*)"
+    )
+    seen = set()
+    out = []
+    for line in lines:
+        for match in pattern.finditer(line):
+            name = match.group(1)
+            if name not in seen:
+                seen.add(name)
+                out.append(name)
+    return out
+
+
+def hint_lines(symbols, index, limit=3):
+    """Return API-index hint lines for the given symbols.
+
+    For each symbol, look up candidates in `index` (a list of
+    (class_name, kind, signature) tuples) and, when results exist, emit
+    one line "- SYMBOL: " followed by the results joined with " | ".
+    Symbols with no result are skipped; an empty index or empty symbol
+    list gives [].
+    """
+    if not index or not symbols:
+        return []
+    out = []
+    for symbol in symbols:
+        results = _lookup(index, symbol, limit)
+        if results:
+            out.append("- %s: %s" % (symbol, " | ".join(results)))
+    return out
+
+
+def _lookup(index, query, limit=3):
+    """Rank index rows for `query`, best first (pure-python, no model).
+
+    Ranks: (1) member name equals the query exactly, (2) name starts
+    with the query, (3) name contains the query, (4) difflib-style
+    ratio >= 0.75.  Comparison is case-insensitive; within a rank the
+    index order is kept, display lines are de-duplicated and cut to
+    `limit`.
+    """
+    q = query.lower()
+    buckets = [[], [], [], []]
+    for entry in index:
+        name = _member_name(entry[1], entry[2]).lower()
+        if name == q:
+            rank = 0
+        elif name.startswith(q):
+            rank = 1
+        elif q in name:
+            rank = 2
+        elif _difflib_ratio(name, q) >= 0.75:
+            rank = 3
+        else:
+            continue
+        buckets[rank].append(entry)
+    lines = []
+    seen = set()
+    for bucket in buckets:
+        for entry in bucket:
+            line = entry[0] + "  " + entry[1] + "  " + entry[2]
+            if line not in seen:
+                seen.add(line)
+                lines.append(line)
+        if len(lines) >= limit:
+            break
+    return lines[:limit]
+
+
+def _member_name(kind, signature):
+    """Return the comparable name of an index row's signature.
+
+    For method and ctor: the identifier just before the first "(".  For
+    field: the last identifier of the signature.  For class: the simple
+    class name.
+    """
+    if kind == "ctor":
+        return _simple_name(signature.split("(", 1)[0].split()[-1])
+    if kind == "method":
+        return signature.split("(", 1)[0].split()[-1]
+    if kind == "field":
+        return signature.split()[-1]
+    words = []
+    for word in signature.split():
+        if word in ("extends", "implements"):
+            break
+        words.append(word)
+    name = words[-1] if words else ""
+    if "<" in name:
+        name = name.split("<", 1)[0]
+    return name.rsplit(".", 1)[-1]
+
+
+def _simple_name(class_name):
+    """Return the simple name: last dotted segment, then last '$'-segment."""
+    last = class_name.rsplit(".", 1)[-1]
+    return last.rsplit("$", 1)[-1]
 
 
 def parse_job_output(text):
@@ -259,6 +403,7 @@ def main(argv):
     parser.add_argument("--protect", action="append",
                         default=["src/test/**"])
     parser.add_argument("--allow-protected-edits", action="store_true")
+    parser.add_argument("--api-index", default=None)
     parser.add_argument("--error-lines", type=int, default=30)
     parser.add_argument("--thinking-from-round", type=int, default=0)
     parser.add_argument(
@@ -283,6 +428,21 @@ def main(argv):
     protect = [] if args.allow_protected_edits else args.protect
     cwd = args.cwd
 
+    index = []
+    if args.api_index:
+        try:
+            with open(args.api_index, "r", encoding="utf-8") as handle:
+                index = []
+                for line in handle:
+                    line = line.rstrip("\n")
+                    if not line:
+                        continue
+                    fields = line.split("\t")
+                    if len(fields) == 3:
+                        index.append(tuple(fields))
+        except OSError as exc:
+            print("[gate] warning: api index: %s" % exc, file=sys.stderr)
+
     last_lines = []
     prev_sig = None
     last_reply = ""
@@ -296,6 +456,7 @@ def main(argv):
                 snap = snapshot(cwd, protect)
             prompt = build_fix_prompt(
                 brief, round_no, last_lines, files_in(last_lines), touched,
+                hints=hint_lines(symbols_in(last_lines), index),
             )
         touched = []
 

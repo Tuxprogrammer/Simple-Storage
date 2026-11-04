@@ -1,0 +1,26 @@
+#	Known-bad names in 1.7.10 code. Format: <Java regex><TAB><what to use instead>. Lines starting with # are comments.
+#	Checked by tools/qwen/namecheck.py against src/**/*.java (comments skipped). Add a row when a new slip shows up twice; keep it in step with forge-1710-names.md.
+\bEnumFacing\b	net.minecraftforge.common.util.ForgeDirection (1.7.10 has no EnumFacing)
+net\.minecraft\.util\.ForgeDirection	net.minecraftforge.common.util.ForgeDirection
+\bBlockPos\b	three ints x, y, z (pack to a long with a helper)
+\bBlockState\b	Block plus metadata 0-15
+\bBlockEntity\b	net.minecraft.tileentity.TileEntity
+\bCompoundTag\b	net.minecraft.nbt.NBTTagCompound
+\bListTag\b	net.minecraft.nbt.NBTTagList
+\bBlocks\.AIR\b	Blocks.air
+\.isClientSide\b	world.isRemote
+\.getGameTime\(\)	world.getTotalWorldTime()
+\.getBlockTileEntity\(	world.getTileEntity(x, y, z)
+new\s+AxisAlignedBB\(	AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ)
+ItemStack\.of\(	ItemStack.loadItemStackFromNBT(tag)
+\.hasSubtypes\(\)	item.getHasSubtypes()
+net\.minecraft\.inventory\.InventoryPlayer	net.minecraft.entity.player.InventoryPlayer
+net\.minecraft\.util\.IBlockAccess	net.minecraft.world.IBlockAccess
+net\.minecraftforge\.fml\.	cpw.mods.fml.* (1.7.10 FML package)
+net\.minecraftforge\.eventbus\.	cpw.mods.fml.common.eventhandler.SubscribeEvent and net.minecraftforge.common.MinecraftForge.EVENT_BUS
+ic2\.api\.util\.Mth	not in the pack's IC2 API; write the helper yourself
+\bList\.of\(	Java 8 only: Arrays.asList(...) or Collections.emptyList()
+\bMap\.of\(	Java 8 only: build a HashMap
+\bSet\.of\(	Java 8 only: build a HashSet
+\.isBlank\(\)	Java 8 only: trim().isEmpty()
+\.repeat\(\d	Java 8 only: no String.repeat; use a loop or StringBuilder

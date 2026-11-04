@@ -45,3 +45,14 @@ Use the templates in `docs/agent-setup/briefs/`.
 - **Final reports.** Keep them in files. Paste only the short summary into your own context.
 - **Unattended runs must not block on approval prompts.** Write temp files only to a dedicated scratch directory by absolute path, never `../` out of the worktree, no broad `rm -rf` (even inside an `ssh` string), no edits to `.git/` internals or global config. List leftovers for a human instead.
 - Cap parallel memory-heavy jobs (Minecraft JVMs, multiprocessing pools) to what the machine can hold.
+
+## Qwen changes and batched review
+
+Code and test changes are written by the local qwen worker through the check gate; Claude agents review in batches. Set by the owner, 2026-11-04.
+
+- **A change is a qwen job behind the gate.** Write the brief to a file from `docs/agent-setup/briefs/qwen-gated-change.md`, run `python3 tools/qwen/gate.py --brief FILE --check '<check>' --max-rounds 3` with `run_in_background`, and read only its verdict line. Compiler output never enters your context. On `STUCK`, read `result.json`, change the brief and rerun; never patch the worker's files by hand.
+- **The check is cheap first.** Chain `python3 tools/qwen/namecheck.py` (known-bad names from `docs/agent-setup/slips.tsv`, runs in a second) before the build host call, so a wrong 1.7.10 name costs one round on the laptop instead of a build.
+- **No review inside a milestone.** The gate (names, compile, unit and static tests) is the only control between landings. Do not spawn review agents per change.
+- **One batched review before the exit gate.** When the milestone's boxes are built, split `git diff <milestone-base>..HEAD` into slices by package (parallel, disjoint), and spawn one `port-reviewer` per slice with `docs/agent-setup/briefs/milestone-review.md`. Findings go to `handoff/review-<slice>.md`; the gate does not close with an open blocker or major. Fixes go back to qwen through the gate, then a single recheck of the fixed items only.
+- **Exception: a seam review.** When a finished package is the base that many later pieces build on (for example the inventory model before the terminal), run one cheap review of that package alone when it lands, so a wrong shape is not built on for the rest of the milestone.
+- **Learn from the slips.** When a gate round-1 error repeats a mistake already in the cheat sheet, add a row to `slips.tsv`. When a new mistake appears twice across jobs, add it to `slips.tsv` and `forge-1710-names.md` in the same commit.

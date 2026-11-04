@@ -24,6 +24,10 @@ Every API call re-reads the whole context, and an agent session grows its contex
 6. **Do not re-read what you wrote.** Edit and Write succeed or error; trust them.
 7. **One task per context.** If the brief lists more than one deliverable with its own verification, finish and hand off between them.
 
+## Auto-compaction
+
+The orchestrator session compacts at 200k tokens (`/autocompact 200000`, owner setting; the `autoCompactWindow` key in `.claude/agents/*.md` does the same for a subagent). Before a milestone gate or a long wait, compact deliberately instead of waiting for the limit. Put what must survive into files (handoff, decision log), not into the conversation.
+
 ## Fresh agent from a handoff
 
 Read only the handoff file and the files it names. Do not reload the brief's whole "read first" list.
