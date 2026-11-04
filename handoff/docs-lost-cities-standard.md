@@ -1,4 +1,4 @@
-# Handoff: raise Simple Storage docs to the Lost Cities standard (2026-11-03)
+# Handoff: docs at the Lost Cities standard; M01 in progress (2026-11-03)
 
 ## Goal and stop condition
 Review the docs for inconsistencies and undecided items, then bring them up to the owner's reference standard (the Lost Cities repo, sibling folder `LostCities`). Done when: no known contradictions, every new-spec area exists, open items are registered with a recommendation and a settler.
@@ -22,16 +22,15 @@ qwen creates new documents; Sonnet reviews and edits; Claude decides and integra
 - Owner decisions D17-D29 recorded and propagated (decision log, tier map, 0001-0003, PACK-CHANGES, ROADMAP, new-spec areas). Highlights: GT hard dependency; network parts LV (basic wireless MV); English only; TYPE sort, narrator, recipe book, ViveCraft, waterlogging not ported; open key ships unbound; one hopper (the "mid/fast variants" proposal was a misreading).
 - OPEN-QUESTIONS has no open rows. BUGS-COVERAGE: 40 untested, 10 cannot occur, 1 not a bug.
 
-## Not done
-1. **Correction pass for the 41 UNVERIFIED flags** (grep -rn UNVERIFIED docs/original-spec). Several touch the bug register: TERM-10 (the shift-step table is actually symmetric), TERM-12 (same-tick growth cannot index a stale array; residual risk is elsewhere), TERM-11 shift-click behavior, STOR/trims paint-scrape claims. Fix the sheet text, then re-judge each affected BUGS.md row (keep, rewrite or move to Not bugs) and rerun tools/bugs-coverage/generate.py.
-2. Spec sheets still describe upstream's now-dropped features (narrator, recipe book, TYPE sort) as upstream facts; that is correct, the new-spec rows record the deviation.
-3. Not present, premature before code: docs/config.md, docs/api.md, docs/reviews/.
-4. Decision log holds D1-D29; keep adding a row whenever a choice is settled.
+## State after 7919a62 and the M01 start
+- The 41 UNVERIFIED flags are corrected; the bug register is re-judged (52 IDs: 50 suspected, TERM-10 and INT-04 not bugs, TERM-13 new). Coverage 40 untested / 10 cannot occur / 2 not a bug.
+- M01 landed in 2870e6f plus a follow-up: pinned dependencies, GTNHLib config (modules, network, wireless, behavior, euSink), ModuleState, packet base classes (adapted from the sibling Lost Cities repo), the five static checks with failing fixtures, dev self-check, `.changelogs/unreleased.md`. `./gradlew spotlessApply build` passes locally.
+- M01 boxes ticked: build/tests/static checks, dependencies. Still open: `runServer` boot (needs the Minecraft EULA accepted by the owner; the tracked `run/` has no eula.txt), `runClient` main menu, self-check on a fresh world, `required-after` proof on a server without GT, config documentation test, packet-base-class tests for position and authorization rules, P01 rows settled in the shipped deviation table.
+- `tools/remote/remote.sh` is not configured for this repo (`.env` has only the Lost Cities host keys); builds ran locally on JDK 21.
 
 ## Next 3 steps
-1. Run the correction pass above with Sonnet editors per area (disjoint files; `git show 26.2:<path>` is the source), then review BUGS.md rows by hand.
-2. Re-run the link check and index-length check (all index.md <= 40 lines) after any docs change.
-3. M01 can start: entry gate is met; its scope now includes the `required-after` dependency declaration (D17) and a reminder that tests for the four+1 static checks need failing fixtures.
+1. Owner accepts the EULA (or asks me to), then run `./gradlew runServer` and `runClient`; tick the boxes.
+2. Add tests: config key table against PACK-CHANGES, packet position/authorization rules, `required-after` check.
+3. Settle the P01 rows against what shipped, then start M02 (Storage).
 
-## Division of labor and tooling (unchanged)
-qwen creates new documents (one file to write, <=2 reads, step plan, max_turns ~12); Sonnet reviews and edits; Claude decides and integrates. qwen plugin v2 is async. Questions to the owner are batched with context, options, consequences and a recommendation; decisions are recorded as decision-log rows.
+Division of labor (unchanged): qwen creates new documents and boilerplate (one file per job, small plan; two of three M01 jobs ran out of turns and I finished them), Sonnet reviews and edits, Claude decides and integrates.
